@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<faqs id="General FAQ">
+  <part id="General">
+    <faq id="where">
+      <question>Why did you write this program?</question>
+      <answer>
+        <p>
+	I wanted a program which I could use to encrypt my secret files in one platform (say, Windows), and 
+	decrypt in another (say, Linux). I was not able to find any such tool.
+        </p>
+      </answer>
+    </faq>
+    <faq id="why">
+      <question>Giving passwords in command line is dangerous. Why does this program expect this?</question>
+      <answer>
+        <p>
+	Java as of version 1.5 does not support password masking in console. I am waiting for the
+	Mustang (1.6) release of Java, where I believe this bug is fixed.
+        </p>
+      </answer>
+    </faq>
+    <faq id="build">
+      <question>What do I need to build this application from source?</question>
+      <answer>
+        <p>
+	You need to have &lt;a href=&quot;http://maven.apache.org/&quot;&gt;Maven 2.x&lt;/a&gt;.
+        </p>
+      </answer>
+    </faq>
+  </part>
+</faqs>

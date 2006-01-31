@@ -1,0 +1,28 @@
+ ------------------
+ WizCrypt - How It Works
+ ------------------
+
+How?
+
+ This document explains how WizCrypt works.
+
+* Encryption
+
+ When WizCrypt is used to encrypt a file, the following transformation
+ happens:
+
+[img/WizCryptArchitecture.png] WizCrypt file transformation.
+
+* Decryption
+
+ During decryption, the following steps happen:
+
+ [[1]] MD5 hash of the user supplied password is computed.
+
+ [[2]] This hash is compared with the first 16 bytes of the
+       encrypted file.
+
+ [[3]] If both are equal, decryption using the supplied key
+       happens. Else, appropriate message is displayed and
+       the program quits.
+
