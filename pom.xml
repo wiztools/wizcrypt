@@ -1,3 +1,11 @@
+<!--
+
+To build executable jar, run:
+
+$ mvn assembly:assembly -DdescriptorId=jar-with-dependencies
+
+-->
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
@@ -17,7 +25,7 @@
 
   <scm>
     <connection>scm:svn://svn.berlios.de/wizcrypt/trunk</connection>
-    <developerConnection>scm:svn+ssh://${user.name}@svn.berlios.de/svnroot/repos/wizcrypt/trunk</developerConnection>
+    <developerConnection>scm:svn+ssh://developerid@svn.berlios.de/svnroot/repos/wizcrypt/trunk</developerConnection>
     <url>http://svn.berlios.de/wsvn/wizcrypt</url>
   </scm>
 
@@ -69,7 +77,7 @@
               <mainClass>org.wiztools.crypt.Main</mainClass>
               <packageName>org.wiztools.crypt</packageName>
               <addClasspath>true</addClasspath>
-              <!-- <classpathPrefix/> -->
+              <classpathPrefix/>
             </manifest>
             <manifestEntries>
               <mode>development</mode>
