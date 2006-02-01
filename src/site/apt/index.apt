@@ -43,6 +43,7 @@ WizCrypt
 
  This software is distributed under {{{license.html}Apache License 2.0}}.
 
- The software uses industry standard encryption, and if by chance you have forgotten the
- password of your encrypted files, probably, no can help.
+ The software uses industry standard encryption, and if by chance you 
+ forgot the password of your encrypted files, no other 
+ method other than brute force can help.
 
