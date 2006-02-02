@@ -23,6 +23,10 @@ $ mvn assembly:assembly -DdescriptorId=jar-with-dependencies
     </license>
   </licenses>
 
+  <issueManagement>
+    <url>http://developer.berlios.de/bugs/?group_id=5944</url>
+  </issueManagement>
+
   <scm>
     <connection>scm:svn://svn.berlios.de/wizcrypt/trunk</connection>
     <developerConnection>scm:svn+ssh://developerid@svn.berlios.de/svnroot/repos/wizcrypt/trunk</developerConnection>
