@@ -41,7 +41,7 @@ public class Main{
 		Options options = new Options();
 		Option option = OptionBuilder.withLongOpt("password")
 				.hasArg()
-				.isRequired(true)
+				.isRequired(false)
 				.withDescription(rb.getString("msg.password"))
 				.create('p');
 		options.addOption(option);
@@ -80,7 +80,7 @@ public class Main{
 			CommandLine cmd = parser.parse(options, arg);
 			if(cmd.hasOption('h')){
 				printCommandLineHelp(options);
-				System.exit(0);
+				return;
 			}
 			if(cmd.hasOption('e')){
 				encrypt = true;
@@ -125,6 +125,9 @@ public class Main{
 						System.err.println(ioe.getMessage());
 					}
 				}
+			}
+			else{
+				throw new ParseException(rb.getString("err.no.pwd"));
 			}
 		}
 		catch(ParseException pe){
