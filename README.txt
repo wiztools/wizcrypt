@@ -26,10 +26,12 @@ JRE 1.5 or above.
 
 Usage:
 
-$ java -jar WizCrypt-1.0.jar --help
+$ java -jar WizCrypt-XX-jar-with-dependencies.jar --help
+
+[Note: `XX' to be substituted with the version number.]
 
 Example usage:
 
-$ java -jar WizCrypt-1.0-jar-with-dependencies.jar -e -p mypwd *.jpg
-$ java -jar WizCrypt-1.0-jar-with-dependencies.jar -d -p mypwd *.jpg.wiz
+$ java -jar WizCrypt-XX-jar-with-dependencies.jar -e -p mypwd *.jpg
+$ java -jar WizCrypt-XX-jar-with-dependencies.jar -d -p mypwd *.jpg.wiz
 
