@@ -1,0 +1,54 @@
+ ------------------
+ WizCrypt - Scriptability
+ ------------------
+ Subhash Chandran
+ ------------------
+ 2nd Feb. 2006
+ ------------------
+
+Scriptability
+
+ Scriptability is the feature of any software to interact with
+ other tools in the standard UNIX way. Some of the features which
+ make a software scriptable are:
+
+ [[1]] Output error messages to standard error.
+
+ [[2]] When operation is successful, do not output any message.
+
+ [[3]] Read input from standard input, and write to standard output
+ \[This is one feature WizCrypt does not support. The support for this
+ is also not planned, as it is not considered as a critical feature 
+ required by WizCrypt.\]
+
+ [[4]] Defined program exit status \[explained in the next section\].
+
+* Exit Status Of WizCrypt
+
+  The following are the exit status supported by WizCrypt:
+
+*-------------------------+------------------------+-----------------------------------------------+
+| 1                       | Error in IO            | Occurs when the file is not                   |
+|                         |                        | readable/writable, or the file does not exist |
+*-------------------------+------------------------+-----------------------------------------------+
+| 2                       | Invalid password       | Wrong password is supplied                    |
+*-------------------------+------------------------+-----------------------------------------------+
+| 3                       | Both                   | When both of the above happens                |
+*-------------------------+------------------------+-----------------------------------------------+
+| 4                       | Security Exception     | When you try to run the application with      |
+|                         |                        | J2RE1.4, or when you have supplied a small    |
+|                         |                        | password                                      |
+*-------------------------+------------------------+-----------------------------------------------+
+| 5                       | Parse Exception        | When the command line arguments are not       |
+|                         |                        | as expected                                   |
+*-------------------------+------------------------+-----------------------------------------------+
+| 0                       | Clean Exit             | When the program exits without any problem    |
+|                         |                        | after finishing its operation in the expected |
+|                         |                        | way                                           |
+*-------------------------+------------------------+-----------------------------------------------+
+<<Exit Status>>
+
+  <<Note>>: When WizCrypt is doing an operation on a batch of files,
+  and when it gives any one of the statuses from 1-5, it means
+  any one or more of the files in the batch has experienced that
+  specific problem(s).
