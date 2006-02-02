@@ -20,15 +20,45 @@ public class Main{
 
 	private static final ResourceBundle rb = ResourceBundle.getBundle("wizcryptmsg");
 
+	// Error booleans
+	// Note: Even when just one of the input file
+	// triggers any of these Exceptions, the flag
+	// is set.
+	private static boolean IO_EXCEPTION = false;
+	private static boolean INVALID_PWD = false;
+	private static boolean SECURITY_EXCEPTION = false;
+	private static boolean PARSE_EXCEPTION = false;
+
+	// Error codes
+	private static final int C_IO_EXCEPTION = 1;
+	private static final int C_INVALID_PWD = 2;
+	// Both of the above
+	private static final int C_BOTH = 3;
+	private static final int C_SECURITY_EXCEPTION = 4;
+	private static final int C_PARSE_EXCEPTION = 5;
+
 	private Options generateOptions(){
 		Options options = new Options();
-		Option option = OptionBuilder.withLongOpt("password").hasArg().isRequired(true).withDescription(rb.getString("msg.password")).create('p');
+		Option option = OptionBuilder.withLongOpt("password")
+				.hasArg()
+				.isRequired(true)
+				.withDescription(rb.getString("msg.password"))
+				.create('p');
 		options.addOption(option);
-		option = OptionBuilder.withLongOpt("encrypt").isRequired(false).withDescription(rb.getString("msg.encrypt")).create('e');
+		option = OptionBuilder.withLongOpt("encrypt")
+				.isRequired(false)
+				.withDescription(rb.getString("msg.encrypt"))
+				.create('e');
 		options.addOption(option);
-		option = OptionBuilder.withLongOpt("decrypt").isRequired(false).withDescription(rb.getString("msg.decrypt")).create('d');
+		option = OptionBuilder.withLongOpt("decrypt")
+				.isRequired(false)
+				.withDescription(rb.getString("msg.decrypt"))
+				.create('d');
 		options.addOption(option);
-		option = OptionBuilder.withLongOpt("help").isRequired(false).withDescription(rb.getString("msg.help")).create('h');
+		option = OptionBuilder.withLongOpt("help")
+				.isRequired(false)
+				.withDescription(rb.getString("msg.help"))
+				.create('h');
 		options.addOption(option);
 		return options;
 	}
@@ -87,24 +117,49 @@ public class Main{
 						iprocess.process(f);
 					}
 					catch(PasswordMismatchException pme){
+						INVALID_PWD = true;
 						System.err.println(pme.getMessage());
 					}
 					catch(IOException ioe){
+						IO_EXCEPTION = true;
 						System.err.println(ioe.getMessage());
 					}
 				}
 			}
 		}
 		catch(ParseException pe){
+			PARSE_EXCEPTION = true;
 			System.err.println(pe.getMessage());
 			printCommandLineHelp(options);
 		}
 		catch(GeneralSecurityException gse){
+			SECURITY_EXCEPTION = true;
 			System.err.println(gse.getMessage());
 		}
 	}
 
 	public static void main(String[] arg){
 		new Main(arg);
+
+		// Set program exit value
+		int exitVal = 0;
+		if(PARSE_EXCEPTION){
+			exitVal = C_PARSE_EXCEPTION;
+		}
+		else if(SECURITY_EXCEPTION){
+			exitVal = C_SECURITY_EXCEPTION;
+		}
+		else{
+			if(IO_EXCEPTION){
+				exitVal = C_IO_EXCEPTION;
+			}
+			if(INVALID_PWD){
+				exitVal = C_INVALID_PWD;
+			}
+			if(IO_EXCEPTION && INVALID_PWD){
+				exitVal = C_BOTH;
+			}
+		}
+		System.exit(exitVal);
 	}
 }
