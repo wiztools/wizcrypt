@@ -31,15 +31,19 @@ Scriptability
 | 1                       | Error in IO            | Occurs when the file is not                   |
 |                         |                        | readable/writable, or the file does not exist |
 *-------------------------+------------------------+-----------------------------------------------+
-| 2                       | Invalid password       | Wrong password is supplied                    |
+| 2                       | Invalid password       | Password supplied is either too short or too  |
+|                         |                        | long
 *-------------------------+------------------------+-----------------------------------------------+
-| 3                       | Both                   | When both of the above happens                |
+| 3                       | Password mismatch      | Wrong password is supplied                    |
 *-------------------------+------------------------+-----------------------------------------------+
-| 4                       | Security Exception     | When you try to run the application with      |
+| 4                       | Both                   | When there is one or more password            |
+|                         |                        | mismatch and one or more IO problems          |
+*-------------------------+------------------------+-----------------------------------------------+
+| 5                       | Security Exception     | When you try to run the application with      |
 |                         |                        | J2RE1.4, or when you have supplied a small    |
 |                         |                        | password                                      |
 *-------------------------+------------------------+-----------------------------------------------+
-| 5                       | Parse Exception        | When the command line arguments are not       |
+| 6                       | Parse Exception        | When the command line arguments are not       |
 |                         |                        | as expected                                   |
 *-------------------------+------------------------+-----------------------------------------------+
 | 0                       | Clean Exit             | When the program exits without any problem    |
@@ -49,6 +53,15 @@ Scriptability
 <<Exit Status>>
 
   <<Note>>: When WizCrypt is doing an operation on a batch of files,
-  and when it gives any one of the statuses from 1-5, it means
+  and when it gives any one of the statuses from 1-6, it means
   any one or more of the files in the batch has experienced that
   specific problem(s).
+
+** Example
+
+  Consider you are decrypting three files: x.wiz, y.wiz and z.wiz:
+
+  $ java -jar WizCrypt-XX-jar-with-dependencies.jar -e -p passwd x.wiz y.wiz z.wiz
+
+  If x.wiz's password is not "passwd", and y.wiz does not exist in
+  the directory, and z.wiz gets decrypted, the program exits with code 4
