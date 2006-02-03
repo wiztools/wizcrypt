@@ -9,6 +9,7 @@ import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
+import java.security.InvalidKeyException;
 import java.security.GeneralSecurityException;
 
 import java.io.IOException;
@@ -26,16 +27,18 @@ public class Main{
 	// is set.
 	private static boolean IO_EXCEPTION = false;
 	private static boolean INVALID_PWD = false;
+	private static boolean PWD_MISMATCH = false;
 	private static boolean SECURITY_EXCEPTION = false;
 	private static boolean PARSE_EXCEPTION = false;
 
 	// Error codes
 	private static final int C_IO_EXCEPTION = 1;
 	private static final int C_INVALID_PWD = 2;
+	private static final int C_PWD_MISMATCH = 3;
 	// Both of the above
-	private static final int C_BOTH = 3;
-	private static final int C_SECURITY_EXCEPTION = 4;
-	private static final int C_PARSE_EXCEPTION = 5;
+	private static final int C_PWD_MISMATCH_N_IO_E = 4;
+	private static final int C_SECURITY_EXCEPTION = 5;
+	private static final int C_PARSE_EXCEPTION = 6;
 
 	private Options generateOptions(){
 		Options options = new Options();
@@ -91,6 +94,9 @@ public class Main{
 			if(encrypt && decrypt){
 				throw new ParseException(rb.getString("err.both.selected"));
 			}
+			if(!encrypt && !decrypt){
+				throw new ParseException(rb.getString("err.none.selected"));
+			}
 			if(cmd.hasOption('p')){
 				String pwd = cmd.getOptionValue('p');
 				if(pwd == null){
@@ -103,9 +109,6 @@ public class Main{
 				else if(decrypt){
 					iprocess = new Decrypt();
 				}
-				else{
-					throw new ParseException(rb.getString("err.none.selected"));
-				}
 				iprocess.init(pwd);
 				String[] args = cmd.getArgs();
 				if(args.length == 0){
@@ -117,7 +120,7 @@ public class Main{
 						iprocess.process(f);
 					}
 					catch(PasswordMismatchException pme){
-						INVALID_PWD = true;
+						PWD_MISMATCH = true;
 						System.err.println(pme.getMessage());
 					}
 					catch(IOException ioe){
@@ -135,6 +138,10 @@ public class Main{
 			System.err.println(pe.getMessage());
 			printCommandLineHelp(options);
 		}
+		catch(InvalidKeyException ike){
+			INVALID_PWD = true;
+			System.err.println(rb.getString("err.invalid.pwd"));
+		}
 		catch(GeneralSecurityException gse){
 			SECURITY_EXCEPTION = true;
 			System.err.println(gse.getMessage());
@@ -149,6 +156,9 @@ public class Main{
 		if(PARSE_EXCEPTION){
 			exitVal = C_PARSE_EXCEPTION;
 		}
+		else if(INVALID_PWD){
+			exitVal = C_INVALID_PWD;
+		}
 		else if(SECURITY_EXCEPTION){
 			exitVal = C_SECURITY_EXCEPTION;
 		}
@@ -156,11 +166,11 @@ public class Main{
 			if(IO_EXCEPTION){
 				exitVal = C_IO_EXCEPTION;
 			}
-			if(INVALID_PWD){
-				exitVal = C_INVALID_PWD;
+			if(PWD_MISMATCH){
+				exitVal = C_PWD_MISMATCH;
 			}
-			if(IO_EXCEPTION && INVALID_PWD){
-				exitVal = C_BOTH;
+			if(IO_EXCEPTION && PWD_MISMATCH){
+				exitVal = C_PWD_MISMATCH_N_IO_E;
 			}
 		}
 		System.exit(exitVal);
