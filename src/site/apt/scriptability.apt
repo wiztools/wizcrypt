@@ -64,4 +64,4 @@ Scriptability
   $ java -jar WizCrypt-XX-jar-with-dependencies.jar -e -p passwd x.wiz y.wiz z.wiz
 
   If x.wiz's password is not "passwd", and y.wiz does not exist in
-  the directory, and z.wiz gets decrypted, the program exits with code 4
+  the directory, and z.wiz gets decrypted, the program exits with code 4.
