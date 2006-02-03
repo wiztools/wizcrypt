@@ -33,7 +33,7 @@ WizCrypt
 
  $ java -jar WizCrypt-XX-jar-with-dependencies.jar --help
 
- \[`XX' to be substituted with the version number.\]
+ \[<<Note>>: `XX' to be substituted with the version number.\]
 
 * Example usage:
 
