@@ -12,7 +12,7 @@ $ mvn assembly:assembly -DdescriptorId=jar-with-dependencies
   <groupId>org.wiztools.crypt</groupId>
   <artifactId>WizCrypt</artifactId>
   <packaging>jar</packaging>
-  <version>1.0</version>
+  <version>1.1</version>
   <name>WizCrypt</name>
   <url>http://wiztools.org/</url>
 
