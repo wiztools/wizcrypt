@@ -4,13 +4,13 @@
 
 Downloads
 
-  1.0 is the latest production release of WizCrypt. If you are a plain user, it is recommended
+  If you are a plain user, it is recommended
   that you download the <Executable Jar> version of the application. You may use this once after
   downloading thus:
 
-  $ java -jar WizCrypt-1.0-jar-with-dependencies.jar --help
+  $ java -jar WizCrypt-XX-jar-with-dependencies.jar --help
 
-  <<Note>>: Version 1.0 requires atleast JRE 1.5.
+  <<Note>>: "XX" is to be replaced with the version number.
 
   To build WizCrypt from source, you need {{{http://maven.apache.org}Maven 2}} (version 2.0.2 or above).
 
