@@ -8,5 +8,3 @@ mvn assembly:assembly -DdescriptorId=src
 
 mvn site
 
-cp src/main/resources/wizcryptmsg.properties target/site/
-
