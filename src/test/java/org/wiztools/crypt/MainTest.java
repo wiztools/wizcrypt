@@ -65,6 +65,7 @@ public class MainTest extends TestCase {
         final String content = "This is a dummy text!";
         
         File fin = new File(path);
+        fin.deleteOnExit();
         
         // Write dummy content into the file
         
