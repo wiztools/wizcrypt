@@ -61,6 +61,8 @@ public class MainTest extends TestCase {
         
         final String password = "testpwd";
         
+        final String wrongPassword = "wrongpwd";
+        
         // Please provide content with NO new lines (\n):
         final String content = "This is a dummy text!";
         
@@ -78,15 +80,16 @@ public class MainTest extends TestCase {
         // Encryption
         
         Encrypt e = new Encrypt();
+        
         try {
             e.init(password);
             e.process(fin);
         } catch (InvalidKeyException ex) {
-            ex.printStackTrace();
+            fail(ex.getMessage());
         } catch (NoSuchAlgorithmException ex) {
-            ex.printStackTrace();
+            fail(ex.getMessage());
         } catch (NoSuchPaddingException ex) {
-            ex.printStackTrace();
+            fail(ex.getMessage());
         }
         
         // Creation of fout
@@ -96,6 +99,24 @@ public class MainTest extends TestCase {
         // Decryption
         
         Decrypt d = new Decrypt();
+        
+        // test for wrong password
+        try {
+            d.init(wrongPassword);
+            try {
+                d.process(fout);
+                fail("Cannot process for wrong supplied password!!!");
+            } catch (PasswordMismatchException ex) {
+                // should be visited here;
+            }
+        } catch (InvalidKeyException ex) {
+            fail(ex.getMessage());
+        } catch (NoSuchPaddingException ex) {
+            fail(ex.getMessage());
+        } catch (NoSuchAlgorithmException ex) {
+            fail(ex.getMessage());
+        }
+        
         try {
             d.init(password);
             try{
@@ -104,11 +125,11 @@ public class MainTest extends TestCase {
                 fail(ex.getMessage());
             }
         } catch (InvalidKeyException ex) {
-            ex.printStackTrace();
+            fail(ex.getMessage());
         } catch (NoSuchAlgorithmException ex) {
-            ex.printStackTrace();
+            fail(ex.getMessage());
         } catch (NoSuchPaddingException ex) {
-            ex.printStackTrace();
+            fail(ex.getMessage());
         }
         
         // Read content to verify
@@ -118,6 +139,5 @@ public class MainTest extends TestCase {
         
         assertEquals(content, str);
 
-    }
-    
+    }   
 }
