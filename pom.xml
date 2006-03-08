@@ -109,6 +109,8 @@ $ mvn assembly:assembly -DdescriptorId=jar-with-dependencies
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
+                <!-- UMLGraph installation: http://wiki.wsmoak.net/cgi-bin/wiki.pl?UMLGraph -->
+                <!-- if u have not configured, comment -->
                 <!--<reportSets>
                     <reportSet>
                         <id>uml</id>
@@ -137,6 +139,7 @@ $ mvn assembly:assembly -DdescriptorId=jar-with-dependencies
                         </reports>
                     </reportSet>
                 </reportSets>-->
+                <!-- End comment here if u don't want UMLGraph -->
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
