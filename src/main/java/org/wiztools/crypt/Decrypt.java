@@ -65,14 +65,14 @@ public class Decrypt implements IProcess{
                     cos.close();
                 }
             } catch(IOException ioe){
-                // Need to log
+                System.err.println(ioe.getMessage());
             }
             try{
                 if(fis != null){
                     fis.close();
                 }
             } catch(IOException ioe){
-                // Need to log
+                System.err.println(ioe.getMessage());
             }
             if(canDelete){
                 file.delete();
