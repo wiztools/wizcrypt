@@ -34,28 +34,49 @@ public class Decrypt implements IProcess{
     }
     
     public void process(File file) throws IOException, FileNotFoundException, PasswordMismatchException{
-        String path = file.getCanonicalPath();
-        if(!path.endsWith(".wiz")){
-            throw new FileNotFoundException(rb.getString("err.file.not.end.wiz")+path);
+        FileInputStream fis = null;
+        CipherOutputStream cos = null;
+        boolean canDelete = false;
+        try{
+            String path = file.getCanonicalPath();
+            if(!path.endsWith(".wiz")){
+                throw new FileNotFoundException(rb.getString("err.file.not.end.wiz")+path);
+            }
+            String newPath = path.replaceFirst(".wiz$", "");
+            File outFile = new File(newPath);
+            fis = new FileInputStream(file);
+            cos = new CipherOutputStream(
+                    new FileOutputStream(outFile), cipher);
+            // read 16 bytes from fis
+            byte[] filePassKeyHash = new byte[16];
+            fis.read(filePassKeyHash, 0, 16);
+            if(!Arrays.equals(passKeyHash, filePassKeyHash)){
+                throw new PasswordMismatchException(rb.getString("err.pwd.not.match")+path);
+            }
+            
+            int i = -1;
+            while((i=fis.read()) != -1){
+                cos.write((char)i);
+            }
+            canDelete = true;
+        } finally{
+            try{
+                if(cos != null){
+                    cos.close();
+                }
+            } catch(IOException ioe){
+                // Need to log
+            }
+            try{
+                if(fis != null){
+                    fis.close();
+                }
+            } catch(IOException ioe){
+                // Need to log
+            }
+            if(canDelete){
+                file.delete();
+            }
         }
-        String newPath = path.replaceFirst(".wiz$", "");
-        File outFile = new File(newPath);
-        FileInputStream fis = new FileInputStream(file);
-        CipherOutputStream cos = new CipherOutputStream(
-                new FileOutputStream(outFile), cipher);
-        // read 16 bytes from fis
-        byte[] filePassKeyHash = new byte[16];
-        fis.read(filePassKeyHash, 0, 16);
-        if(!Arrays.equals(passKeyHash, filePassKeyHash)){
-            throw new PasswordMismatchException(rb.getString("err.pwd.not.match")+path);
-        }
-        
-        int i = -1;
-        while((i=fis.read()) != -1){
-            cos.write((char)i);
-        }
-        cos.close();
-        fis.close();
-        file.delete();
     }
 }
