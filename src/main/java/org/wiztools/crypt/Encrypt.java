@@ -52,14 +52,14 @@ public class Encrypt implements IProcess{
                     fos.close();
                 }
             } catch(IOException ioe){
-                // Log Exception
+                System.err.println(ioe.getMessage());
             }
             try{
                 if(cis != null){
                     cis.close();
                 }
             } catch(IOException ioe){
-                // Log Exception
+                System.err.println(ioe.getMessage());
             }
             if(canDelete){
                 file.delete();
