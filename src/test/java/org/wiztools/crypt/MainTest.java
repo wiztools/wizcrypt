@@ -8,6 +8,7 @@
 package org.wiztools.crypt;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -119,6 +120,17 @@ public class MainTest extends TestCase {
         
         try {
             d.init(password);
+            
+            // Try processing file not ending with .wiz
+            try{
+                d.process(new File(path+".xxx"));
+                fail("Cannot process for file not ending with .wiz");
+            } catch(FileNotFoundException fnfe){
+                // should be visited here
+            } catch(PasswordMismatchException ex){
+                fail(ex.getMessage());
+            }
+            
             try{
                 d.process(fout);
             } catch (PasswordMismatchException ex) {
@@ -138,6 +150,5 @@ public class MainTest extends TestCase {
         br.close();
         
         assertEquals(content, str);
-
     }   
 }
