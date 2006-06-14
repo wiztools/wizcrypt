@@ -1,0 +1,57 @@
+##########################################################################
+# Need To Have JAVA_HOME environment variable set, And Maven >= 2.0.3 in #
+# the PATH.                                                              #
+##########################################################################
+
+%define name WizCrypt
+%define version 1.1
+%define release 1
+
+Summary: Cross platform file encryption software.
+Name: %{name}
+Version: %{version}
+Release: %{release}
+Source: http://prdownload.berlios.de/wizcrypt/%{name}-%{version}-src.tar.bz2
+Vendor: WizTools.org
+URL: http://www.wiztools.org/
+License: Apache 2
+Group: System Environment/Libraries
+BuildArch: noarch
+Prefix: %{_prefix}
+
+%description
+Cross platform file encryption software.
+
+%prep
+%setup -q
+
+%build
+mvn compile
+
+%install
+if mvn assembly:assembly -DdescriptorId=jar-with-dependencies
+then
+	# Copy Binaries
+	if [ ! -d ${RPM_BUILD_ROOT}/usr/share/java ];then
+		mkdir -p ${RPM_BUILD_ROOT}/usr/share/java
+	fi
+	if [ ! -d ${RPM_BUILD_ROOT}/usr/bin ];then
+		mkdir -p ${RPM_BUILD_ROOT}/usr/bin
+	fi
+	cp target/%{name}-%{version}-jar-with-dependencies.jar ${RPM_BUILD_ROOT}/usr/share/java/
+	cp src/main/shell/wizcrypt ${RPM_BUILD_ROOT}/usr/bin/wizcrypt
+	chmod +x ${RPM_BUILD_ROOT}/usr/bin/wizcrypt
+
+	# Generate Documentation
+	mvn site
+fi
+
+%clean
+# Do nothing
+
+%files
+%defattr(-,root,root)
+%doc target/site/*
+/usr/share/java/%{name}-%{version}-jar-with-dependencies.jar
+/usr/bin/wizcrypt
+
