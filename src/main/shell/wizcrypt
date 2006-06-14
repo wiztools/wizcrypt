@@ -1,4 +1,14 @@
 #!/bin/sh
 
-java -jar /usr/share/java/WizCrypt-1.1-jar-with-dependencies.jar $*
+###########################################
+## http://wiztools.org/project/WizCrypt/ ##
+###########################################
+
+if which java > /dev/null 2>&1
+then
+	java -jar /usr/share/java/WizCrypt-1.1-jar-with-dependencies.jar $*
+else
+	echo Java not in PATH
+	exit 1
+fi
 
