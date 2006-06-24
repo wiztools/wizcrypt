@@ -38,8 +38,8 @@ $ mvn assembly:assembly -DdescriptorId=jar-with-dependencies
             <id>subwiz</id>
             <name>Subhash Chandran</name>
             <email>subwiz in the gmail.com server</email>
-            <organization>SSIL</organization>
-            <organizationUrl>http://www.sella.it</organizationUrl>
+            <organization>SpikeSource</organization>
+            <organizationUrl>http://www.spikesource.com/</organizationUrl>
             <roles>
                 <role>Project admin and main developer</role>
             </roles>
