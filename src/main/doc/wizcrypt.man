@@ -1,0 +1,32 @@
+.TH WizCrypt 1 "16 July 2006"
+.SH NAME
+wizcrypt \- Cross platform file encryption software.
+.SH SYNOPSIS
+\fBwizcrypt\fP [ \fB-e\fP | \fB-d\fP ] [ \fB-p\fP \fIPASSWD\fP ] FILES
+.SH DESCRIPTION
+wizcrypt is a cross platform file encryption software written in Java. To
+encrypt all \fI.txt\fP files in current directory using password `mypass':
+
+$ \fBwizcrypt -e -p\fP \fImypass *.txt\fP
+
+Running this command will transform all \fI.txt\fP files in the current 
+directory to \fI.txt.wiz\fP. To decrypt these files:
+
+$ \fBwizcrypt -d -p\fP \fImypass *.txt.wiz\fP
+.SH OPTIONS
+.TP
+\fB-e,--encrypt\fP
+Encrypt mode
+.TP
+\fB-d,--decrypt\fP
+Decrypt mode
+.TP
+\fB-p,--password\fP
+Give password
+.TP
+\fB-h,--help\fP
+Display Help
+.SH AUTHOR
+Developed by Subhash Chandran.
+.SH REPORTING BUGS
+Visit WizTools.org for details.
