@@ -33,7 +33,7 @@ then
 	exit 1
 fi
 
-shar -zq /usr/bin/wizcrypt /usr/share/java/WizCrypt-${WC_VERSION}-jar-with-dependencies.jar /usr/share/doc/WizCrypt-${WC_VERSION}/ > target/WizCrypt-${WC_VERSION}.bin
+shar -zq /usr/bin/wizcrypt /usr/share/java/WizCrypt-${WC_VERSION}-jar-with-dependencies.jar /usr/share/man/man1/wizcrypt.1.gz /usr/share/doc/WizCrypt-${WC_VERSION}/ > target/WizCrypt-${WC_VERSION}.bin
 
 ## Post build check
 
