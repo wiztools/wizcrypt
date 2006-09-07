@@ -42,6 +42,13 @@ then
 	cp src/main/shell/wizcrypt ${RPM_BUILD_ROOT}/usr/bin/wizcrypt
 	chmod +x ${RPM_BUILD_ROOT}/usr/bin/wizcrypt
 
+	# Copy man page
+	if [ ! -d ${RPM_BUILD_ROOT}/usr/share/man/man1 ];then
+		mkdir -p ${RPM_BUILD_ROOT}/usr/share/man/man1
+	fi
+	cp src/main/doc/wizcrypt.man ${RPM_BUILD_ROOT}/usr/share/man/man1/wizcrypt.1
+	gzip -f ${RPM_BUILD_ROOT}/usr/share/man/man1/wizcrypt.1
+
 	# Generate Documentation
 	mvn site
 fi
@@ -51,6 +58,7 @@ fi
 
 %files
 %defattr(-,root,root)
+%doc /usr/share/man/man1/wizcrypt.1.gz
 %doc target/site/*
 /usr/share/java/%{name}-%{version}-jar-with-dependencies.jar
 /usr/bin/wizcrypt
