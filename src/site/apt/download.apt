@@ -4,15 +4,7 @@
 
 Downloads
 
-  If you are a plain user, it is recommended
-  that you download the <Executable Jar> version of the application. You may use this once after
-  downloading thus:
-
-  $ java -jar WizCrypt-XX-jar-with-dependencies.jar --help
-
-  <<Note>>: "XX" is to be replaced with the version number.
-
-  To build WizCrypt from source, you need {{{http://maven.apache.org}Maven 2}} (version 2.0.2 or above).
-
   Download releases from {{{http://developer.berlios.de/project/showfiles.php?group_id=5944}BerliOS.de}}.
+
+  If you are confused about which format to use from the available download options, go to {{{http://kmwiz.pbwiki.com/WizCrypt}Download Help}} page.
 
