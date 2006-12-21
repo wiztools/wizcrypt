@@ -10,12 +10,20 @@
         </p>
       </answer>
     </faq>
-    <faq id="why">
-      <question>Giving passwords in command line is dangerous. Why does this program expect this?</question>
+    <faq id="why1x">
+      <question>[v1.x] Giving passwords in command line is dangerous. Why does this program expect this?</question>
       <answer>
         <p>
-	Java as of version 1.5 does not support password masking in console. I am waiting for the
-	Mustang (1.6) release of Java, where I believe this bug is fixed.
+	Java as of version 5 does not support password masking in console. Version 2.x of application supports
+        interactive input of password (this runs in Java 6).
+        </p>
+      </answer>
+    </faq>
+    <faq id="why2x">
+      <question>[v2.x] Version 2.x have support for accepting passwords from user interactively. Then why does it retain support for command-line parameter supply of password?</question>
+      <answer>
+        <p>
+	Two reasons: 1. For scripting support 2. Backwork compatibility
         </p>
       </answer>
     </faq>
@@ -23,7 +31,7 @@
       <question>What do I need to build this application from source?</question>
       <answer>
         <p>
-	You need to have &lt;a href=&quot;http://maven.apache.org/&quot;&gt;Maven 2.x&lt;/a&gt;.
+	You need to have Maven 2.x (http://maven.apache.org/).
         </p>
       </answer>
     </faq>
