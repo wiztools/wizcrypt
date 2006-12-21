@@ -47,7 +47,7 @@ Scriptability
 |                         |                        | as expected                                   |
 *-------------------------+------------------------+-----------------------------------------------+
 | 7                       | Console not available  | The application expects password from console,|
-|                         |                        | but application running in headless state (eg.|
+|                         |                        | but it is running in headless state (eg.|
 |                         |                        | when the application is started using cron)   |
 *-------------------------+------------------------+-----------------------------------------------+
 | 0                       | Clean Exit             | When the program exits without any problem    |
