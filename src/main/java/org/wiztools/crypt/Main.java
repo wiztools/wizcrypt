@@ -1,6 +1,7 @@
 package org.wiztools.crypt;
 
 import java.io.Console;
+import java.io.InputStream;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.GnuParser;
@@ -46,25 +47,30 @@ public class Main{
     private Options generateOptions(){
         Options options = new Options();
         Option option = OptionBuilder.withLongOpt("password")
-        .hasOptionalArg()
-        .isRequired(false)
-        .withDescription(rb.getString("msg.password"))
-        .create('p');
+                .hasOptionalArg()
+                .isRequired(false)
+                .withDescription(rb.getString("msg.password"))
+                .create('p');
         options.addOption(option);
         option = OptionBuilder.withLongOpt("encrypt")
-        .isRequired(false)
-        .withDescription(rb.getString("msg.encrypt"))
-        .create('e');
+                .isRequired(false)
+                .withDescription(rb.getString("msg.encrypt"))
+                .create('e');
         options.addOption(option);
         option = OptionBuilder.withLongOpt("decrypt")
-        .isRequired(false)
-        .withDescription(rb.getString("msg.decrypt"))
-        .create('d');
+                .isRequired(false)
+                .withDescription(rb.getString("msg.decrypt"))
+                .create('d');
         options.addOption(option);
         option = OptionBuilder.withLongOpt("help")
-        .isRequired(false)
-        .withDescription(rb.getString("msg.help"))
-        .create('h');
+                .isRequired(false)
+                .withDescription(rb.getString("msg.help"))
+                .create('h');
+        options.addOption(option);
+        option = OptionBuilder.withLongOpt("version")
+                .isRequired(false)
+                .withDescription(rb.getString("msg.version"))
+                .create('v');
         options.addOption(option);
         return options;
     }
@@ -75,6 +81,20 @@ public class Main{
         String descriptor = rb.getString("display.detail");
         String moreHelp = rb.getString("display.footer");
         hf.printHelp(cmdLine, descriptor, options, moreHelp);
+    }
+    
+    private void printVersionInfo(){
+        InputStream is = this.getClass().getClassLoader().getResourceAsStream("org/wiztools/wizcrypt/VERSION");
+        try{
+            int i = -1;
+            while((i=is.read())!=-1){
+                System.out.print((char)i);
+            }
+            is.close();
+            System.out.println();
+        } catch(IOException ioe) {
+            assert true: "VERSION file not found in Jar!";
+        }
     }
     
     private String getConsolePassword() throws ParseException,
@@ -100,6 +120,10 @@ public class Main{
             CommandLine cmd = parser.parse(options, arg);
             if(cmd.hasOption('h')){
                 printCommandLineHelp(options);
+                return;
+            }
+            if(cmd.hasOption('v')){
+                printVersionInfo();
                 return;
             }
             if(cmd.hasOption('e')){
