@@ -21,13 +21,9 @@ WizCrypt
 
    You have to pass command line argument `-d' for operating in this mode.
 
-* Limitation:
-
- You have to supply password through the command line :-(.
-
 * Requirement:
 
- JRE 1.5 or above.
+ 2.x and above versions require JRE 1.6 or above. 1.x versions JRE 1.5 or above.
 
 * Usage:
 
@@ -40,6 +36,9 @@ WizCrypt
  $ java -jar WizCrypt-XX-jar-with-dependencies.jar -e -p mypwd *.jpg
 
  $ java -jar WizCrypt-XX-jar-with-dependencies.jar -d -p mypwd *.jpg.wiz
+
+ If you do not supply `-p' parameter with password, or if you do not supply the
+ `-p' parameter itself, the application will interactively ask for password.
 
 * Disclaimer And License
 
