@@ -1,4 +1,4 @@
-.TH WizCrypt 1 "16 July 2006"
+.TH WizCrypt 1 "22 December 2006"
 .SH NAME
 wizcrypt \- Cross platform file encryption software.
 .SH SYNOPSIS
@@ -9,10 +9,31 @@ encrypt all \fI.txt\fP files in current directory using password `mypass':
 
 $ \fBwizcrypt -e -p\fP \fImypass *.txt\fP
 
+or:
+
+$ \fBwizcrypt -e \fP\fI*.txt\fP
+
+or:
+
+$ \fBwizcrypt -p -e \fP\fI*.txt\fP
+
+The last two commands will interactively ask for password.
+
 Running this command will transform all \fI.txt\fP files in the current 
 directory to \fI.txt.wiz\fP. To decrypt these files:
 
 $ \fBwizcrypt -d -p\fP \fImypass *.txt.wiz\fP
+
+or:
+
+$ \fBwizcrypt -d \fP\fI*.txt.wiz\fP
+
+or:
+
+$ \fBwizcrypt -p -d \fP\fI*.txt.wiz\fP
+
+The last two commands will interactively ask for password.
+
 .SH OPTIONS
 .TP
 \fB-e,--encrypt\fP
@@ -26,6 +47,10 @@ Give password
 .TP
 \fB-h,--help\fP
 Display Help
+.TP
+\fB-v,--version\fP
+Displays version information
+
 .SH AUTHOR
 Developed by Subhash Chandran.
 .SH REPORTING BUGS
