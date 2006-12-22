@@ -10,6 +10,17 @@
         </p>
       </answer>
     </faq>
+    <faq id="version-compat">
+      <question>Can I decrypt a file I encrypted using a older version of WizCrypt?</question>
+      <answer>
+        <p>
+	The encryption algorithm and the file-format used by every version of WizCrypt is the same. In 
+	addition, every version of WizCrypt is tested for decrypting the 
+	oldest-released-version-encrypted-file. This is one of our design-decisions: WizCrypt will always 
+	be able to decrypt earlier-version-encrypted-files.
+        </p>
+      </answer>
+    </faq>
     <faq id="why1x">
       <question>[v1.x] Giving passwords in command line is dangerous. Why does this program expect this?</question>
       <answer>

@@ -1,0 +1,10 @@
+The file `VERSION' in this folder has the version information.
+
+The contents of this file will be displayed when the application
+is executed with the `-v' or `--version' parameter.
+
+The file should not have EOL character (no new-line after the single
+line of text). The new-line is added by the application.
+
+Release manager should remember to update this file during releases.
+
