@@ -10,4 +10,8 @@ done for a release.
 * Change version number in: src/main/shell/wizcrypt
 * Change version number in RPM spec file: wizcrypt.spec
 * Create a tag with the version number
+* Upload the artifacts to release site
+* Update site with: target/site
+* Update http://freshmeat.net/
+* Blog, digg, etc!
 
