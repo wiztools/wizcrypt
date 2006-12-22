@@ -1,0 +1,10 @@
+The logo.png Test
+=================
+
+The `logo.png test' is for testing the compatibility of
+later versions of WizCrypt with the first ever released
+version. What is in this directory have been created using
+the version 1 of WizCrypt. The test should generate these
+files using the new version of WizCrypt and then compute md5 
+and try to match them with what is available here.
+
