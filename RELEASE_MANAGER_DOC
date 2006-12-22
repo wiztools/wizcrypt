@@ -4,14 +4,23 @@ Release Manager Doc
 This document is a checklist of all the actiities to be
 done for a release.
 
-* Update all the site docs: src/site
-* pom.xml -> change version number
 * Verify backword compatibility: ./testBackwardCompatibility.sh
-* Change version number in: src/main/shell/wizcrypt
-* Change version number in RPM spec file: wizcrypt.spec
-* Create a tag with the version number
+
+* Update/add all the site docs: src/site
+
+* Change version info in:
+  => pom.xml
+  => src/main/resources/org/wiztools/wizcrypt/VERSION
+  => src/main/shell/wizcrypt
+  => wizcrypt.spec
+
+* Create a sibversion tag with the version number
+
 * Upload the artifacts to release site
+
 * Update site with: target/site
+
 * Update http://freshmeat.net/
+
 * Blog, digg, etc!
 
