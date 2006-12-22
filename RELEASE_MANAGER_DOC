@@ -1,0 +1,13 @@
+Release Manager Doc
+===================
+
+This document is a checklist of all the actiities to be
+done for a release.
+
+* Update all the site docs: src/site
+* pom.xml -> change version number
+* Verify backword compatibility: ./testBackwardCompatibility.sh
+* Change version number in: src/main/shell/wizcrypt
+* Change version number in RPM spec file: wizcrypt.spec
+* Create a tag with the version number
+
