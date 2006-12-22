@@ -8,6 +8,8 @@ done for a release.
 
 * Update/add all the site docs: src/site
 
+* Update the MAN page: src/main/doc/wizcrypt.man
+
 * Change version info in:
   => pom.xml
   => src/main/resources/org/wiztools/wizcrypt/VERSION
