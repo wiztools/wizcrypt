@@ -2,6 +2,7 @@ package org.wiztools.crypt;
 
 import java.io.Console;
 import java.io.InputStream;
+import java.util.Arrays;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.GnuParser;
@@ -97,7 +98,7 @@ public class Main{
         }
     }
     
-    private String getConsolePassword(String msg) throws PasswordMismatchException,
+    private char[] getConsolePassword(String msg) throws PasswordMismatchException,
                     ConsoleNotAvailable{
         Console cons = System.console();
         if(cons == null){
@@ -109,19 +110,19 @@ public class Main{
             throw new PasswordMismatchException(rb.getString("err.no.pwd"));
         }
 
-        return new String(passwd);
+        return passwd;
     }
     
-    private String getConsolePassword() throws PasswordMismatchException,
+    private char[] getConsolePassword() throws PasswordMismatchException,
                     ConsoleNotAvailable{
         return getConsolePassword(rb.getString("msg.interactive.password"));
     }
     
-    private String getConsolePasswordVerify() throws PasswordMismatchException,
+    private char[] getConsolePasswordVerify() throws PasswordMismatchException,
                     ConsoleNotAvailable{
-        String passwd = getConsolePassword(rb.getString("msg.interactive.password"));
-        String passwd_retype = getConsolePassword(rb.getString("msg.interactive.password.again"));
-        if(!passwd.equals(passwd_retype)){
+        char[] passwd = getConsolePassword(rb.getString("msg.interactive.password"));
+        char[] passwd_retype = getConsolePassword(rb.getString("msg.interactive.password.again"));
+        if(!Arrays.equals(passwd, passwd_retype)){
             throw new PasswordMismatchException(rb.getString("err.interactive.pwd.not.match"));
         }
         return passwd;
@@ -154,11 +155,14 @@ public class Main{
             if(!encrypt && !decrypt){
                 throw new ParseException(rb.getString("err.none.selected"));
             }
-            String pwd = null;
+            char[] pwd = null;
             if(cmd.hasOption('p')){
-                pwd = cmd.getOptionValue('p');
-                if(pwd == null){
+                String pwdStr = cmd.getOptionValue('p');
+                if(pwdStr == null){
                     pwd = encrypt ? getConsolePasswordVerify() : getConsolePassword();
+                }
+                else{
+                    pwd = pwdStr.toCharArray();
                 }
                 
             } else{
@@ -170,7 +174,7 @@ public class Main{
             } else if(decrypt){
                 iprocess = new Decrypt();
             }
-            iprocess.init(pwd);
+            iprocess.init(new String(pwd));
             String[] args = cmd.getArgs();
             if(args.length == 0){
                 throw new ParseException(rb.getString("err.no.file"));
