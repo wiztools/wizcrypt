@@ -97,18 +97,34 @@ public class Main{
         }
     }
     
-    private String getConsolePassword() throws ParseException,
+    private String getConsolePassword(String msg) throws PasswordMismatchException,
                     ConsoleNotAvailable{
         Console cons = System.console();
         if(cons == null){
             throw new ConsoleNotAvailable();
         }
         char[] passwd;
-        passwd = cons.readPassword("%s ", rb.getString("msg.interactive.password"));
+        passwd = cons.readPassword("%s ", msg);
         if(passwd == null){
-            throw new ParseException(rb.getString("err.no.pwd"));
+            throw new PasswordMismatchException(rb.getString("err.no.pwd"));
         }
+
         return new String(passwd);
+    }
+    
+    private String getConsolePassword() throws PasswordMismatchException,
+                    ConsoleNotAvailable{
+        return getConsolePassword(rb.getString("msg.interactive.password"));
+    }
+    
+    private String getConsolePasswordVerify() throws PasswordMismatchException,
+                    ConsoleNotAvailable{
+        String passwd = getConsolePassword(rb.getString("msg.interactive.password"));
+        String passwd_retype = getConsolePassword(rb.getString("msg.interactive.password.again"));
+        if(!passwd.equals(passwd_retype)){
+            throw new PasswordMismatchException(rb.getString("err.interactive.pwd.not.match"));
+        }
+        return passwd;
     }
     
     public Main(String[] arg){
@@ -142,11 +158,11 @@ public class Main{
             if(cmd.hasOption('p')){
                 pwd = cmd.getOptionValue('p');
                 if(pwd == null){
-                    pwd = getConsolePassword();
+                    pwd = encrypt ? getConsolePasswordVerify() : getConsolePassword();
                 }
                 
             } else{
-                pwd = getConsolePassword();
+                pwd = encrypt ? getConsolePasswordVerify() : getConsolePassword();
             }
             IProcess iprocess = null;
             if(encrypt){
@@ -178,6 +194,9 @@ public class Main{
         } catch(ConsoleNotAvailable cna){
             CONSOLE_NOT_AVBL_EXCEPTION = true;
             System.err.println(rb.getString("err.console.not.avbl"));
+        } catch(PasswordMismatchException pme){
+            INVALID_PWD = true;
+            System.err.println(pme.getMessage());
         } catch(InvalidKeyException ike){
             INVALID_PWD = true;
             System.err.println(rb.getString("err.invalid.pwd"));
@@ -213,4 +232,5 @@ public class Main{
         }
         System.exit(exitVal);
     }
+
 }
