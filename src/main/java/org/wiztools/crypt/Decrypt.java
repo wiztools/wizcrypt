@@ -18,15 +18,15 @@ import java.util.ResourceBundle;
  */
 public class Decrypt implements IProcess{
     
-    private static final ResourceBundle rb = ResourceBundle.getBundle("wizcryptmsg");
+    private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
     
     private CipherKey ce;
     
-    public void init(String keyStr) throws NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException{
+    public void init(final String keyStr) throws NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException{
         ce = CipherKeyGen.getCipherKeyForDecrypt(keyStr);
     }
     
-    public void process(File file) throws IOException, FileNotFoundException, PasswordMismatchException{
+    public void process(final File file) throws IOException, FileNotFoundException, PasswordMismatchException{
         FileInputStream fis = null;
         FileOutputStream fos = null;
         boolean canDelete = false;

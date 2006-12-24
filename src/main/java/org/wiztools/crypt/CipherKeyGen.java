@@ -14,16 +14,20 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public final class CipherKeyGen{
 
-    private static final String ALGO = ResourceBundle.getBundle("wizcrypt").getString("algorithm");
+    private static final String ALGO = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcrypt").getString("algorithm");
     
-    private static byte[] passHash(String password) throws NoSuchAlgorithmException{
+    /** Disallow public creation of instances of this class. */
+    private CipherKeyGen(){
+    }
+    
+    private static byte[] passHash(final String password) throws NoSuchAlgorithmException{
         MessageDigest md = MessageDigest.getInstance("MD5");
         md.update(password.getBytes());
         byte[] raw = md.digest();
         return raw;
     }
     
-    private static CipherKey getCipherKey(String keyStr, int mode) throws NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException{
+    private static CipherKey getCipherKey(final String keyStr, final int mode) throws NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException{
         byte[] passKeyHash = null;
         Cipher cipher = null;
 
@@ -49,7 +53,7 @@ public final class CipherKeyGen{
      * @see WizCrypt#encrypt(InputStream is, OutputStream os, CipherKey ce)
      * @see CipherKey
      */
-    public static CipherKey getCipherKeyForEncrypt(String keyStr) throws NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException{
+    public static CipherKey getCipherKeyForEncrypt(final String keyStr) throws NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException{
         return getCipherKey(keyStr, Cipher.ENCRYPT_MODE);
     }
     
@@ -65,7 +69,7 @@ public final class CipherKeyGen{
      * @see WizCrypt#decrypt(InputStream is, OutputStream os, CipherKey ce)
      * @see CipherKey
      */
-    public static CipherKey getCipherKeyForDecrypt(String keyStr) throws NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException{
+    public static CipherKey getCipherKeyForDecrypt(final String keyStr) throws NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException{
         return getCipherKey(keyStr, Cipher.DECRYPT_MODE);
     }
 }

@@ -23,9 +23,9 @@ import javax.crypto.CipherOutputStream;
  */
 public final class WizCrypt {
     
-    private static final ResourceBundle rb = ResourceBundle.getBundle("wizcryptmsg");
+    private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
     
-    /** Creates a new instance of WizCrypt */
+    /** Disallow public creation of instances of this object. */
     private WizCrypt() {
     }
     

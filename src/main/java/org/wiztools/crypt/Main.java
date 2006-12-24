@@ -25,7 +25,7 @@ import java.util.ResourceBundle;
  */
 public class Main{
     
-    private static final ResourceBundle rb = ResourceBundle.getBundle("wizcryptmsg");
+    private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
     
     // Error booleans
     // Note: Even when just one of the input file
