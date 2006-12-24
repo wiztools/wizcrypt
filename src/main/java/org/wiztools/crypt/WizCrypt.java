@@ -19,6 +19,8 @@ import javax.crypto.CipherOutputStream;
 
 /**
  * This class has the public APIs of WizCrypt application to do encryption and decryption.
+ * @see CipherKeyGen
+ * @see CipherKey
  * @author subhash
  */
 public final class WizCrypt {
@@ -36,7 +38,7 @@ public final class WizCrypt {
      * @param is The input stream that needs to be encrypted.
      * @param os The output stream where the encrypted content of <code>is</code> need to be written.
      * @param ck The <code>CipherKey</code> object. This has to be created by passing the password to <code>PassHash.getPassKeyHashForEncrypt(String keyStr)</code>.
-     * @see PassHash#getPassKeyHashForEncrypt(String keyStr)
+     * @see CipherKeyGen#getCipherKeyForEncrypt(String keyStr)
      * @see CipherKey
      * @throws IOException <code>IOException</code> is thrown when faced with IO issues during read/write.
      */
@@ -79,7 +81,7 @@ public final class WizCrypt {
      * @param is The input stream that needs to be decrypted.
      * @param os The output stream where the decrypted content of <code>is</code> need to be written.
      * @param ck The <code>CipherKey</code> object. This has to be created by passing the password to <code>PassHash.getPassKeyHashForDecrypt(String keyStr)</code>.
-     * @see PassHash#getPassKeyHashForDecrypt(String keyStr)
+     * @see CipherKeyGen#getCipherKeyForDecrypt(String keyStr)
      * @see CipherKey
      * @throws PasswordMismatchException <code>PasswordMismatchException</code> is thrown when the supplied password is wrong.
      * @throws IOException <code>IOException</code> is thrown when faced with IO issues during read/write.
