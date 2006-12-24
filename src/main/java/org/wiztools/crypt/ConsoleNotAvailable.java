@@ -1,5 +1,5 @@
 /*
- * ConsoleNotAvailable.java
+ * ConsoleNotAvailableException.java
  *
  * Created on 21 December 2006, 23:36
  *
@@ -13,10 +13,12 @@ package org.wiztools.crypt;
  *
  * @author subhash
  */
-public class ConsoleNotAvailable extends Exception {
+public class ConsoleNotAvailableException extends Exception {
     
-    /** Creates a new instance of ConsoleNotAvailable */
-    public ConsoleNotAvailable() {
+    /**
+     * Creates a new instance of ConsoleNotAvailableException
+     */
+    public ConsoleNotAvailableException() {
     }
     
 }
