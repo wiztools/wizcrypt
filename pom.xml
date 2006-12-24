@@ -15,6 +15,10 @@ $ mvn assembly:assembly -DdescriptorId=jar-with-dependencies
     <version>2.1</version>
     <name>WizCrypt</name>
     <url>http://wiztools.org/</url>
+    <description>
+        WizCrypt is an encryption library and command-line tool using
+        RC4 encyption and MD5 hashing technologies.
+    </description>
     
     <licenses>
         <license>
