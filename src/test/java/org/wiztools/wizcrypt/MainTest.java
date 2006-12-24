@@ -84,7 +84,9 @@ public class MainTest extends TestCase {
         
         try {
             e.init(password);
-            e.process(fin);
+            e.process(fin, true);
+        } catch(DestinationFileExistsException dfe){
+            fail(dfe.getMessage());
         } catch (InvalidKeyException ex) {
             fail(ex.getMessage());
         } catch (NoSuchAlgorithmException ex) {
@@ -105,8 +107,10 @@ public class MainTest extends TestCase {
         try {
             d.init(wrongPassword);
             try {
-                d.process(fout);
+                d.process(fout, true);
                 fail("Cannot process for wrong supplied password!!!");
+            } catch(DestinationFileExistsException dfe){
+                fail(dfe.getMessage());
             } catch (PasswordMismatchException ex) {
                 // should be visited here;
             }
@@ -123,19 +127,23 @@ public class MainTest extends TestCase {
             
             // Try processing file not ending with .wiz
             try{
-                d.process(new File(path+".xxx"));
+                d.process(new File(path+".xxx"), true);
                 fail("Cannot process for file not ending with .wiz");
             } catch(FileNotFoundException fnfe){
                 // should be visited here
+            } catch(DestinationFileExistsException dfe){
+                fail(dfe.getMessage());
             } catch(PasswordMismatchException ex){
                 fail(ex.getMessage());
             }
             
             try{
-                d.process(fout);
+                d.process(fout, true);
             } catch (PasswordMismatchException ex) {
                 fail(ex.getMessage());
             }
+        } catch(DestinationFileExistsException dfe){
+            fail(dfe.getMessage());
         } catch (InvalidKeyException ex) {
             fail(ex.getMessage());
         } catch (NoSuchAlgorithmException ex) {

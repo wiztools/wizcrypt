@@ -26,7 +26,11 @@ public class Decrypt implements IProcess{
         ce = CipherKeyGen.getCipherKeyForDecrypt(keyStr);
     }
     
-    public void process(final File file) throws IOException, FileNotFoundException, PasswordMismatchException{
+    public void process(final File file, final boolean forceOverwrite) 
+            throws FileNotFoundException,
+                DestinationFileExistsException,
+                PasswordMismatchException,
+                IOException{
         FileInputStream fis = null;
         FileOutputStream fos = null;
         boolean canDelete = false;
@@ -37,6 +41,13 @@ public class Decrypt implements IProcess{
             }
             String newPath = path.replaceFirst(".wiz$", "");
             File outFile = new File(newPath);
+            if(!forceOverwrite){
+                if(outFile.exists()){
+                    throw new DestinationFileExistsException(
+                            rb.getString("err.destination.file.exists")+
+                            outFile.getCanonicalPath());
+                }
+            }
             fis = new FileInputStream(file);
             fos = new FileOutputStream(outFile);
             WizCrypt.decrypt(fis, fos, ce);
