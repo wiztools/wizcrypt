@@ -37,14 +37,16 @@ public class Main{
     private static boolean SECURITY_EXCEPTION = false;
     private static boolean PARSE_EXCEPTION = false;
     private static boolean CONSOLE_NOT_AVBL_EXCEPTION = false;
+    private static boolean DEST_FILE_EXISTS = false;
     
     // Error codes
     private static final int C_IO_EXCEPTION = 1;
     private static final int C_INVALID_PWD = 2;
     private static final int C_PWD_MISMATCH = 3;
     private static final int C_CONSOLE_NOT_AVBL_EXCEPTION = 7;
+    private static final int C_DEST_FILE_EXISTS = 8;
     // Both of the above
-    private static final int C_PWD_MISMATCH_N_IO_E = 4;
+    private static final int C_MULTIPLE_EXCEPTION = 4;
     private static final int C_SECURITY_EXCEPTION = 5;
     private static final int C_PARSE_EXCEPTION = 6;
     
@@ -75,6 +77,11 @@ public class Main{
                 .isRequired(false)
                 .withDescription(rb.getString("msg.version"))
                 .create('v');
+        options.addOption(option);
+        option = OptionBuilder.withLongOpt("force-overwrite")
+                .isRequired(false)
+                .withDescription(rb.getString("msg.force.overwrite"))
+                .create('f');
         options.addOption(option);
         return options;
     }
@@ -136,6 +143,7 @@ public class Main{
         try{
             boolean encrypt = false;
             boolean decrypt = false;
+            boolean forceOverwrite = false;
             CommandLineParser parser = new GnuParser();
             CommandLine cmd = parser.parse(options, arg);
             if(cmd.hasOption('h')){
@@ -145,6 +153,9 @@ public class Main{
             if(cmd.hasOption('v')){
                 printVersionInfo();
                 return;
+            }
+            if(cmd.hasOption('f')){
+                forceOverwrite = true;
             }
             if(cmd.hasOption('e')){
                 encrypt = true;
@@ -185,7 +196,10 @@ public class Main{
             for(int i=0;i<args.length;i++){
                 File f = new File(args[i]);
                 try{
-                    iprocess.process(f);
+                    iprocess.process(f, forceOverwrite);
+                } catch(DestinationFileExistsException dfe){
+                    DEST_FILE_EXISTS = true;
+                    System.err.println(dfe.getMessage());
                 } catch(PasswordMismatchException pme){
                     PWD_MISMATCH = true;
                     System.err.println(pme.getMessage());
@@ -227,14 +241,21 @@ public class Main{
         } else if(SECURITY_EXCEPTION){
             exitVal = C_SECURITY_EXCEPTION;
         } else{
+            int count = 0; // count the number of exceptions
+            if(DEST_FILE_EXISTS){
+                exitVal = C_DEST_FILE_EXISTS;
+                count++;
+            }
             if(IO_EXCEPTION){
                 exitVal = C_IO_EXCEPTION;
+                count++;
             }
             if(PWD_MISMATCH){
                 exitVal = C_PWD_MISMATCH;
+                count++;
             }
-            if(IO_EXCEPTION && PWD_MISMATCH){
-                exitVal = C_PWD_MISMATCH_N_IO_E;
+            if(count > 1){
+                exitVal = C_MULTIPLE_EXCEPTION;
             }
         }
         System.exit(exitVal);

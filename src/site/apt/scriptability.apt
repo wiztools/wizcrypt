@@ -29,35 +29,39 @@ Scriptability
 
 *-------------------------+------------------------+-----------------------------------------------+
 | 1                       | Error in IO            | Occurs when the file is not                   |
-|                         |                        | readable/writable, or the file does not exist |
+|                         |                        | readable/writable, or the file does not exist.|
 *-------------------------+------------------------+-----------------------------------------------+
 | 2                       | Invalid password       | Password supplied is either too short or too  |
-|                         |                        | long
+|                         |                        | long.
 *-------------------------+------------------------+-----------------------------------------------+
-| 3                       | Password mismatch      | Wrong password is supplied                    |
+| 3                       | Password mismatch      | Wrong password is supplied.                   |
 *-------------------------+------------------------+-----------------------------------------------+
-| 4                       | Both                   | When there is one or more password            |
-|                         |                        | mismatch and one or more IO problems          |
+| 4                       | Multiple exceptions    | When more than one exception has happened.    |
 *-------------------------+------------------------+-----------------------------------------------+
 | 5                       | Security Exception     | When you try to run the application with      |
 |                         |                        | J2RE1.4, or when you have supplied a small    |
-|                         |                        | password                                      |
+|                         |                        | password.                                     |
 *-------------------------+------------------------+-----------------------------------------------+
 | 6                       | Parse Exception        | When the command line arguments are not       |
-|                         |                        | as expected                                   |
+|                         |                        | as expected.                                  |
 *-------------------------+------------------------+-----------------------------------------------+
 | 7                       | Console not available  | The application expects password from console,|
-|                         |                        | but it is running in headless state (eg.|
-|                         |                        | when the application is started using cron)   |
+|                         |                        | but it is running in headless state (eg.      |
+|                         |                        | when the application is started using cron).  |
+*-------------------------+------------------------+-----------------------------------------------+
+| 8                       | Destination file exists| When the destination file (FILE.ext.wiz during|
+|                         |                        | encryption, FILE.ext during decryption) exists|
+|                         |                        | . When -f option is given, this exit status   |
+|                         |                        | will not be generated.                        |
 *-------------------------+------------------------+-----------------------------------------------+
 | 0                       | Clean Exit             | When the program exits without any problem    |
 |                         |                        | after finishing its operation in the expected |
-|                         |                        | way                                           |
+|                         |                        | way.                                          |
 *-------------------------+------------------------+-----------------------------------------------+
 <<Exit Status>>
 
   <<Note>>: When WizCrypt is doing an operation on a batch of files,
-  and when it gives any one of the statuses from 1-7, it means
+  and when it gives any one of the statuses from 1-8, it means
   any one or more of the files in the batch has experienced that
   specific problem(s).
 

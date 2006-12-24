@@ -45,6 +45,9 @@ Decrypt mode
 \fB-p,--password\fP
 Give password
 .TP
+\fB-f,--force-overwrite\fP
+When destination file(s) exist, force overwrite
+.TP
 \fB-h,--help\fP
 Display Help
 .TP
