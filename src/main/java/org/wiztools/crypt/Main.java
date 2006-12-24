@@ -1,4 +1,4 @@
-package org.wiztools.crypt;
+package org.wiztools.wizcrypt;
 
 import java.io.Console;
 import java.io.InputStream;

@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package org.wiztools.crypt;
+package org.wiztools.wizcrypt;
 
 /**
  *
