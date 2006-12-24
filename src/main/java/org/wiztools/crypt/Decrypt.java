@@ -13,14 +13,17 @@ import java.io.FileNotFoundException;
 
 import java.util.ResourceBundle;
 
+/**
+ * Class to do the decryption using the WizCrypt naming convention (*.wiz).
+ */
 public class Decrypt implements IProcess{
     
     private static final ResourceBundle rb = ResourceBundle.getBundle("wizcryptmsg");
     
-    private CipherEnsc ce;
+    private CipherKey ce;
     
     public void init(String keyStr) throws NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException{
-        ce = PassHash.getPassKeyHashForDecrypt(keyStr);
+        ce = CipherKeyGen.getCipherKeyForDecrypt(keyStr);
     }
     
     public void process(File file) throws IOException, FileNotFoundException, PasswordMismatchException{

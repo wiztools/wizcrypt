@@ -20,6 +20,9 @@ import java.io.File;
 
 import java.util.ResourceBundle;
 
+/**
+ * The class which does the commandline parsing the calls the public APIs to encrypt/decrypt.
+ */
 public class Main{
     
     private static final ResourceBundle rb = ResourceBundle.getBundle("wizcryptmsg");
