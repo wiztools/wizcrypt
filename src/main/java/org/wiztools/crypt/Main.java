@@ -102,10 +102,10 @@ public class Main{
     }
     
     private char[] getConsolePassword(String msg) throws PasswordMismatchException,
-                    ConsoleNotAvailable{
+                    ConsoleNotAvailableException{
         Console cons = System.console();
         if(cons == null){
-            throw new ConsoleNotAvailable();
+            throw new ConsoleNotAvailableException();
         }
         char[] passwd;
         passwd = cons.readPassword("%s ", msg);
@@ -117,12 +117,12 @@ public class Main{
     }
     
     private char[] getConsolePassword() throws PasswordMismatchException,
-                    ConsoleNotAvailable{
+                    ConsoleNotAvailableException{
         return getConsolePassword(rb.getString("msg.interactive.password"));
     }
     
     private char[] getConsolePasswordVerify() throws PasswordMismatchException,
-                    ConsoleNotAvailable{
+                    ConsoleNotAvailableException{
         char[] passwd = getConsolePassword(rb.getString("msg.interactive.password"));
         char[] passwd_retype = getConsolePassword(rb.getString("msg.interactive.password.again"));
         if(!Arrays.equals(passwd, passwd_retype)){
@@ -198,7 +198,7 @@ public class Main{
             PARSE_EXCEPTION = true;
             System.err.println(pe.getMessage());
             printCommandLineHelp(options);
-        } catch(ConsoleNotAvailable cna){
+        } catch(ConsoleNotAvailableException cna){
             CONSOLE_NOT_AVBL_EXCEPTION = true;
             System.err.println(rb.getString("err.console.not.avbl"));
         } catch(PasswordMismatchException pme){
