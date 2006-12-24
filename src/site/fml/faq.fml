@@ -34,7 +34,7 @@
       <question>[v2.x] Version 2.x have support for accepting passwords from user interactively. Then why does it retain support for command-line parameter supply of password?</question>
       <answer>
         <p>
-	Two reasons: 1. For scripting support 2. Backwork compatibility
+	Two reasons: 1. For scripting support 2. Backward compatibility
         </p>
       </answer>
     </faq>
