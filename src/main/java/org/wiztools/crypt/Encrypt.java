@@ -18,11 +18,11 @@ public class Encrypt implements IProcess{
     
     private CipherKey ce;
     
-    public void init(String keyStr) throws NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException{
+    public void init(final String keyStr) throws NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException{
         ce = CipherKeyGen.getCipherKeyForEncrypt(keyStr);
     }
     
-    public void process(File file) throws IOException, FileNotFoundException{
+    public void process(final File file) throws IOException, FileNotFoundException{
         FileOutputStream fos = null;
         FileInputStream fis = null;
         boolean canDelete = false;
