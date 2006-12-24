@@ -36,11 +36,15 @@ public final class WizCrypt {
      * 
      * 
      * @param is The input stream that needs to be encrypted.
-     * @param os The output stream where the encrypted content of <code>is</code> need to be written.
-     * @param ck The <code>CipherKey</code> object. This has to be created by passing the password to <code>PassHash.getPassKeyHashForEncrypt(String keyStr)</code>.
+     * @param os The output stream where the encrypted content 
+     *     of <code>is</code> need to be written.
+     * @param ck The <code>CipherKey</code> object. This has to be 
+     *     created by passing the password to 
+     *     <code>CipherKeyGen.getCipherKeyForEncrypt(String keyStr)</code>.
      * @see CipherKeyGen#getCipherKeyForEncrypt(String keyStr)
      * @see CipherKey
-     * @throws IOException <code>IOException</code> is thrown when faced with IO issues during read/write.
+     * @throws IOException <code>IOException</code> is thrown when 
+     *     faced with IO issues during read/write.
      */
     public static void encrypt(final InputStream is, final OutputStream os, 
             final CipherKey ck) throws IOException{
@@ -79,12 +83,17 @@ public final class WizCrypt {
      * 
      * 
      * @param is The input stream that needs to be decrypted.
-     * @param os The output stream where the decrypted content of <code>is</code> need to be written.
-     * @param ck The <code>CipherKey</code> object. This has to be created by passing the password to <code>PassHash.getPassKeyHashForDecrypt(String keyStr)</code>.
+     * @param os The output stream where the decrypted content 
+     *      of <code>is</code> need to be written.
+     * @param ck The <code>CipherKey</code> object. This has to be 
+     *      created by passing the password to 
+     *      <code>CipherKeyGen.getCipherKeyForDecrypt(String keyStr)</code>.
      * @see CipherKeyGen#getCipherKeyForDecrypt(String keyStr)
      * @see CipherKey
-     * @throws PasswordMismatchException <code>PasswordMismatchException</code> is thrown when the supplied password is wrong.
-     * @throws IOException <code>IOException</code> is thrown when faced with IO issues during read/write.
+     * @throws PasswordMismatchException <code>PasswordMismatchException</code> 
+     *      is thrown when the supplied password is wrong.
+     * @throws IOException <code>IOException</code> is thrown when faced with 
+     *      IO issues during read/write.
      */
     public static void decrypt(final InputStream is, final OutputStream os, 
             final CipherKey ck) throws IOException, PasswordMismatchException{
