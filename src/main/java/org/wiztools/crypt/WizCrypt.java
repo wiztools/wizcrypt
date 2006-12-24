@@ -18,7 +18,7 @@ import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
 
 /**
- *
+ * This class has the public APIs of WizCrypt application to do encryption and decryption.
  * @author subhash
  */
 public final class WizCrypt {
@@ -29,7 +29,19 @@ public final class WizCrypt {
     private WizCrypt() {
     }
     
-    public static void encrypt(InputStream is, OutputStream os, CipherEnsc ce) throws IOException{
+    /**
+     * This is the public API exposed to encrypt.
+     * 
+     * @param is The input stream that needs to be encrypted.
+     * @param os The output stream where the encrypted content of <code>is</code> need to be written.
+     * @param ce The <code>CipherKey</code> object. This has to be created by passing the password to <code>PassHash.getPassKeyHashForEncrypt(String keyStr)</code>.
+     * @throws IOException <code>IOException</code> is thrown when faced with IO issues during read/write.
+     * @see PassHash#getPassKeyHashForEncrypt(String keyStr)
+     * @see CipherKey
+     */
+    public static void encrypt(final InputStream is, final OutputStream os, 
+            final CipherKey ce) throws IOException{
+        
         CipherInputStream cis = null;
         try{
             cis = new CipherInputStream(is, ce.cipher);
@@ -59,7 +71,21 @@ public final class WizCrypt {
         }
     }
     
-    public static void decrypt(InputStream is, OutputStream os, CipherEnsc ce) throws IOException, PasswordMismatchException{
+    /**
+     * This is the public API exposed to decrypt.
+     * 
+     * @param is The input stream that needs to be decrypted.
+     * @param os The output stream where the decrypted content of <code>is</code> need to be written.
+     * @param ce The <code>CipherKey</code> object. This has to be created by passing the password to <code>PassHash.getPassKeyHashForDecrypt(String keyStr)</code>.
+     * @throws PasswordMismatchException <code>PasswordMismatchException</code> is thrown when the supplied password is wrong.
+     * @throws IOException <code>IOException</code> is thrown when faced with IO issues during read/write.
+     * @see PassHash#getPassKeyHashForDecrypt(String keyStr)
+     * @see CipherKey
+     * 
+     */
+    public static void decrypt(final InputStream is, final OutputStream os, 
+            final CipherKey ce) throws IOException, PasswordMismatchException{
+        
         CipherOutputStream cos = null;
 
         try{

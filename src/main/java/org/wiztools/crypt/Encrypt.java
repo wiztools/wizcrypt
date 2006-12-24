@@ -11,12 +11,15 @@ import java.io.File;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 
+/**
+ * Class to do the encryption using the WizCrypt naming convention (*.wiz).
+ */
 public class Encrypt implements IProcess{
     
-    private CipherEnsc ce;
+    private CipherKey ce;
     
     public void init(String keyStr) throws NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException{
-        ce = PassHash.getPassKeyHashForEncrypt(keyStr);
+        ce = CipherKeyGen.getCipherKeyForEncrypt(keyStr);
     }
     
     public void process(File file) throws IOException, FileNotFoundException{
