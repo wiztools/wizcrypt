@@ -32,21 +32,22 @@ public final class WizCrypt {
     /**
      * This is the public API exposed to encrypt.
      * 
+     * 
      * @param is The input stream that needs to be encrypted.
      * @param os The output stream where the encrypted content of <code>is</code> need to be written.
-     * @param ce The <code>CipherKey</code> object. This has to be created by passing the password to <code>PassHash.getPassKeyHashForEncrypt(String keyStr)</code>.
-     * @throws IOException <code>IOException</code> is thrown when faced with IO issues during read/write.
+     * @param ck The <code>CipherKey</code> object. This has to be created by passing the password to <code>PassHash.getPassKeyHashForEncrypt(String keyStr)</code>.
      * @see PassHash#getPassKeyHashForEncrypt(String keyStr)
      * @see CipherKey
+     * @throws IOException <code>IOException</code> is thrown when faced with IO issues during read/write.
      */
     public static void encrypt(final InputStream is, final OutputStream os, 
-            final CipherKey ce) throws IOException{
+            final CipherKey ck) throws IOException{
         
         CipherInputStream cis = null;
         try{
-            cis = new CipherInputStream(is, ce.cipher);
+            cis = new CipherInputStream(is, ck.cipher);
             // Write the hash in first 16 bytes
-            os.write(ce.passKeyHash);
+            os.write(ck.passKeyHash);
             
             int i = -1;
             while((i=cis.read()) != -1){
@@ -74,17 +75,17 @@ public final class WizCrypt {
     /**
      * This is the public API exposed to decrypt.
      * 
+     * 
      * @param is The input stream that needs to be decrypted.
      * @param os The output stream where the decrypted content of <code>is</code> need to be written.
-     * @param ce The <code>CipherKey</code> object. This has to be created by passing the password to <code>PassHash.getPassKeyHashForDecrypt(String keyStr)</code>.
-     * @throws PasswordMismatchException <code>PasswordMismatchException</code> is thrown when the supplied password is wrong.
-     * @throws IOException <code>IOException</code> is thrown when faced with IO issues during read/write.
+     * @param ck The <code>CipherKey</code> object. This has to be created by passing the password to <code>PassHash.getPassKeyHashForDecrypt(String keyStr)</code>.
      * @see PassHash#getPassKeyHashForDecrypt(String keyStr)
      * @see CipherKey
-     * 
+     * @throws PasswordMismatchException <code>PasswordMismatchException</code> is thrown when the supplied password is wrong.
+     * @throws IOException <code>IOException</code> is thrown when faced with IO issues during read/write.
      */
     public static void decrypt(final InputStream is, final OutputStream os, 
-            final CipherKey ce) throws IOException, PasswordMismatchException{
+            final CipherKey ck) throws IOException, PasswordMismatchException{
         
         CipherOutputStream cos = null;
 
@@ -93,11 +94,11 @@ public final class WizCrypt {
             byte[] filePassKeyHash = new byte[16];
             is.read(filePassKeyHash, 0, 16);
             
-            if(!Arrays.equals(ce.passKeyHash, filePassKeyHash)){
+            if(!Arrays.equals(ck.passKeyHash, filePassKeyHash)){
                 throw new PasswordMismatchException(rb.getString("err.pwd.not.match"));
             }
             
-            cos = new CipherOutputStream(os, ce.cipher);
+            cos = new CipherOutputStream(os, ck.cipher);
             
             int i = -1;
             while((i=is.read()) != -1){

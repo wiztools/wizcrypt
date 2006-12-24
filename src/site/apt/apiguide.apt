@@ -1,0 +1,86 @@
+ ---------
+ WizCrypt API Guide
+ ---------
+ WizTools.org Team
+ ---------
+
+WizCrypt API Guide
+
+ This API guide explains how to use the WizCrypt engine inside your application. It
+ is recommended that you have the {{{apidocs/}JavaDoc}} opened in 
+ another window while going through this guide. The approximate time to learn 
+ this API is about 1-5 minutes depending on your expertise in Java.
+
+* Inputs To The API
+
+ [[1]] The password for encryption.
+
+ [[2]] The InputStream that need to be encrypted/decrypted.
+
+ [[3]] The OutputStream where the encrypted/decrypted data need to be written.
+
+* Usecase: Encryption
+
+ [[1]] Use password "mypassword"
+
+ [[2]] File to be encrypted: "myfile.jpg" in the current directory
+
+ [[3]] Encrypted output file: "myfile.jpg.wiz" in the current directory
+
+
+* Encryption, the code
+
+ The Exception handling code is not shown. Please refer to {{{apidocs/}JavaDoc}}.
+
++---
+ import org.wiztools.wizcrypt.CipherKey;
+ import org.wiztools.wizcrypt.CipherKeyGen;
+ import org.wiztools.wizcrypt.WizCrypt;
+
+ import java.io.*;
+
+ // Get the CipherKey object by giving the password:
+ String password = "mypassword";
+ CipherKey ck = CipherKeyGen.getCipherKeyForEncrypt(password);
+
+ // Get the InputStream & OutputStream
+ InputStream is = new FileInputStream("myfile.jpg");
+ OutputStream os = new FileOutputStream("myfile.jpg.wiz");
+
+ // Encrypt!
+ WizCrypt.encrypt(is, os, ck);
+ 
++---
+
+* Usecase: Decryption
+
+ [[1]] Use password "mypassword"
+
+ [[2]] File to be decrypted: "myfile.jpg.wiz" in the current directory
+
+ [[3]] Decrypted output file: "myfile.jpg" in the current directory
+
+* Decryption, the code
+
++---
+ import org.wiztools.wizcrypt.CipherKey;
+ import org.wiztools.wizcrypt.CipherKeyGen;
+ import org.wiztools.wizcrypt.WizCrypt;
+
+ import java.io.*;
+
+ // Get the CipherKey object by giving the password:
+ String password = "mypassword";
+ CipherKey ck = CipherKeyGen.getCipherKeyForDecrypt(password);
+
+ // Get the InputStream & OutputStream
+ InputStream is = new FileInputStream("myfile.jpg.wiz");
+ OutputStream os = new FileOutputStream("myfile.jpg");
+
+ // Decrypt!
+ WizCrypt.decrypt(is, os, ck);
+ 
++---
+
+ <<Note>>: CipherKey generation for both encryption and decryption call different
+ methods.
