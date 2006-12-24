@@ -36,9 +36,9 @@ public final class CipherKeyGen{
         cipher.init(mode, key);
         passKeyHash = CipherKeyGen.passHash(keyStr);
         
-        CipherKey ce = new CipherKey(cipher, passKeyHash);
+        CipherKey ck = new CipherKey(cipher, passKeyHash);
         
-        return ce;
+        return ck;
     }
     
     /**
