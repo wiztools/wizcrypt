@@ -5,7 +5,7 @@
  * Created on March 2, 2006, 5:32 PM
  */
 
-package org.wiztools.crypt;
+package org.wiztools.wizcrypt;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
