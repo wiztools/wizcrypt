@@ -79,8 +79,8 @@ $ mvn assembly:assembly -DdescriptorId=jar-with-dependencies
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>org.wiztools.crypt.Main</mainClass>
-                            <packageName>org.wiztools.crypt</packageName>
+                            <mainClass>org.wiztools.wizcrypt.Main</mainClass>
+                            <packageName>org.wiztools.wizcrypt</packageName>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix/>
                         </manifest>
@@ -97,7 +97,7 @@ $ mvn assembly:assembly -DdescriptorId=jar-with-dependencies
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>org.wiztools.crypt.Main</mainClass>
+                            <mainClass>org.wiztools.wizcrypt.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
