@@ -11,6 +11,8 @@ import javax.crypto.spec.SecretKeySpec;
 
 /**
  * This class has static methods to create <code>CipherKey</code> objects.
+ * @see CipherKey
+ * @see WizCrypt
  */
 public final class CipherKeyGen{
 
