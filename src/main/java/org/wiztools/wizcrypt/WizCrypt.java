@@ -56,8 +56,9 @@ public final class WizCrypt {
             os.write(ck.passKeyHash);
             
             int i = -1;
-            while((i=cis.read()) != -1){
-                os.write((char)i);
+            byte[] buffer = new byte[0xFFFF];
+            while((i=cis.read(buffer)) != -1){
+                os.write(buffer, 0, i);
             }
         }
         finally{
@@ -112,8 +113,9 @@ public final class WizCrypt {
             cos = new CipherOutputStream(os, ck.cipher);
             
             int i = -1;
-            while((i=is.read()) != -1){
-                cos.write((char)i);
+            byte[] buffer = new byte[0xFFFF];
+            while((i=is.read(buffer)) != -1){
+                cos.write(buffer, 0, i);
             }
         }
         finally{
