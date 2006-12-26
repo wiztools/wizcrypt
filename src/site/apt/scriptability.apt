@@ -69,7 +69,7 @@ Scriptability
 
   Consider you are decrypting three files: x.wiz, y.wiz and z.wiz:
 
-  $ java -jar WizCrypt-XX-jar-with-dependencies.jar -e -p passwd x.wiz y.wiz z.wiz
+  $ java -jar wizcrypt-XX-jar-with-dependencies.jar -e -p passwd x.wiz y.wiz z.wiz
 
   If x.wiz's password is not "passwd", and y.wiz does not exist in
   the directory, and z.wiz gets decrypted, the program exits with code 4.
