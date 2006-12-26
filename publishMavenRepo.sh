@@ -6,6 +6,5 @@
 ## The Jira request has to be posted here:
 ## http://jira.codehaus.org/secure/CreateIssue.jspa?pid=10367&issuetype=3
 
-mvn clean
-mvn source:jar javadoc:jar repository:bundle-create
+mvn clean source:jar javadoc:jar repository:bundle-create
 
