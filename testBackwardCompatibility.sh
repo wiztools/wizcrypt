@@ -5,7 +5,7 @@
 ## Details in src/test/resources/README     ##
 ##############################################
 
-T=`ls target/WizCrypt-*-jar-with-dependencies.jar`
+T=`ls target/wizcrypt-*-jar-with-dependencies.jar`
 P_DIR=`pwd`
 EXEC=${P_DIR}/${T}
 

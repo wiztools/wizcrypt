@@ -28,7 +28,7 @@ WizCrypt
 * Usage:
 
 +---
- $ java -jar WizCrypt-XX-jar-with-dependencies.jar --help
+ $ java -jar wizcrypt-XX-jar-with-dependencies.jar --help
 +---
 
  \[<<Note>>: `XX' to be substituted with the version number.\]
@@ -36,9 +36,9 @@ WizCrypt
 * Example usage:
 
 +---
- $ java -jar WizCrypt-XX-jar-with-dependencies.jar -e -p mypwd *.jpg
+ $ java -jar wizcrypt-XX-jar-with-dependencies.jar -e -p mypwd *.jpg
 
- $ java -jar WizCrypt-XX-jar-with-dependencies.jar -d -p mypwd *.jpg.wiz
+ $ java -jar wizcrypt-XX-jar-with-dependencies.jar -d -p mypwd *.jpg.wiz
 +---
 
  If you do not supply `-p' parameter with password, or if you do not supply the
