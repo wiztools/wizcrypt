@@ -76,6 +76,11 @@ public class Main{
         option = OptionBuilder.withLongOpt("version")
                 .isRequired(false)
                 .withDescription(rb.getString("msg.version"))
+                .create();
+        options.addOption(option);
+        option = OptionBuilder.withLongOpt("verbose")
+                .isRequired(false)
+                .withDescription(rb.getString("msg.verbose"))
                 .create('v');
         options.addOption(option);
         option = OptionBuilder.withLongOpt("force-overwrite")
@@ -144,15 +149,19 @@ public class Main{
             boolean encrypt = false;
             boolean decrypt = false;
             boolean forceOverwrite = false;
+            boolean verbose = false;
             CommandLineParser parser = new GnuParser();
             CommandLine cmd = parser.parse(options, arg);
             if(cmd.hasOption('h')){
                 printCommandLineHelp(options);
                 return;
             }
-            if(cmd.hasOption('v')){
+            if(cmd.hasOption("version")){
                 printVersionInfo();
                 return;
+            }
+            if(cmd.hasOption('v')){
+                verbose = true;
             }
             if(cmd.hasOption('f')){
                 forceOverwrite = true;
@@ -197,6 +206,10 @@ public class Main{
                 File f = new File(args[i]);
                 try{
                     iprocess.process(f, forceOverwrite);
+                    if(verbose){
+                        System.out.println(rb.getString("msg.verbose.success")+
+                                f.getCanonicalPath() + ".wiz");
+                    }
                 } catch(DestinationFileExistsException dfe){
                     DEST_FILE_EXISTS = true;
                     System.err.println(dfe.getMessage());
