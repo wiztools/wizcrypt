@@ -60,6 +60,21 @@ public class CallbackTest extends TestCase {
         }
     }
     
+    public void testEncryptPercentageCallback(){
+        System.out.println("\ntestEncryptPercentageCallback()");
+        try{
+            CipherKey ck = CipherKeyGen.getCipherKeyForEncrypt(PASSWD);
+            InputStream is = new FileInputStream(PLAIN_FILE);
+            OutputStream os = new FileOutputStream(System.getProperty("java.io.tmpdir")
+                            + File.separator + "logo.png.wiz");
+            
+            WizCrypt.encrypt(is, os, ck, new TestCallback(), new File(PLAIN_FILE).length());
+        }
+        catch(Exception e){
+            fail("An exception occurred: " + e.getMessage());
+        }
+    }
+    
     public void testDecryptCallback(){
         System.out.println("\ntestDecryptCallback()");
         try{
@@ -69,6 +84,21 @@ public class CallbackTest extends TestCase {
                             + File.separator + "logo.png");
             
             WizCrypt.decrypt(is, os, ck, new TestCallback());
+        }
+        catch(Exception e){
+            fail("An exception occurred: " + e.getMessage());
+        }
+    }
+    
+    public void testDecryptPercentageCallback(){
+        System.out.println("\ntestDecryptCallback()");
+        try{
+            CipherKey ck = CipherKeyGen.getCipherKeyForDecrypt(PASSWD);
+            InputStream is = new FileInputStream(CIPHER_FILE);
+            OutputStream os = new FileOutputStream(System.getProperty("java.io.tmpdir")
+                            + File.separator + "logo.png");
+            
+            WizCrypt.decrypt(is, os, ck, new TestCallback(), new File(CIPHER_FILE).length());
         }
         catch(Exception e){
             fail("An exception occurred: " + e.getMessage());
