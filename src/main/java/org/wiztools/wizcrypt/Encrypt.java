@@ -32,12 +32,10 @@ public class Encrypt implements IProcess{
         boolean canDelete = false;
         try{
             File outFile = new File(file.getCanonicalPath()+".wiz");
-            if(!forceOverwrite){
-                if(outFile.exists()){
-                    throw new DestinationFileExistsException(
-                            rb.getString("err.destination.file.exists") +
-                            outFile.getCanonicalPath());
-                }
+            if(!forceOverwrite && outFile.exists()){
+                throw new DestinationFileExistsException(
+                        rb.getString("err.destination.file.exists") +
+                        outFile.getCanonicalPath());
             }
             fis = new FileInputStream(file);
             fos = new FileOutputStream(outFile);
