@@ -46,6 +46,7 @@ public class CallbackTest extends TestCase {
     }
     
     public void testEncryptCallback(){
+        System.out.println("\ntestEncryptCallback()");
         try{
             CipherKey ck = CipherKeyGen.getCipherKeyForEncrypt(PASSWD);
             InputStream is = new FileInputStream(PLAIN_FILE);
@@ -60,6 +61,7 @@ public class CallbackTest extends TestCase {
     }
     
     public void testDecryptCallback(){
+        System.out.println("\ntestDecryptCallback()");
         try{
             CipherKey ck = CipherKeyGen.getCipherKeyForDecrypt(PASSWD);
             InputStream is = new FileInputStream(CIPHER_FILE);
@@ -75,7 +77,7 @@ public class CallbackTest extends TestCase {
     
     class TestCallback implements Callback{
         public void begin() {
-            System.out.println("\n\n~~~~ Callback output ~~~~");
+            System.out.println("~~~~ Callback output ~~~~");
             System.out.print("Begin,");
         }
 
