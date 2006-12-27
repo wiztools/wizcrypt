@@ -47,18 +47,32 @@ public final class WizCrypt {
      *     faced with IO issues during read/write.
      */
     public static void encrypt(final InputStream is, final OutputStream os, 
-            final CipherKey ck) throws IOException{
+            final CipherKey ck, final Callback cb, final long size) throws IOException{
         
         CipherInputStream cis = null;
         try{
+            if(cb != null){
+                cb.begin();
+            }
+            
             cis = new CipherInputStream(is, ck.cipher);
             // Write the hash in first 16 bytes
             os.write(ck.passKeyHash);
             
             int i = -1;
             byte[] buffer = new byte[0xFFFF];
+            long readSize = 0;
             while((i=cis.read(buffer)) != -1){
                 os.write(buffer, 0, i);
+                readSize += i;
+                if(cb != null){
+                    if(size == -1){
+                        cb.notifyProgress(readSize);
+                    }
+                    else{
+                        cb.notifyProgress(readSize * 100 / size);
+                    }
+                }
             }
         }
         finally{
@@ -76,7 +90,20 @@ public final class WizCrypt {
             } catch(IOException ioe){
                 System.err.println(ioe.getMessage());
             }
+            if(cb != null){
+                cb.end();
+            }
         }
+    }
+    
+    public static void encrypt(final InputStream is, final OutputStream os, 
+            final CipherKey ck) throws IOException{
+        encrypt(is, os, ck, null, -1);
+    }
+    
+    public static void encrypt(final InputStream is, final OutputStream os, 
+            final CipherKey ck, final Callback cb) throws IOException{
+        encrypt(is, os, ck, cb, -1);
     }
     
     /**
@@ -97,11 +124,15 @@ public final class WizCrypt {
      *      IO issues during read/write.
      */
     public static void decrypt(final InputStream is, final OutputStream os, 
-            final CipherKey ck) throws IOException, PasswordMismatchException{
+            final CipherKey ck, final Callback cb, final long size) throws IOException, PasswordMismatchException{
         
         CipherOutputStream cos = null;
 
         try{
+            if(cb != null){
+                cb.begin();
+            }
+            
             // read 16 bytes from fis
             byte[] filePassKeyHash = new byte[16];
             is.read(filePassKeyHash, 0, 16);
@@ -114,8 +145,18 @@ public final class WizCrypt {
             
             int i = -1;
             byte[] buffer = new byte[0xFFFF];
+            long readSize = 0;
             while((i=is.read(buffer)) != -1){
                 cos.write(buffer, 0, i);
+                readSize += i;
+                if(cb != null){
+                    if(size == -1){
+                        cb.notifyProgress(readSize);
+                    }
+                    else{
+                        cb.notifyProgress(readSize * 100 / size);
+                    }
+                }
             }
         }
         finally{
@@ -133,7 +174,20 @@ public final class WizCrypt {
             } catch(IOException ioe){
                 System.err.println(ioe.getMessage());
             }
+            if(cb != null){
+                cb.end();
+            }
         }
     }
     
+    public static void decrypt(final InputStream is, final OutputStream os, 
+            final CipherKey ck) throws IOException, PasswordMismatchException{
+        decrypt(is, os, ck, null, -1);
+    }
+    
+    public static void decrypt(final InputStream is, final OutputStream os, 
+            final CipherKey ck, final Callback cb) throws IOException, 
+                PasswordMismatchException{
+        decrypt(is, os, ck, cb, -1);
+    }
 }

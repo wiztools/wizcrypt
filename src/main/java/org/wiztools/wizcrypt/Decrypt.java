@@ -41,12 +41,10 @@ public class Decrypt implements IProcess{
             }
             String newPath = path.replaceFirst(".wiz$", "");
             File outFile = new File(newPath);
-            if(!forceOverwrite){
-                if(outFile.exists()){
-                    throw new DestinationFileExistsException(
-                            rb.getString("err.destination.file.exists")+
-                            outFile.getCanonicalPath());
-                }
+            if(!forceOverwrite && outFile.exists()){
+                throw new DestinationFileExistsException(
+                        rb.getString("err.destination.file.exists")+
+                        outFile.getCanonicalPath());
             }
             fis = new FileInputStream(file);
             fos = new FileOutputStream(outFile);
