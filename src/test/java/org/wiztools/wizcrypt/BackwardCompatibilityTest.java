@@ -128,7 +128,7 @@ public class BackwardCompatibilityTest extends TestCase {
     public void testDecryptBackwardCompatibility(){
         System.out.println("\ntestDecryptBackwardCompatibility()");
         try{
-            // 1. Encrypt the file
+            // 1. Decrypt the file
             CipherKey ck = CipherKeyGen.getCipherKeyForDecrypt(PASSWD);
             InputStream is = new FileInputStream(CIPHER_FILE);
             File outFile = new File(System.getProperty("java.io.tmpdir") +
@@ -137,10 +137,10 @@ public class BackwardCompatibilityTest extends TestCase {
             
             WizCrypt.decrypt(is, os, ck);
             
-            // 2. Hash for encrypted file
+            // 2. Hash for decrypted file
             byte[] newHash = fileHash(outFile);
             
-            // 3. Hash for old encrypted file
+            // 3. Hash for old decrypted file
             byte[] oldHash = fileHash(new File(PLAIN_FILE));
             
             // 4. Compare!
