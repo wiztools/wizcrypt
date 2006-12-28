@@ -103,8 +103,9 @@ public class Main{
         InputStream is = this.getClass().getClassLoader().getResourceAsStream("org/wiztools/wizcrypt/VERSION");
         try{
             int i = -1;
-            while((i=is.read())!=-1){
-                System.out.print((char)i);
+            byte[] buffer = new byte[0xFFFF];
+            while((i=is.read(buffer))!=-1){
+                System.out.print(new String(buffer, 0, i));
             }
             is.close();
             System.out.println();
@@ -160,6 +161,14 @@ public class Main{
                 printVersionInfo();
                 return;
             }
+            
+            // All other options require files as argument
+            String[] args = cmd.getArgs();
+            
+            if(args == null || args.length == 0){
+                throw new ParseException(rb.getString("err.no.file"));
+            }
+            
             if(cmd.hasOption('v')){
                 verbose = true;
             }
@@ -198,10 +207,7 @@ public class Main{
                 iprocess = new Decrypt();
             }
             iprocess.init(new String(pwd));
-            String[] args = cmd.getArgs();
-            if(args.length == 0){
-                throw new ParseException(rb.getString("err.no.file"));
-            }
+            
             for(int i=0;i<args.length;i++){
                 File f = new File(args[i]);
                 try{
