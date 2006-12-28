@@ -41,8 +41,14 @@ public final class WizCrypt {
      * @param ck The <code>CipherKey</code> object. This has to be 
      *     created by passing the password to 
      *     <code>CipherKeyGen.getCipherKeyForEncrypt(String keyStr)</code>.
+     * @param cb <code>Callback</code> object for monitoring the progress.
+     * @param size The size of the <code>is</code> stream. When this is passed,
+     *      the <code>Callback.notifyProgress(long value)</code> will receive
+     *      the percentage completed. If this is not passed, it will get the
+     *      number of bytes read and processed.
      * @see CipherKeyGen#getCipherKeyForEncrypt(String keyStr)
      * @see CipherKey
+     * @see Callback
      * @throws IOException <code>IOException</code> is thrown when 
      *     faced with IO issues during read/write.
      */
@@ -96,11 +102,19 @@ public final class WizCrypt {
         }
     }
     
+    /**
+     * @see #encrypt(InputStream is, OutputStream os, 
+     *      CipherKey ck, Callback cb, long size)
+     */
     public static void encrypt(final InputStream is, final OutputStream os, 
             final CipherKey ck) throws IOException{
         encrypt(is, os, ck, null, -1);
     }
     
+    /**
+     * @see #encrypt(InputStream is, OutputStream os, 
+     *      CipherKey ck, Callback cb, long size)
+     */
     public static void encrypt(final InputStream is, final OutputStream os, 
             final CipherKey ck, final Callback cb) throws IOException{
         encrypt(is, os, ck, cb, -1);
@@ -116,8 +130,14 @@ public final class WizCrypt {
      * @param ck The <code>CipherKey</code> object. This has to be 
      *      created by passing the password to 
      *      <code>CipherKeyGen.getCipherKeyForDecrypt(String keyStr)</code>.
+     * @param cb <code>Callback</code> object for monitoring the progress.
+     * @param size The size of the <code>is</code> stream. When this is passed,
+     *      the <code>Callback.notifyProgress(long value)</code> will receive
+     *      the percentage completed. If this is not passed, it will get the
+     *      number of bytes read and processed.
      * @see CipherKeyGen#getCipherKeyForDecrypt(String keyStr)
      * @see CipherKey
+     * @see Callback
      * @throws PasswordMismatchException <code>PasswordMismatchException</code> 
      *      is thrown when the supplied password is wrong.
      * @throws IOException <code>IOException</code> is thrown when faced with 
@@ -180,11 +200,19 @@ public final class WizCrypt {
         }
     }
     
+    /**
+     * @see #decrypt(InputStream is, OutputStream os, 
+     *      CipherKey ck, Callback cb, long size)
+     */
     public static void decrypt(final InputStream is, final OutputStream os, 
             final CipherKey ck) throws IOException, PasswordMismatchException{
         decrypt(is, os, ck, null, -1);
     }
     
+    /**
+     * @see #decrypt(InputStream is, OutputStream os, 
+     *      CipherKey ck, Callback cb, long size)
+     */
     public static void decrypt(final InputStream is, final OutputStream os, 
             final CipherKey ck, final Callback cb) throws IOException, 
                 PasswordMismatchException{
