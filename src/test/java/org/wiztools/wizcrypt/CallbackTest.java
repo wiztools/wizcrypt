@@ -14,37 +14,30 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  *
  * @author schandran
  */
-public class CallbackTest extends TestCase {
+public class CallbackTest {
     
     private static final String PLAIN_FILE = "src/test/resources/logo.png";
     private static final String CIPHER_FILE = "src/test/resources/logo.png.wiz";
     private static final String PASSWD = "password";
     
+    @Before
     protected void setUp() throws Exception {
     }
     
+    @After
     protected void tearDown() throws Exception {
     }
-    
-    public static Test suite() {
-        TestSuite suite = new TestSuite(CallbackTest.class);
-        
-        return suite;
-    }
-    
-    /** Creates a new instance of CallbackTest */
-    public CallbackTest(String testName) {
-        super(testName);
-    }
-    
+
+    @Test
     public void testEncryptCallback(){
         System.out.println("\ntestEncryptCallback()");
         try{
@@ -56,10 +49,11 @@ public class CallbackTest extends TestCase {
             WizCrypt.encrypt(is, os, ck, new TestCallback());
         }
         catch(Exception e){
-            fail("An exception occurred: " + e.getMessage());
+            Assert.fail("An exception occurred: " + e.getMessage());
         }
     }
     
+    @Test
     public void testEncryptPercentageCallback(){
         System.out.println("\ntestEncryptPercentageCallback()");
         try{
@@ -71,10 +65,11 @@ public class CallbackTest extends TestCase {
             WizCrypt.encrypt(is, os, ck, new TestCallback(), new File(PLAIN_FILE).length());
         }
         catch(Exception e){
-            fail("An exception occurred: " + e.getMessage());
+            Assert.fail("An exception occurred: " + e.getMessage());
         }
     }
     
+    @Test
     public void testDecryptCallback(){
         System.out.println("\ntestDecryptCallback()");
         try{
@@ -86,10 +81,11 @@ public class CallbackTest extends TestCase {
             WizCrypt.decrypt(is, os, ck, new TestCallback());
         }
         catch(Exception e){
-            fail("An exception occurred: " + e.getMessage());
+            Assert.fail("An exception occurred: " + e.getMessage());
         }
     }
     
+    @Test
     public void testDecryptPercentageCallback(){
         System.out.println("\ntestDecryptCallback()");
         try{
@@ -101,7 +97,7 @@ public class CallbackTest extends TestCase {
             WizCrypt.decrypt(is, os, ck, new TestCallback(), new File(CIPHER_FILE).length());
         }
         catch(Exception e){
-            fail("An exception occurred: " + e.getMessage());
+            Assert.fail("An exception occurred: " + e.getMessage());
         }
     }
     

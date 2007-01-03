@@ -14,46 +14,31 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.security.NoSuchAlgorithmException;
 import javax.crypto.NoSuchPaddingException;
-import junit.framework.*;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.GnuParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionBuilder;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
 import java.security.InvalidKeyException;
-import java.security.GeneralSecurityException;
 import java.io.IOException;
 import java.io.File;
-import java.util.ResourceBundle;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
 
 /**
  *
  * @author subhash
  */
-public class MainTest extends TestCase {
+public class MainTest {
     
-    public MainTest(String testName) {
-        super(testName);
-    }
-    
+    @Before
     protected void setUp() throws Exception {
     }
     
+    @After
     protected void tearDown() throws Exception {
-    }
-    
-    public static Test suite() {
-        TestSuite suite = new TestSuite(MainTest.class);
-        
-        return suite;
     }
     
     /**
      * Test of main method, of class org.wiztools.crypt.Main.
      */
+    @org.junit.Test()
     public void testMain() throws IOException {
         System.out.println("main");
         
@@ -86,13 +71,13 @@ public class MainTest extends TestCase {
             e.init(password);
             e.process(fin, true);
         } catch(DestinationFileExistsException dfe){
-            fail(dfe.getMessage());
+            Assert.fail(dfe.getMessage());
         } catch (InvalidKeyException ex) {
-            fail(ex.getMessage());
+            Assert.fail(ex.getMessage());
         } catch (NoSuchAlgorithmException ex) {
-            fail(ex.getMessage());
+            Assert.fail(ex.getMessage());
         } catch (NoSuchPaddingException ex) {
-            fail(ex.getMessage());
+            Assert.fail(ex.getMessage());
         }
         
         // Creation of fout
@@ -108,18 +93,18 @@ public class MainTest extends TestCase {
             d.init(wrongPassword);
             try {
                 d.process(fout, true);
-                fail("Cannot process for wrong supplied password!!!");
+                Assert.fail("Cannot process for wrong supplied password!!!");
             } catch(DestinationFileExistsException dfe){
-                fail(dfe.getMessage());
+                Assert.fail(dfe.getMessage());
             } catch (PasswordMismatchException ex) {
                 // should be visited here;
             }
         } catch (InvalidKeyException ex) {
-            fail(ex.getMessage());
+            Assert.fail(ex.getMessage());
         } catch (NoSuchPaddingException ex) {
-            fail(ex.getMessage());
+            Assert.fail(ex.getMessage());
         } catch (NoSuchAlgorithmException ex) {
-            fail(ex.getMessage());
+            Assert.fail(ex.getMessage());
         }
         
         try {
@@ -128,28 +113,28 @@ public class MainTest extends TestCase {
             // Try processing file not ending with .wiz
             try{
                 d.process(new File(path+".xxx"), true);
-                fail("Cannot process for file not ending with .wiz");
+                Assert.fail("Cannot process for file not ending with .wiz");
             } catch(FileNotFoundException fnfe){
                 // should be visited here
             } catch(DestinationFileExistsException dfe){
-                fail(dfe.getMessage());
+                Assert.fail(dfe.getMessage());
             } catch(PasswordMismatchException ex){
-                fail(ex.getMessage());
+                Assert.fail(ex.getMessage());
             }
             
             try{
                 d.process(fout, true);
             } catch (PasswordMismatchException ex) {
-                fail(ex.getMessage());
+                Assert.fail(ex.getMessage());
             }
         } catch(DestinationFileExistsException dfe){
-            fail(dfe.getMessage());
+            Assert.fail(dfe.getMessage());
         } catch (InvalidKeyException ex) {
-            fail(ex.getMessage());
+            Assert.fail(ex.getMessage());
         } catch (NoSuchAlgorithmException ex) {
-            fail(ex.getMessage());
+            Assert.fail(ex.getMessage());
         } catch (NoSuchPaddingException ex) {
-            fail(ex.getMessage());
+            Assert.fail(ex.getMessage());
         }
         
         // Read content to verify
@@ -157,6 +142,6 @@ public class MainTest extends TestCase {
         String str = br.readLine();
         br.close();
         
-        assertEquals(content, str);
+        Assert.assertEquals(content, str);
     }   
 }

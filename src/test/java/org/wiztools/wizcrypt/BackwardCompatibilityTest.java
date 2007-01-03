@@ -18,9 +18,10 @@ import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.Assert;
 
 /**
  * The test works this way:
@@ -32,30 +33,22 @@ import junit.framework.TestSuite;
  *
  * @author schandran
  */
-public class BackwardCompatibilityTest extends TestCase {
+public class BackwardCompatibilityTest {
     
     private static final String PLAIN_FILE = "src/test/resources/logo.png";
     private static final String CIPHER_FILE = "src/test/resources/logo.png.wiz";
     private static final String PASSWD = "password";
     
-    /** Creates a new instance of BackwardCompatibilityTest */
-    public BackwardCompatibilityTest(String testName) {
-        super(testName);
-    }
-    
+    @Before
     protected void setUp() throws Exception {
     }
     
+    @After
     protected void tearDown() throws Exception {
     }
     
-    public static Test suite() {
-        TestSuite suite = new TestSuite(BackwardCompatibilityTest.class);
-        
-        return suite;
-    }
     // method taken from JavaAlmanac!
-    public static byte[] getBytesFromFile(File file) throws IOException {
+    private static byte[] getBytesFromFile(File file) throws IOException {
         InputStream is = new FileInputStream(file);
     
         // Get the size of the file
@@ -97,6 +90,7 @@ public class BackwardCompatibilityTest extends TestCase {
         return raw;
     }
     
+    @Test
     public void testEncryptBackwardCompatibility(){
         System.out.println("\ntestEncryptBackwardCompatibility()");
         try{
@@ -117,14 +111,15 @@ public class BackwardCompatibilityTest extends TestCase {
             
             // 4. Compare!
             if(!Arrays.equals(oldHash, newHash)){
-                fail("Encryption fails backward compatibility test!");
+                Assert.fail("Encryption fails backward compatibility test!");
             }
         }
         catch(Exception e){
-            fail("An exception occured during run of test case: "+e.getMessage());
+            Assert.fail("An exception occured during run of test case: "+e.getMessage());
         }
     }
     
+    @Test
     public void testDecryptBackwardCompatibility(){
         System.out.println("\ntestDecryptBackwardCompatibility()");
         try{
@@ -145,11 +140,11 @@ public class BackwardCompatibilityTest extends TestCase {
             
             // 4. Compare!
             if(!Arrays.equals(oldHash, newHash)){
-                fail("Encryption fails backward compatibility test!");
+                Assert.fail("Encryption fails backward compatibility test!");
             }
         }
         catch(Exception e){
-            fail("An exception occured during run of test case: "+e.getMessage());
+            Assert.fail("An exception occured during run of test case: "+e.getMessage());
         }
     }
 }
