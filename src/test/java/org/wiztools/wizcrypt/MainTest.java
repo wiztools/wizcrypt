@@ -20,6 +20,7 @@ import java.io.File;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Test;
 
 /**
  *
@@ -38,7 +39,7 @@ public class MainTest {
     /**
      * Test of main method, of class org.wiztools.crypt.Main.
      */
-    @org.junit.Test()
+    @Test()
     public void testMain() throws IOException {
         System.out.println("main");
         
