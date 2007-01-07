@@ -8,7 +8,11 @@ WizCrypt
 
 * About the application:
 
- Cross platform personal commandline encryption program. It runs in 2 modes:
+ Cross platform commandline encryption program. It also exposes Java
+ APIs which can be used to embed WizCrypt inside your Java application.
+ It uses symmetric key algorithm.
+
+ The commandline tool runs in two mode:
 
  [[1]] <<Encryption mode>>
    Whatever file is given as input, the same is encrypted, and saved with .wiz
