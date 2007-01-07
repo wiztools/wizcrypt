@@ -1,4 +1,4 @@
-.TH WizCrypt 1 "22 December 2006"
+.TH WizCrypt 1 "07 January 2007"
 .SH NAME
 wizcrypt \- Cross platform file encryption software.
 .SH SYNOPSIS
@@ -51,8 +51,11 @@ When destination file(s) exist, force overwrite
 \fB-h,--help\fP
 Display Help
 .TP
-\fB-v,--version\fP
+\fB--version\fP
 Displays version information
+.TP
+\fB-v\fP
+Verbose output
 
 .SH AUTHOR
 Developed by Subhash Chandran.
