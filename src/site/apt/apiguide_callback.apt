@@ -1,0 +1,99 @@
+ ---------
+ WizCrypt API Guide--Callback
+ ---------
+ WizTools.org Team
+ ---------
+
+WizCrypt API Guide--Callback
+
+ Often when doing IO operations it is recommended that the user be given the
+ feedback (progress) of the operation. For writing applications that display
+ GUI elements like progress bar for showing the progress made by WizCrypt, the
+ Callback API is used.
+
+* org.wiztools.wizcrypt.Callback Interface
+
+ For writing applications that display progress of encryption/decryption
+ operation, one has to write a class implementing the Callback interface.
+
++---
+package org.wiztools.wizcrypt;
+
+public interface Callback {
+
+    public void begin();
+    
+    public void notifyProgress(long value);
+    
+    public void end();
+}
+
++---
+
+* An Example
+
+ Let us write a simple console based progress monitor. When the encryption/decryption
+ operation starts, we need to print "Begin", then print the number of bytes
+ processed as the operation proceeds, and finally print "End" as the operation
+ ends.
+
+ For this, we will be writing a class like this:
+
++---
+class TestCallback implements org.wiztools.wizcrypt.Callback {
+    public void begin() {
+        System.out.println("~~~~ Callback output ~~~~");
+        System.out.print("Begin,");
+    }
+
+    public void notifyProgress(long value) {
+        System.out.print(value + ",");
+    }
+
+    public void end() {
+        System.out.println("End.\n");
+    }
+
+}
++---
+
+ Simple? Now to actually use this class:
+
++---
+ import org.wiztools.wizcrypt.Callback;
+ import org.wiztools.wizcrypt.WizCrypt;
+ import java.io.*;
+
+ // ...
+ File myFile = new File("a.jpg");
+ InputStream is = new FileInputStream(myFile);
+ OutputStream os = new FileOutputStream("a.jpg.wiz");
+ CipherKey ck = CipherKeyGen.getCipherKeyForEncrypt("password");
+ Callback cb = new TestCallback();
+ WizCrypt.encrypt(is, os, ck, cb);
++---
+
+ Output:
+
++---
+~~~~ Callback output ~~~~
+Begin,512,1024,1536,2048,2560,3072,3584,4096,4608,5120,5632,6144,6656,7168,7680,
+8192,8704,9216,9728,10240,10752,11264,11776,11848,End.
++---
+
+ Now, if instead of printing the number of bytes processed, if you want to print
+ the % progress, you would change the last line in the above code to:
+
++---
+ long size = myFile.length();
+ WizCrypt.encrypt(is, os, ck, cb, size);
++---
+
+ Output:
+
++---
+~~~~ Callback output ~~~~
+Begin,4,8,12,17,21,25,30,34,38,43,47,51,56,60,64,69,73,77,82,86,90,95,99,100,End.
++---
+
+ Use the {{{apidocs/}JavaDoc}} for further information.

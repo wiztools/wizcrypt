@@ -13,6 +13,10 @@ package org.wiztools.wizcrypt;
  * Implement this interface to write your own monitoring class.
  * @author subhash
  * @see WizCrypt
+ * @see WizCrypt#encrypt(InputStream is, OutputStream os, 
+ *      CipherKey ck, Callback cb, long size)
+ * @see WizCrypt#decrypt(InputStream is, OutputStream os, 
+ *      CipherKey ck, Callback cb, long size)
  */
 public interface Callback {
     /**
@@ -31,7 +35,7 @@ public interface Callback {
      * the number of bytes that have been processed. This choice depends on the
      * parameter given to the <code>WizCrypt</code>'s 
      * <code>encrypt()</code>/<code>decrypt()</code> method.
-     *
+     * 
      * @see WizCrypt#encrypt(InputStream is, OutputStream os, 
      *      CipherKey ck, Callback cb, long size)
      * @see WizCrypt#decrypt(InputStream is, OutputStream os, 
