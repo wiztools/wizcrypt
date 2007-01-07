@@ -91,3 +91,8 @@ WizCrypt API Guide
  The only other dependency WizCrypt has, Commons-cli is not needed when the API
  is used. So, if you are planning to use the API and not WizCrypt as a tool,
  download wizcrypt-XX.jar and <<not>> wizcrypt-XX-jar-with-dependencies.jar.
+
+* Next. . .
+
+ Read the guide for {{{apiguide_callback.html}Callback}} functionality. This allows
+ one to write applications with progress bar kind of feedback functionality.
