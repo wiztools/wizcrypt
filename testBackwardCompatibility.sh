@@ -15,7 +15,7 @@ PASSWD=password
 
 cp src/test/resources/logo.png /tmp/
 cd /tmp/
-java -jar ${EXEC} -e -p ${PASSWD} logo.png
+java -jar ${EXEC} -f -e -p ${PASSWD} logo.png
 md5sum logo.png.wiz > logo.png.wiz.md5
 
 DIFF_OUT=`diff logo.png.wiz.md5 ${P_DIR}/src/test/resources/logo.png.wiz.md5`
@@ -28,7 +28,7 @@ fi
 
 ## 2. Decrypt
 
-java -jar ${EXEC} -d -p ${PASSWD} logo.png.wiz
+java -jar ${EXEC} -f -d -p ${PASSWD} logo.png.wiz
 md5sum logo.png > logo.png.md5
 
 DIFF_OUT=`diff logo.png.md5 ${P_DIR}/src/test/resources/logo.png.md5`

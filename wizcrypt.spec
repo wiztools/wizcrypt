@@ -4,7 +4,7 @@
 ##########################################################################
 
 %define name WizCrypt
-%define version 2.1
+%define version 2.2
 %define release 1
 
 Summary: Cross platform file encryption software.

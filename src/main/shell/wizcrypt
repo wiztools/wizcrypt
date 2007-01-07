@@ -4,9 +4,15 @@
 ## http://wiztools.org/project/WizCrypt/ ##
 ###########################################
 
+## Version Information: To Be Changed During Release ##
+
+VERSION=2.2
+
+## Program logic starts, not to modify! ##
+
 if which java > /dev/null 2>&1
 then
-	java -jar /usr/share/java/wizcrypt-2.2-jar-with-dependencies.jar $*
+	java -jar /usr/share/java/wizcrypt-${VERSION}-jar-with-dependencies.jar $*
 else
 	echo Java not in PATH
 	exit 1

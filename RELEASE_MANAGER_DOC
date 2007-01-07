@@ -16,7 +16,7 @@ done for a release.
   => src/main/shell/wizcrypt
   => wizcrypt.spec
 
-* Create a sibversion tag with the version number
+* Create a subversion tag with the version number
 
 * Upload the artifacts to release site
 
