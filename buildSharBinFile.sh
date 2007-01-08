@@ -27,20 +27,20 @@ fi
 
 ## Check if RPM build is installed
 
-if [ ! -e /usr/bin/wizcrypt -o ! -e /usr/share/java/WizCrypt-${WC_VERSION}-jar-with-dependencies.jar -o ! -d /usr/share/doc/WizCrypt-${WC_VERSION}/ ]
+if [ ! -e /usr/bin/wizcrypt -o ! -e /usr/share/java/wizcrypt-${WC_VERSION}-jar-with-dependencies.jar -o ! -d /usr/share/doc/wizcrypt-${WC_VERSION}/ ]
 then
 	echo RPM build of WizCrypt for version ${WC_VERSION} does not seem to be installed. Needed for generating .bin
 	exit 1
 fi
 
-shar -zq /usr/bin/wizcrypt /usr/share/java/WizCrypt-${WC_VERSION}-jar-with-dependencies.jar /usr/share/man/man1/wizcrypt.1.gz /usr/share/doc/WizCrypt-${WC_VERSION}/ > target/WizCrypt-${WC_VERSION}.bin
+shar -zq /usr/bin/wizcrypt /usr/share/java/wizcrypt-${WC_VERSION}-jar-with-dependencies.jar /usr/share/man/man1/wizcrypt.1.gz /usr/share/doc/wizcrypt-${WC_VERSION}/ > target/wizcrypt-${WC_VERSION}.bin
 
 ## Post build check
 
 SHAR_EXIT_STATUS=$?
 
 if [ "${SHAR_EXIT_STATUS}" -eq 0 ];then
-	echo "*** Successfully generated 'target/WizCrypt-${WC_VERSION}.bin' file! ***"
+	echo "*** Successfully generated 'target/wizcrypt-${WC_VERSION}.bin' file! ***"
 else
 	echo shar failed!
 	exit ${SHAR_EXIT_STATUS}
