@@ -3,7 +3,7 @@
 # the PATH.                                                              #
 ##########################################################################
 
-%define name WizCrypt
+%define name wizcrypt
 %define version 2.2
 %define release 1
 
