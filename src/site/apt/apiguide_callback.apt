@@ -96,4 +96,4 @@ Begin,512,1024,1536,2048,2560,3072,3584,4096,4608,5120,5632,6144,6656,7168,7680,
 Begin,4,8,12,17,21,25,30,34,38,43,47,51,56,60,64,69,73,77,82,86,90,95,99,100,End.
 +---
 
- For further information, checkout the {{{apidocs/}JavaDocs}}.
+ Refer {{{apidocs/}JavaDocs}} for API documentation.
