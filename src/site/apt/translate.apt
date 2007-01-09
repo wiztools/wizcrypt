@@ -7,7 +7,7 @@
 Help Us Make Available WizCrypt In Multi-Language
 
  WizCrypt is currently available in English. Checkout 
- the <wizcryptmsg.properties> from <trunk/src/main/resources> 
+ the <wizcryptmsg.properties> from <trunk/src/main/resources/org/wiztools/wizcrypt/> 
  (available here: {{http://svn.berlios.de/wsvn/wizcrypt/trunk/src/main/resources/org/wiztools/wizcrypt/wizcryptmsg.properties?op=file}})
  and provide the translated
  version to me (subwiz in the gmail dot com server).
