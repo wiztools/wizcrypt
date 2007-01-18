@@ -14,7 +14,7 @@ $ mvn assembly:assembly -DdescriptorId=jar-with-dependencies
     <packaging>jar</packaging>
     <version>2.2</version>
     <name>WizCrypt</name>
-    <url>http://wiztools.org/</url>
+	<url>http://wizcrypt.wiztools.org/</url>
     <description>
         WizCrypt is an encryption library and command-line tool using
         RC4 encyption and MD5 hashing technologies.
@@ -118,38 +118,6 @@ $ mvn assembly:assembly -DdescriptorId=jar-with-dependencies
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <!-- UMLGraph installation: http://wiki.wsmoak.net/cgi-bin/wiki.pl?UMLGraph -->
-                <!-- if u have not configured, comment -->
-                <!--<reportSets>
-                <reportSet>
-                <id>uml</id>
-                <configuration>
-                <doclet>gr.spinellis.umlgraph.doclet.UmlGraph</doclet>
-                <docletPath>${env.HOME}/.m2/repository/umlgraph/UmlGraph/4.2-SNAPSHOT/UmlGraph-4.2-SNAPSHOT.jar</docletPath>
-                <docletArtifact>
-                <groupId>umlgraph</groupId>
-                <artifactId>UMLGraph</artifactId>
-                <version>4.2-SNAPSHOT</version>
-                </docletArtifact>
-                <additionalparam>-views</additionalparam>
-                <destDir>target/uml</destDir>
-                <show>private</show>
-                </configuration>
-                <reports>
-                <report>javadoc</report>
-                </reports>
-                </reportSet>
-                <reportSet>
-                <id>html</id>
-                <configuration>
-                <show>private</show>
-                </configuration>
-                <reports>
-                <report>javadoc</report>
-                </reports>
-                </reportSet>
-                </reportSets>-->
-                <!-- End comment here if u don't want UMLGraph -->
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -189,15 +157,6 @@ $ mvn assembly:assembly -DdescriptorId=jar-with-dependencies
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jxr-maven-plugin</artifactId>
             </plugin>
-            <!--<plugin>
-                <groupId>maven-plugins</groupId>
-                <artifactId>maven-javancss-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>jdepend-maven-plugin</artifactId>
-                <version>2.0-beta-1-SNAPSHOT</version>
-            </plugin>-->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>taglist-maven-plugin</artifactId>
