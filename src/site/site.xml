@@ -28,6 +28,7 @@
       <item name="Forum" href="http://developer.berlios.de/forum/?group_id=5944"/>
       <item name="Translate" href="translate.html"/>
       <item name="Downloads" href="download.html"/>
+      <item name="Powered By" href="poweredby.html"/>
     </menu>
     ${reports}
   </body>
