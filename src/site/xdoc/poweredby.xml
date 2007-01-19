@@ -13,10 +13,16 @@
       <table>
         <tr>
           <td>
-<a href="http://developer.berlios.de">
-<img src="http://developer.berlios.de/bslogo.php?group_id=5944" width="124" height="32" border="0" alt="BerliOS Logo" /></a>
+             <a href="http://developer.berlios.de">
+               <img src="http://developer.berlios.de/bslogo.php?group_id=5944"
+                       width="124" height="32" border="0" alt="BerliOS Logo" />
+             </a>
           </td>
           <td>
+             <a href="http://developer.berlios.de">developer.berlios.de</a> provide excellent
+             OpenSource Software hosting platform. They provide all the necessities like subversion,
+             Wiki page, forums, mailing list, bug tracker, etc.--all so important for an OSS
+             to succeed.
           </td>
         </tr>
         <tr>
@@ -26,6 +32,9 @@
             </a>
           </td>
           <td>
+             Thanks to the people at <a href="http://www.cenqua.com/">Cenqua</a> for providing free
+             OpenSource license of <a href="http://www.cenqua.com/clover/">Clover</a> for WizCrypt
+             project.
           </td>
         </tr>
         <tr>
@@ -35,6 +44,29 @@
             </a>
           </td>
           <td>
+             The IDE used in the development of WizCrypt is <a href="http://www.netbeans.org/">Netbeans</a>.
+             <a href="http://mevenide.codehaus.org/m2-site/index.html">MevenIDE</a> plugin is also used for
+             working with <a href="http://maven.apache.org/">Maven</a>.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <a href="http://maven.apache.org/">
+              <img src="images/logos/maven-feather.png" border="0" width="89" height="37"/>
+            </a>
+          </td>
+          <td>
+              Maven 2.x is used for building WizCrypt.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <a href="http://subversion.tigris.org/">
+              <img src="img/subversion_logo.png" border="0" width="124" height="74"/>
+            </a>
+          </td>
+          <td>
+             The Source Configuration Management tool used is <a href="http://subversion.tigris.org/">Subversion</a>.
           </td>
         </tr>
       </table>
