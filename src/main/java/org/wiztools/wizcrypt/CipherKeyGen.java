@@ -1,5 +1,6 @@
 package org.wiztools.wizcrypt;
 
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -8,6 +9,9 @@ import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import static org.wiztools.wizcrypt.WizCryptAlgorithms.PWD_HASH;
+import static org.wiztools.wizcrypt.WizCryptAlgorithms.PWD_ENCODE;
+import static org.wiztools.wizcrypt.WizCryptAlgorithms.CRYPT_ALGO;
 
 /**
  * This class has static methods to create <code>CipherKey</code> objects.
@@ -16,27 +20,33 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public final class CipherKeyGen{
 
-    private static final String ALGO = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcrypt").getString("algorithm");
-    
     /** Disallow public creation of instances of this class. */
     private CipherKeyGen(){
     }
     
-    private static byte[] passHash(final String password) throws NoSuchAlgorithmException{
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        md.update(password.getBytes());
+    private static byte[] passHash(final byte[] passKey)
+            throws NoSuchAlgorithmException,
+                UnsupportedEncodingException{
+        MessageDigest md = MessageDigest.getInstance(PWD_HASH);
+        md.update(passKey);
         byte[] raw = md.digest();
         return raw;
     }
     
-    private static CipherKey getCipherKey(final String keyStr, final int mode) throws NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException{
+    private static CipherKey getCipherKey(final String keyStr, final int mode) 
+                throws NoSuchAlgorithmException,
+                    UnsupportedEncodingException,
+                    InvalidKeyException, 
+                    NoSuchPaddingException{
         byte[] passKeyHash = null;
         Cipher cipher = null;
+        
+        byte[] passKey = keyStr.getBytes(PWD_ENCODE);
 
-        SecretKey key = new SecretKeySpec(keyStr.getBytes(), ALGO);
-        cipher = Cipher.getInstance(ALGO);
+        SecretKey key = new SecretKeySpec(passKey, CRYPT_ALGO);
+        cipher = Cipher.getInstance(CRYPT_ALGO);
         cipher.init(mode, key);
-        passKeyHash = CipherKeyGen.passHash(keyStr);
+        passKeyHash = CipherKeyGen.passHash(passKey);
         
         CipherKey ck = new CipherKey(cipher, passKeyHash);
         
@@ -49,13 +59,18 @@ public final class CipherKeyGen{
      *
      * @param keyStr The password used for creating the cipher.
      * @throws NoSuchAlgorithmException When the Algorithm used by WizCrypt (RC4) is not found in JVM. This is highly unlikely, because SUN JVM has this.
+     * @throws UnsupportedEncodingException Password provided is encoded using UTF-8. If UTF-8 encoder is not available in JVM, this exception is thrown. This exception is not likely to happen.
      * @throws InvalidKeyException The key should be of specific size. If this size limits are not met, <code>InvalidKeyException</code> exception is thrown.
      * @throws NoSuchPaddingException This exception is thrown when a particular padding mechanism is requested but is not available in the environment. This also is also highly unlikely to happen.
      * @return Returns the initialized <code>CipherKey</code> object for encryption.
      * @see WizCrypt#encrypt(InputStream is, OutputStream os, CipherKey ce)
      * @see CipherKey
      */
-    public static CipherKey getCipherKeyForEncrypt(final String keyStr) throws NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException{
+    public static CipherKey getCipherKeyForEncrypt(final String keyStr) 
+            throws NoSuchAlgorithmException,
+                UnsupportedEncodingException,
+                InvalidKeyException,
+                NoSuchPaddingException{
         return getCipherKey(keyStr, Cipher.ENCRYPT_MODE);
     }
     
@@ -65,13 +80,18 @@ public final class CipherKeyGen{
      *
      * @param keyStr The password used for creating the cipher.
      * @throws NoSuchAlgorithmException When the Algorithm used by WizCrypt (RC4) is not found in JVM. This is highly unlikely, because SUN JVM has this.
+     * @throws UnsupportedEncodingException Password provided is encoded using UTF-8. If UTF-8 encoder is not available in JVM, this exception is thrown. This exception is not likely to happen.
      * @throws InvalidKeyException The key should be of specific size. If this size limits are not met, <code>InvalidKeyException</code> exception is thrown.
      * @throws NoSuchPaddingException This exception is thrown when a particular padding mechanism is requested but is not available in the environment. This also is also highly unlikely to happen.
      * @return Returns the initialized <code>CipherKey</code> object for decryption.
      * @see WizCrypt#decrypt(InputStream is, OutputStream os, CipherKey ce)
      * @see CipherKey
      */
-    public static CipherKey getCipherKeyForDecrypt(final String keyStr) throws NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException{
+    public static CipherKey getCipherKeyForDecrypt(final String keyStr) 
+            throws NoSuchAlgorithmException,
+                UnsupportedEncodingException,
+                InvalidKeyException,
+                NoSuchPaddingException{
         return getCipherKey(keyStr, Cipher.DECRYPT_MODE);
     }
 }
