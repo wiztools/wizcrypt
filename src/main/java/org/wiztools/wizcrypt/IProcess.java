@@ -1,5 +1,6 @@
 package org.wiztools.wizcrypt;
 
+import java.io.UnsupportedEncodingException;
 import javax.crypto.NoSuchPaddingException;
 
 import java.security.NoSuchAlgorithmException;
@@ -11,7 +12,8 @@ import java.io.FileNotFoundException;
 
 public interface IProcess{
 	public void init(String password) 
-            throws NoSuchAlgorithmException, 
+            throws NoSuchAlgorithmException,
+                UnsupportedEncodingException,
                 InvalidKeyException, 
                 NoSuchPaddingException;
 	public void process(File file, boolean forceOverwrite) 

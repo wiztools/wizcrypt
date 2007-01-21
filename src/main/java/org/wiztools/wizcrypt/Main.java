@@ -2,6 +2,7 @@ package org.wiztools.wizcrypt;
 
 import java.io.Console;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -38,6 +39,7 @@ public class Main{
     private static boolean PARSE_EXCEPTION = false;
     private static boolean CONSOLE_NOT_AVBL_EXCEPTION = false;
     private static boolean DEST_FILE_EXISTS = false;
+    private static boolean PWD_ENCODING_EXCEPTION = false;
     
     // Error codes
     private static final int C_IO_EXCEPTION = 1;
@@ -240,6 +242,9 @@ public class Main{
         } catch(InvalidKeyException ike){
             INVALID_PWD = true;
             System.err.println(rb.getString("err.invalid.pwd"));
+        } catch(UnsupportedEncodingException uee){
+            PWD_ENCODING_EXCEPTION = true;
+            System.err.println(uee.getMessage());
         } catch(GeneralSecurityException gse){
             SECURITY_EXCEPTION = true;
             System.err.println(gse.getMessage());
@@ -257,7 +262,7 @@ public class Main{
             exitVal = C_CONSOLE_NOT_AVBL_EXCEPTION;
         } else if(INVALID_PWD){
             exitVal = C_INVALID_PWD;
-        } else if(SECURITY_EXCEPTION){
+        } else if(SECURITY_EXCEPTION || PWD_ENCODING_EXCEPTION){
             exitVal = C_SECURITY_EXCEPTION;
         } else{
             int count = 0; // count the number of exceptions

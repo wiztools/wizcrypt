@@ -1,5 +1,6 @@
 package org.wiztools.wizcrypt;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ResourceBundle;
 import javax.crypto.NoSuchPaddingException;
 
@@ -21,7 +22,12 @@ public class Encrypt implements IProcess{
     
     private CipherKey ce;
     
-    public void init(final String keyStr) throws NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException{
+    public void init(final String keyStr)
+        throws 
+            NoSuchAlgorithmException,
+            UnsupportedEncodingException,
+            InvalidKeyException,
+            NoSuchPaddingException{
         ce = CipherKeyGen.getCipherKeyForEncrypt(keyStr);
     }
     
@@ -31,11 +37,11 @@ public class Encrypt implements IProcess{
         FileInputStream fis = null;
         boolean canDelete = false;
         try{
-            File outFile = new File(file.getCanonicalPath()+".wiz");
+            File outFile = new File(file.getAbsolutePath()+".wiz");
             if(!forceOverwrite && outFile.exists()){
                 throw new DestinationFileExistsException(
                         rb.getString("err.destination.file.exists") +
-                        outFile.getCanonicalPath());
+                        outFile.getAbsolutePath());
             }
             fis = new FileInputStream(file);
             fos = new FileOutputStream(outFile);
