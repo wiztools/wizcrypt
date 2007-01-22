@@ -20,7 +20,7 @@ final class WizCryptAlgorithms {
     }
     
     public static final String CRYPT_ALGO = "RC4";
-    public static final String PWD_ENCODE = "UTF-8";
+    public static final String STR_ENCODE = "UTF-8";
     public static final String PWD_HASH = "MD5";
     
 }

@@ -10,7 +10,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import static org.wiztools.wizcrypt.WizCryptAlgorithms.PWD_HASH;
-import static org.wiztools.wizcrypt.WizCryptAlgorithms.PWD_ENCODE;
+import static org.wiztools.wizcrypt.WizCryptAlgorithms.STR_ENCODE;
 import static org.wiztools.wizcrypt.WizCryptAlgorithms.CRYPT_ALGO;
 
 /**
@@ -41,7 +41,7 @@ public final class CipherKeyGen{
         byte[] passKeyHash = null;
         Cipher cipher = null;
         
-        byte[] passKey = keyStr.getBytes(PWD_ENCODE);
+        byte[] passKey = keyStr.getBytes(STR_ENCODE);
 
         SecretKey key = new SecretKeySpec(passKey, CRYPT_ALGO);
         cipher = Cipher.getInstance(CRYPT_ALGO);

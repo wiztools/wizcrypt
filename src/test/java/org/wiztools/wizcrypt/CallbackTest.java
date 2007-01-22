@@ -74,7 +74,8 @@ public class CallbackTest {
         System.out.println("\ntestDecryptCallback()");
         try{
             CipherKey ck = CipherKeyGen.getCipherKeyForDecrypt(PASSWD);
-            InputStream is = new FileInputStream(CIPHER_FILE);
+            InputStream is = new FileInputStream(System.getProperty("java.io.tmpdir")
+                            + File.separator + "logo.png.wiz");
             OutputStream os = new FileOutputStream(System.getProperty("java.io.tmpdir")
                             + File.separator + "logo.png");
             
@@ -90,7 +91,8 @@ public class CallbackTest {
         System.out.println("\ntestDecryptCallback()");
         try{
             CipherKey ck = CipherKeyGen.getCipherKeyForDecrypt(PASSWD);
-            InputStream is = new FileInputStream(CIPHER_FILE);
+            InputStream is = new FileInputStream(System.getProperty("java.io.tmpdir")
+                            + File.separator + "logo.png.wiz");
             OutputStream os = new FileOutputStream(System.getProperty("java.io.tmpdir")
                             + File.separator + "logo.png");
             
