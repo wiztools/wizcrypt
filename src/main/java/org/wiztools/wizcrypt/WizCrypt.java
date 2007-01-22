@@ -12,6 +12,7 @@ package org.wiztools.wizcrypt;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 import javax.crypto.CipherInputStream;
@@ -62,7 +63,12 @@ public final class WizCrypt {
             }
             
             cis = new CipherInputStream(is, ck.cipher);
-            // Write the hash in first 16 bytes
+            
+            // Write the file-format magic number
+            byte[] versionStr = FileFormatVersion.WC07.getBytes(WizCryptAlgorithms.STR_ENCODE);
+            os.write(versionStr);
+            
+            // Write the hash in next 16 bytes
             os.write(ck.passKeyHash);
             
             int i = -1;
@@ -152,6 +158,13 @@ public final class WizCrypt {
             if(cb != null){
                 cb.begin();
             }
+            
+            // Read the magic number
+            byte[] versionStr = FileFormatVersion.WC07.getBytes(WizCryptAlgorithms.STR_ENCODE);
+            int versionByteLen = versionStr.length;
+            byte[] magicNumber = new byte[versionByteLen];
+            is.read(magicNumber, 0, versionByteLen);
+            System.out.println("magicNumber: "+new String(magicNumber));
             
             // read 16 bytes from fis
             byte[] filePassKeyHash = new byte[16];
