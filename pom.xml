@@ -121,7 +121,7 @@ $ mvn assembly:assembly -DdescriptorId=jar-with-dependencies
                     <execution>
                         <id>verify</id>
                         <configuration>
-                            <targetPercentage>50%</targetPercentage>
+                            <targetPercentage>40%</targetPercentage>
                         </configuration>
                         <phase>verify</phase>
                         <goals>
