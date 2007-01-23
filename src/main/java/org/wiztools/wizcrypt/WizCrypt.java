@@ -15,6 +15,8 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
 
@@ -57,6 +59,7 @@ public final class WizCrypt {
             final CipherKey ck, final Callback cb, final long size) throws IOException{
         
         CipherInputStream cis = null;
+        OutputStream gos = new GZIPOutputStream(os);
         try{
             if(cb != null){
                 cb.begin();
@@ -66,16 +69,16 @@ public final class WizCrypt {
             
             // Write the file-format magic number
             byte[] versionStr = FileFormatVersion.WC07.getBytes(WizCryptAlgorithms.STR_ENCODE);
-            os.write(versionStr);
+            gos.write(versionStr);
             
             // Write the hash in next 16 bytes
-            os.write(ck.passKeyHash);
+            gos.write(ck.passKeyHash);
             
             int i = -1;
             byte[] buffer = new byte[0xFFFF];
             long readSize = 0;
             while((i=cis.read(buffer)) != -1){
-                os.write(buffer, 0, i);
+                gos.write(buffer, 0, i);
                 readSize += i;
                 if(cb != null){
                     if(size == -1){
@@ -89,8 +92,8 @@ public final class WizCrypt {
         }
         finally{
             try{
-                if(os != null){
-                    os.close();
+                if(gos != null){
+                    gos.close();
                 }
             } catch(IOException ioe){
                 System.err.println(ioe.getMessage());
@@ -153,7 +156,7 @@ public final class WizCrypt {
             final CipherKey ck, final Callback cb, final long size) throws IOException, PasswordMismatchException{
         
         CipherOutputStream cos = null;
-
+        InputStream gis = new GZIPInputStream(is);
         try{
             if(cb != null){
                 cb.begin();
@@ -163,12 +166,12 @@ public final class WizCrypt {
             byte[] versionStr = FileFormatVersion.WC07.getBytes(WizCryptAlgorithms.STR_ENCODE);
             int versionByteLen = versionStr.length;
             byte[] magicNumber = new byte[versionByteLen];
-            is.read(magicNumber, 0, versionByteLen);
+            gis.read(magicNumber, 0, versionByteLen);
             System.out.println("magicNumber: "+new String(magicNumber));
             
             // read 16 bytes from fis
             byte[] filePassKeyHash = new byte[16];
-            is.read(filePassKeyHash, 0, 16);
+            gis.read(filePassKeyHash, 0, 16);
             
             if(!Arrays.equals(ck.passKeyHash, filePassKeyHash)){
                 throw new PasswordMismatchException(rb.getString("err.pwd.not.match"));
@@ -179,7 +182,7 @@ public final class WizCrypt {
             int i = -1;
             byte[] buffer = new byte[0xFFFF];
             long readSize = 0;
-            while((i=is.read(buffer)) != -1){
+            while((i=gis.read(buffer)) != -1){
                 cos.write(buffer, 0, i);
                 readSize += i;
                 if(cb != null){
@@ -201,8 +204,8 @@ public final class WizCrypt {
                 System.err.println(ioe.getMessage());
             }
             try{
-                if(is != null){
-                    is.close();
+                if(gis != null){
+                    gis.close();
                 }
             } catch(IOException ioe){
                 System.err.println(ioe.getMessage());
