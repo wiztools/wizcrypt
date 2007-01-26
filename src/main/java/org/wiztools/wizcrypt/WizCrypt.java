@@ -166,12 +166,18 @@ public final class WizCrypt {
             byte[] versionStr = FileFormatVersion.WC07.getBytes(WizCryptAlgorithms.STR_ENCODE);
             int versionByteLen = versionStr.length;
             byte[] magicNumber = new byte[versionByteLen];
-            gis.read(magicNumber, 0, versionByteLen);
+            int bytesRead = gis.read(magicNumber, 0, versionByteLen);
+            if(bytesRead < versionByteLen){
+                // TODO throw exception
+            }
             System.out.println("magicNumber: "+new String(magicNumber));
             
             // read 16 bytes from fis
             byte[] filePassKeyHash = new byte[16];
-            gis.read(filePassKeyHash, 0, 16);
+            bytesRead = gis.read(filePassKeyHash, 0, 16);
+            if(bytesRead < 16){
+                // TODO throw exception
+            }
             
             if(!Arrays.equals(ck.passKeyHash, filePassKeyHash)){
                 throw new PasswordMismatchException(rb.getString("err.pwd.not.match"));

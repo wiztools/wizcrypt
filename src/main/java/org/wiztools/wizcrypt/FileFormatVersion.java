@@ -19,6 +19,6 @@ public class FileFormatVersion {
     private FileFormatVersion() {
     }
     
-    public static String WC07 = "WizCrypt07";
+    public static final String WC07 = "WizCrypt07";
     
 }
