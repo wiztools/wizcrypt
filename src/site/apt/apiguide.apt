@@ -92,6 +92,10 @@ WizCrypt API Guide
  is used. So, if you are planning to use the API and not WizCrypt as a tool,
  download wizcrypt-XX.jar and <<not>> wizcrypt-XX-jar-with-dependencies.jar.
 
+ WizCrypt Jars are also available in the Maven public repository. Details on
+ having it as dependency in your project is available
+ {{{http://mvnrepository.com/artifact/org.wiztools.wizcrypt/wizcrypt/}here}}.
+
 * Next. . .
 
  Read the guide for {{{apiguide_callback.html}Callback}} functionality. This allows
