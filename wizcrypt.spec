@@ -13,7 +13,7 @@ Version: %{version}
 Release: %{release}
 Source: http://prdownload.berlios.de/wizcrypt/%{name}-%{version}-src.tar.bz2
 Vendor: WizTools.org
-URL: http://www.wiztools.org/
+URL: http://wizcrypt.wiztools.org/
 License: Apache 2
 Group: System Environment/Libraries
 BuildArch: noarch
