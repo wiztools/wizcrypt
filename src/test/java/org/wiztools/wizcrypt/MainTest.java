@@ -21,6 +21,8 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.wiztools.wizcrypt.exception.DestinationFileExistsException;
+import org.wiztools.wizcrypt.exception.PasswordMismatchException;
 
 /**
  *
