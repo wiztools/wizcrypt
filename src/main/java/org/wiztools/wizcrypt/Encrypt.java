@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.FileNotFoundException;
+import org.wiztools.wizcrypt.exception.DestinationFileExistsException;
 
 /**
  * Class to do the encryption using the WizCrypt naming convention (*.wiz).
@@ -45,7 +46,7 @@ public class Encrypt implements IProcess{
             }
             fis = new FileInputStream(file);
             fos = new FileOutputStream(outFile);
-            WizCrypt.encrypt(fis, fos, ce);
+            WizCrypt.get07Instance().encrypt(fis, fos, ce);
             canDelete = true;
         } finally{
             // fos & fis will be closed by WizCrypt.encrypt() API

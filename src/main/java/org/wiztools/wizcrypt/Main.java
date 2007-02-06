@@ -20,6 +20,9 @@ import java.io.IOException;
 import java.io.File;
 
 import java.util.ResourceBundle;
+import org.wiztools.wizcrypt.exception.ConsoleNotAvailableException;
+import org.wiztools.wizcrypt.exception.DestinationFileExistsException;
+import org.wiztools.wizcrypt.exception.PasswordMismatchException;
 
 /**
  * The class which does the commandline parsing the calls the public APIs to encrypt/decrypt.

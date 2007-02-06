@@ -9,6 +9,8 @@ import java.security.InvalidKeyException;
 import java.io.File;
 import java.io.IOException;
 import java.io.FileNotFoundException;
+import org.wiztools.wizcrypt.exception.DestinationFileExistsException;
+import org.wiztools.wizcrypt.exception.PasswordMismatchException;
 
 public interface IProcess{
 	public void init(String password) 
