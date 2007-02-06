@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.io.FileNotFoundException;
 
 import java.util.ResourceBundle;
+import org.wiztools.wizcrypt.exception.DestinationFileExistsException;
+import org.wiztools.wizcrypt.exception.PasswordMismatchException;
 
 /**
  * Class to do the decryption using the WizCrypt naming convention (*.wiz).
@@ -54,7 +56,7 @@ public class Decrypt implements IProcess{
             }
             fis = new FileInputStream(file);
             fos = new FileOutputStream(outFile);
-            WizCrypt.decrypt(fis, fos, ce);
+            WizCrypt.get07Instance().decrypt(fis, fos, ce);
             canDelete = true;
         } finally{
             // fos & fis will be closed by WizCrypt.decrypt() API

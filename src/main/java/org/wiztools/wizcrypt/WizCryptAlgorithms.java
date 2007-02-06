@@ -13,7 +13,7 @@ package org.wiztools.wizcrypt;
  *
  * @author schandran
  */
-final class WizCryptAlgorithms {
+public final class WizCryptAlgorithms {
     
     /** Creates a new instance of Algorithms */
     private WizCryptAlgorithms() {

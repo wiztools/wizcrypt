@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package org.wiztools.wizcrypt;
+package org.wiztools.wizcrypt.exception;
 
 /**
  *
