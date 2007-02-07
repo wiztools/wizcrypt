@@ -123,7 +123,7 @@ public class WizCrypt07 extends WizCrypt {
             }
             
             if(!Arrays.equals(ck.passKeyHash, filePassKeyHash)){
-                throw new PasswordMismatchException(rb.getString("err.pwd.not.match"));
+                throw new PasswordMismatchException();
             }
             
             cos = new CipherOutputStream(os, ck.cipher);

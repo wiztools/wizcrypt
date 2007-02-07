@@ -15,6 +15,10 @@ package org.wiztools.wizcrypt.exception;
  */
 public class DestinationFileExistsException extends Exception {
     
+    public DestinationFileExistsException(){
+        
+    }
+    
     /** Creates a new instance of DestinationFileExistsException */
     public DestinationFileExistsException(final String msg) {
         super(msg);
