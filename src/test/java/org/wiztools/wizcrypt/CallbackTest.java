@@ -12,8 +12,10 @@ package org.wiztools.wizcrypt;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.logging.LogManager;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -31,6 +33,14 @@ public class CallbackTest {
     
     @Before
     protected void setUp() throws Exception {
+        try{
+            LogManager.getLogManager().readConfiguration(
+                Main.class.getClassLoader()
+                .getResourceAsStream("org/wiztools/wizcrypt/logging.properties"));
+        }
+        catch(IOException ioe){
+            assert true: "Logger configuration load failed!";
+        }
     }
     
     @After

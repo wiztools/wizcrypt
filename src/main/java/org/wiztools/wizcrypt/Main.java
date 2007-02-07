@@ -4,6 +4,7 @@ import java.io.Console;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
+import java.util.logging.LogManager;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.GnuParser;
@@ -150,6 +151,15 @@ public class Main{
     }
     
     public Main(String[] arg){
+        try{
+            LogManager.getLogManager().readConfiguration(
+                Main.class.getClassLoader()
+                .getResourceAsStream("org/wiztools/wizcrypt/logging.properties"));
+        }
+        catch(IOException ioe){
+            assert true: "Logger configuration load failed!";
+        }
+        
         Options options = generateOptions();
         try{
             boolean encrypt = false;
