@@ -1,5 +1,5 @@
 ##########################################################################
-# Need To Have JAVA_HOME environment variable set, And Maven >= 2.0.3 in #
+# Need To Have JAVA_HOME environment variable set, And Maven >= 2.0.4 in #
 # the PATH.                                                              #
 ##########################################################################
 
@@ -54,7 +54,7 @@ then
 fi
 
 %clean
-# Do nothing
+mvn clean
 
 %files
 %defattr(-,root,root)
