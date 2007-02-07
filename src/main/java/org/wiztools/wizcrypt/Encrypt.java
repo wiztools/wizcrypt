@@ -1,6 +1,7 @@
 package org.wiztools.wizcrypt;
 
 import java.io.UnsupportedEncodingException;
+import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import javax.crypto.NoSuchPaddingException;
 
@@ -41,8 +42,8 @@ public class Encrypt implements IProcess{
             File outFile = new File(file.getAbsolutePath()+".wiz");
             if(!forceOverwrite && outFile.exists()){
                 throw new DestinationFileExistsException(
-                        rb.getString("err.destination.file.exists") +
-                        outFile.getAbsolutePath());
+                        MessageFormat.format(rb.getString("err.destination.file.exists"),
+                        outFile.getAbsolutePath()));
             }
             fis = new FileInputStream(file);
             fos = new FileOutputStream(outFile);

@@ -1,6 +1,7 @@
 package org.wiztools.wizcrypt;
 
 import java.io.UnsupportedEncodingException;
+import java.text.MessageFormat;
 import javax.crypto.NoSuchPaddingException;
 
 import java.security.NoSuchAlgorithmException;
@@ -45,14 +46,15 @@ public class Decrypt implements IProcess{
         try{
             String path = file.getAbsolutePath();
             if(!path.endsWith(".wiz")){
-                throw new FileNotFoundException(rb.getString("err.file.not.end.wiz")+path);
+                throw new FileNotFoundException(
+                        MessageFormat.format(rb.getString("err.file.not.end.wiz"), path));
             }
             String newPath = path.replaceFirst(".wiz$", "");
             File outFile = new File(newPath);
             if(!forceOverwrite && outFile.exists()){
                 throw new DestinationFileExistsException(
-                        rb.getString("err.destination.file.exists")+
-                        outFile.getAbsolutePath());
+                        MessageFormat.format(rb.getString("err.destination.file.exists"),
+                        outFile.getAbsolutePath()));
             }
             fis = new FileInputStream(file);
             fos = new FileOutputStream(outFile);

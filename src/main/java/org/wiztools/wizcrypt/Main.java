@@ -3,6 +3,7 @@ package org.wiztools.wizcrypt;
 import java.io.Console;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.logging.LogManager;
 import org.apache.commons.cli.CommandLine;
@@ -228,15 +229,19 @@ public class Main{
                 try{
                     iprocess.process(f, forceOverwrite);
                     if(verbose){
-                        System.out.println(rb.getString("msg.verbose.success")+
-                                f.getCanonicalPath() + ".wiz");
+                        System.out.println(
+                                MessageFormat.format(
+                                    rb.getString("msg.verbose.success"),
+                                    f.getAbsolutePath()));
                     }
                 } catch(DestinationFileExistsException dfe){
                     DEST_FILE_EXISTS = true;
                     System.err.println(dfe.getMessage());
                 } catch(PasswordMismatchException pme){
                     PWD_MISMATCH = true;
-                    System.err.println(pme.getMessage());
+                    String msg = rb.getString("err.pwd.not.match");
+                    msg = MessageFormat.format(msg, f.getAbsolutePath());
+                    System.err.println(msg);
                 } catch(IOException ioe){
                     IO_EXCEPTION = true;
                     System.err.println(ioe.getMessage());
