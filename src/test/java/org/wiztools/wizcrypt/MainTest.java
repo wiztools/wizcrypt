@@ -13,6 +13,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.security.NoSuchAlgorithmException;
+import java.util.logging.LogManager;
 import javax.crypto.NoSuchPaddingException;
 import java.security.InvalidKeyException;
 import java.io.IOException;
@@ -32,6 +33,14 @@ public class MainTest {
     
     @Before
     protected void setUp() throws Exception {
+        try{
+            LogManager.getLogManager().readConfiguration(
+                Main.class.getClassLoader()
+                .getResourceAsStream("org/wiztools/wizcrypt/logging.properties"));
+        }
+        catch(IOException ioe){
+            assert true: "Logger configuration load failed!";
+        }
     }
     
     @After

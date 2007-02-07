@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import javax.crypto.CipherInputStream;
@@ -31,6 +32,7 @@ import org.wiztools.wizcrypt.WizCryptAlgorithms;
  */
 public class WizCrypt07 extends WizCrypt {
     
+    private static final Logger LOG = Logger.getLogger(WizCrypt07.class.getName());
     private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
     
     /** Creates a new instance of WizCrypt07 */
@@ -51,7 +53,7 @@ public class WizCrypt07 extends WizCrypt {
             
             // Write the file-format magic number
             byte[] versionStr = FileFormatVersion.WC07.getBytes(WizCryptAlgorithms.STR_ENCODE);
-            gos.write(versionStr);
+            os.write(versionStr);
             
             // Write the hash in next 16 bytes
             gos.write(ck.passKeyHash);
@@ -107,11 +109,11 @@ public class WizCrypt07 extends WizCrypt {
             byte[] versionStr = FileFormatVersion.WC07.getBytes(WizCryptAlgorithms.STR_ENCODE);
             int versionByteLen = versionStr.length;
             byte[] magicNumber = new byte[versionByteLen];
-            int bytesRead = gis.read(magicNumber, 0, versionByteLen);
+            int bytesRead = is.read(magicNumber, 0, versionByteLen);
             if(bytesRead < versionByteLen){
                 // TODO throw exception
             }
-            System.out.println("magicNumber: "+new String(magicNumber));
+            LOG.finest("magicNumber: "+new String(magicNumber));
             
             // read 16 bytes from fis
             byte[] filePassKeyHash = new byte[16];
