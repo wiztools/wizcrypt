@@ -19,6 +19,7 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
+import org.wiztools.wizcrypt.exception.FileFormatException;
 import org.wiztools.wizcrypt.exception.PasswordMismatchException;
 import org.wiztools.wizcrypt.impl.WizCrypt07;
 import org.wiztools.wizcrypt.impl.WizCryptOld;
@@ -116,7 +117,8 @@ public abstract class WizCrypt {
      *      IO issues during read/write.
      */
     abstract public void decrypt(final InputStream is, final OutputStream os, 
-            final CipherKey ck, final Callback cb, final long size) throws IOException, PasswordMismatchException;
+            final CipherKey ck, final Callback cb, final long size) 
+            throws IOException, PasswordMismatchException, FileFormatException;
     
     /**
      * @see #decrypt(InputStream is, OutputStream os, 
