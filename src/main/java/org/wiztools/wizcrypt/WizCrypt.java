@@ -21,6 +21,7 @@ import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
 import org.wiztools.wizcrypt.exception.PasswordMismatchException;
 import org.wiztools.wizcrypt.impl.WizCrypt07;
+import org.wiztools.wizcrypt.impl.WizCryptOld;
 
 /**
  * This class has the public APIs of WizCrypt application to do encryption and decryption.
@@ -33,12 +34,20 @@ public abstract class WizCrypt {
     private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
     
     private static WizCrypt __instance07;
+    private static WizCrypt __instanceOld;
     
     public static WizCrypt get07Instance(){
         if(__instance07 == null){
             __instance07 = new WizCrypt07();
         }
         return __instance07;
+    }
+    
+    public static WizCrypt getOldInstance(){
+        if(__instanceOld == null){
+            __instanceOld = new WizCryptOld();
+        }
+        return __instanceOld;
     }
     
     /**

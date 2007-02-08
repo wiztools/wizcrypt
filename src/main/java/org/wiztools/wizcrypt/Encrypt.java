@@ -33,7 +33,7 @@ public class Encrypt implements IProcess{
         ce = CipherKeyGen.getCipherKeyForEncrypt(keyStr);
     }
     
-    public void process(final File file, final boolean forceOverwrite) 
+    public void process(final File file, final boolean forceOverwrite, final boolean isOldFormat) 
             throws FileNotFoundException, DestinationFileExistsException, IOException{
         FileOutputStream fos = null;
         FileInputStream fis = null;
@@ -47,7 +47,14 @@ public class Encrypt implements IProcess{
             }
             fis = new FileInputStream(file);
             fos = new FileOutputStream(outFile);
-            WizCrypt.get07Instance().encrypt(fis, fos, ce);
+            WizCrypt wc = null;
+            if(isOldFormat){
+                wc = WizCrypt.getOldInstance();
+            }
+            else{
+                wc = WizCrypt.get07Instance();
+            }
+            wc.encrypt(fis, fos, ce);
             canDelete = true;
         } finally{
             // fos & fis will be closed by WizCrypt.encrypt() API
@@ -55,5 +62,10 @@ public class Encrypt implements IProcess{
                 file.delete();
             }
         }
+    }
+    
+    public void process(final File file, final boolean forceOverwrite) 
+            throws FileNotFoundException, DestinationFileExistsException, IOException{
+        process(file, forceOverwrite, false);
     }
 }
