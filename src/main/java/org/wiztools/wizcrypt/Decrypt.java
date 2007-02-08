@@ -15,6 +15,7 @@ import java.io.FileNotFoundException;
 
 import java.util.ResourceBundle;
 import org.wiztools.wizcrypt.exception.DestinationFileExistsException;
+import org.wiztools.wizcrypt.exception.FileFormatException;
 import org.wiztools.wizcrypt.exception.PasswordMismatchException;
 
 /**
@@ -41,6 +42,7 @@ public class Decrypt implements IProcess{
             throws FileNotFoundException,
                 DestinationFileExistsException,
                 PasswordMismatchException,
+                FileFormatException,
                 IOException{
         FileInputStream fis = null;
         FileOutputStream fos = null;
@@ -83,6 +85,7 @@ public class Decrypt implements IProcess{
             throws FileNotFoundException,
                 DestinationFileExistsException,
                 PasswordMismatchException,
+                FileFormatException,
                 IOException{
         process(file, false, false, false);
     }

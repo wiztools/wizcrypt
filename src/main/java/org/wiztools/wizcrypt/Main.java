@@ -24,6 +24,7 @@ import java.io.File;
 import java.util.ResourceBundle;
 import org.wiztools.wizcrypt.exception.ConsoleNotAvailableException;
 import org.wiztools.wizcrypt.exception.DestinationFileExistsException;
+import org.wiztools.wizcrypt.exception.FileFormatException;
 import org.wiztools.wizcrypt.exception.PasswordMismatchException;
 
 /**
@@ -259,6 +260,9 @@ public class Main{
                     PWD_MISMATCH = true;
                     String msg = rb.getString("err.pwd.not.match");
                     msg = MessageFormat.format(msg, f.getAbsolutePath());
+                    System.err.println(msg);
+                } catch(FileFormatException ffe){
+                    String msg = rb.getString("err.file.format");
                     System.err.println(msg);
                 } catch(IOException ioe){
                     IO_EXCEPTION = true;
