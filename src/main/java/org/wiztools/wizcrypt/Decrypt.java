@@ -35,7 +35,9 @@ public class Decrypt implements IProcess{
         ce = CipherKeyGen.getCipherKeyForDecrypt(keyStr);
     }
     
-    public void process(final File file, final boolean forceOverwrite, final boolean isOldFormat) 
+    public void process(final File file, final boolean forceOverwrite,
+            final boolean keepSource,
+            final boolean isOldFormat) 
             throws FileNotFoundException,
                 DestinationFileExistsException,
                 PasswordMismatchException,
@@ -66,7 +68,9 @@ public class Decrypt implements IProcess{
                 wc = WizCrypt.get07Instance();
             }
             wc.decrypt(fis, fos, ce);
-            canDelete = true;
+            if(!keepSource){
+                canDelete = true;
+            }
         } finally{
             // fos & fis will be closed by WizCrypt.decrypt() API
             if(canDelete){
@@ -75,11 +79,11 @@ public class Decrypt implements IProcess{
         }
     }
     
-    public void process(final File file, final boolean forceOverwrite) 
+    public void process(final File file) 
             throws FileNotFoundException,
                 DestinationFileExistsException,
                 PasswordMismatchException,
                 IOException{
-        process(file, forceOverwrite, false);
+        process(file, false, false, false);
     }
 }

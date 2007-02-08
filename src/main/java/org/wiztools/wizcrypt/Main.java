@@ -95,6 +95,11 @@ public class Main{
                 .withDescription(rb.getString("msg.force.overwrite"))
                 .create('f');
         options.addOption(option);
+        option = OptionBuilder.withLongOpt("keep")
+                .isRequired(false)
+                .withDescription(rb.getString("msg.keep"))
+                .create('k');
+        options.addOption(option);
         option = OptionBuilder.withLongOpt("old-format")
                 .isRequired(false)
                 .withDescription(rb.getString("msg.old.format"))
@@ -173,6 +178,7 @@ public class Main{
             boolean forceOverwrite = false;
             boolean verbose = false;
             boolean oldFormat = false;
+            boolean keepSource = false;
             CommandLineParser parser = new GnuParser();
             CommandLine cmd = parser.parse(options, arg);
             if(cmd.hasOption('h')){
@@ -206,6 +212,9 @@ public class Main{
             if(cmd.hasOption('o')){
                 oldFormat = true;
             }
+            if(cmd.hasOption('k')){
+                keepSource = true;
+            }
             if(encrypt && decrypt){
                 throw new ParseException(rb.getString("err.both.selected"));
             }
@@ -236,7 +245,7 @@ public class Main{
             for(int i=0;i<args.length;i++){
                 File f = new File(args[i]);
                 try{
-                    iprocess.process(f, forceOverwrite, oldFormat);
+                    iprocess.process(f, forceOverwrite, keepSource, oldFormat);
                     if(verbose){
                         System.out.println(
                                 MessageFormat.format(
