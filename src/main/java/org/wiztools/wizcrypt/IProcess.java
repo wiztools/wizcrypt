@@ -13,14 +13,21 @@ import org.wiztools.wizcrypt.exception.DestinationFileExistsException;
 import org.wiztools.wizcrypt.exception.PasswordMismatchException;
 
 public interface IProcess{
-	public void init(String password) 
-            throws NoSuchAlgorithmException,
-                UnsupportedEncodingException,
-                InvalidKeyException, 
-                NoSuchPaddingException;
-	public void process(File file, boolean forceOverwrite) 
-            throws IOException, 
-                FileNotFoundException,
-                DestinationFileExistsException,
-                PasswordMismatchException;
+    public void init(String password)
+    throws NoSuchAlgorithmException,
+            UnsupportedEncodingException,
+            InvalidKeyException,
+            NoSuchPaddingException;
+    
+    public void process(File file, boolean forceOverwrite, boolean isOldFormat)
+    throws IOException,
+            FileNotFoundException,
+            DestinationFileExistsException,
+            PasswordMismatchException;
+    
+    public void process(File file, boolean forceOverwrite)
+    throws IOException,
+            FileNotFoundException,
+            DestinationFileExistsException,
+            PasswordMismatchException;
 }
