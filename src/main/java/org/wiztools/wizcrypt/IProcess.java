@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 import org.wiztools.wizcrypt.exception.DestinationFileExistsException;
+import org.wiztools.wizcrypt.exception.FileFormatException;
 import org.wiztools.wizcrypt.exception.PasswordMismatchException;
 
 public interface IProcess{
@@ -25,11 +26,13 @@ public interface IProcess{
     throws IOException,
             FileNotFoundException,
             DestinationFileExistsException,
+            FileFormatException,
             PasswordMismatchException;
     
     public void process(File file)
     throws IOException,
             FileNotFoundException,
             DestinationFileExistsException,
+            FileFormatException,
             PasswordMismatchException;
 }

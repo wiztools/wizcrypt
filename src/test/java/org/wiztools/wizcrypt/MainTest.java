@@ -23,6 +23,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.wiztools.wizcrypt.exception.DestinationFileExistsException;
+import org.wiztools.wizcrypt.exception.FileFormatException;
 import org.wiztools.wizcrypt.exception.PasswordMismatchException;
 
 /**
@@ -110,6 +111,8 @@ public class MainTest {
                 Assert.fail(dfe.getMessage());
             } catch (PasswordMismatchException ex) {
                 // should be visited here;
+            } catch(FileFormatException ffe){
+                Assert.fail(ffe.getMessage());
             }
         } catch (InvalidKeyException ex) {
             Assert.fail(ex.getMessage());
@@ -132,12 +135,16 @@ public class MainTest {
                 Assert.fail(dfe.getMessage());
             } catch(PasswordMismatchException ex){
                 Assert.fail(ex.getMessage());
+            } catch(FileFormatException ffe){
+                Assert.fail(ffe.getMessage());
             }
             
             try{
                 d.process(fout, true, false, false);
             } catch (PasswordMismatchException ex) {
                 Assert.fail(ex.getMessage());
+            } catch(FileFormatException ffe){
+                Assert.fail(ffe.getMessage());
             }
         } catch(DestinationFileExistsException dfe){
             Assert.fail(dfe.getMessage());

@@ -125,7 +125,8 @@ public abstract class WizCrypt {
      *      CipherKey ck, Callback cb, long size)
      */
     public void decrypt(final InputStream is, final OutputStream os, 
-            final CipherKey ck) throws IOException, PasswordMismatchException{
+            final CipherKey ck) 
+            throws IOException, PasswordMismatchException, FileFormatException{
         decrypt(is, os, ck, null, -1);
     }
     
@@ -135,7 +136,7 @@ public abstract class WizCrypt {
      */
     public void decrypt(final InputStream is, final OutputStream os, 
             final CipherKey ck, final Callback cb) throws IOException, 
-                PasswordMismatchException{
+                PasswordMismatchException, FileFormatException{
         decrypt(is, os, ck, cb, -1);
     }
 }
