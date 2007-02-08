@@ -19,6 +19,7 @@ import javax.crypto.CipherOutputStream;
 import org.wiztools.wizcrypt.Callback;
 import org.wiztools.wizcrypt.CipherKey;
 import org.wiztools.wizcrypt.WizCrypt;
+import org.wiztools.wizcrypt.exception.FileFormatException;
 import org.wiztools.wizcrypt.exception.PasswordMismatchException;
 
 /**
@@ -82,7 +83,8 @@ public class WizCryptOld extends WizCrypt {
     }
     
     public void decrypt(final InputStream is, final OutputStream os,
-            final CipherKey ck, final Callback cb, final long size) throws IOException, PasswordMismatchException{
+            final CipherKey ck, final Callback cb, final long size)
+            throws IOException, PasswordMismatchException, FileFormatException{
         
         CipherOutputStream cos = null;
         

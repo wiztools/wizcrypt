@@ -22,6 +22,7 @@ import javax.crypto.CipherOutputStream;
 import org.wiztools.wizcrypt.Callback;
 import org.wiztools.wizcrypt.CipherKey;
 import org.wiztools.wizcrypt.FileFormatVersion;
+import org.wiztools.wizcrypt.exception.FileFormatException;
 import org.wiztools.wizcrypt.exception.PasswordMismatchException;
 import org.wiztools.wizcrypt.WizCrypt;
 import org.wiztools.wizcrypt.WizCryptAlgorithms;
@@ -96,7 +97,8 @@ public class WizCrypt07 extends WizCrypt {
     }
     
     public void decrypt(final InputStream is, final OutputStream os, 
-            final CipherKey ck, final Callback cb, final long size) throws IOException, PasswordMismatchException{
+            final CipherKey ck, final Callback cb, final long size) 
+            throws IOException, PasswordMismatchException, FileFormatException{
         
         CipherOutputStream cos = null;
         InputStream gis = new GZIPInputStream(is);
@@ -110,6 +112,9 @@ public class WizCrypt07 extends WizCrypt {
             int versionByteLen = versionStr.length;
             byte[] magicNumber = new byte[versionByteLen];
             int bytesRead = is.read(magicNumber, 0, versionByteLen);
+            if(!Arrays.equals(versionStr, magicNumber)){
+                throw new FileFormatException();
+            }
             if(bytesRead < versionByteLen){
                 // TODO throw exception
             }
