@@ -81,7 +81,7 @@ public class MainTest {
         
         try {
             e.init(password);
-            e.process(fin, true);
+            e.process(fin, true, false, false);
         } catch(DestinationFileExistsException dfe){
             Assert.fail(dfe.getMessage());
         } catch (InvalidKeyException ex) {
@@ -104,7 +104,7 @@ public class MainTest {
         try {
             d.init(wrongPassword);
             try {
-                d.process(fout, true);
+                d.process(fout, true, false, false);
                 Assert.fail("Cannot process for wrong supplied password!!!");
             } catch(DestinationFileExistsException dfe){
                 Assert.fail(dfe.getMessage());
@@ -124,7 +124,7 @@ public class MainTest {
             
             // Try processing file not ending with .wiz
             try{
-                d.process(new File(path+".xxx"), true);
+                d.process(new File(path+".xxx"), true, false, false);
                 Assert.fail("Cannot process for file not ending with .wiz");
             } catch(FileNotFoundException fnfe){
                 // should be visited here
@@ -135,7 +135,7 @@ public class MainTest {
             }
             
             try{
-                d.process(fout, true);
+                d.process(fout, true, false, false);
             } catch (PasswordMismatchException ex) {
                 Assert.fail(ex.getMessage());
             }

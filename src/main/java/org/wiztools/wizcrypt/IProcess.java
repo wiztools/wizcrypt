@@ -19,13 +19,15 @@ public interface IProcess{
             InvalidKeyException,
             NoSuchPaddingException;
     
-    public void process(File file, boolean forceOverwrite, boolean isOldFormat)
+    public void process(File file, boolean forceOverwrite,
+            final boolean keepSource,
+            boolean isOldFormat)
     throws IOException,
             FileNotFoundException,
             DestinationFileExistsException,
             PasswordMismatchException;
     
-    public void process(File file, boolean forceOverwrite)
+    public void process(File file)
     throws IOException,
             FileNotFoundException,
             DestinationFileExistsException,
