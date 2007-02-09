@@ -18,7 +18,9 @@ import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
 import org.wiztools.wizcrypt.Callback;
 import org.wiztools.wizcrypt.CipherKey;
+import org.wiztools.wizcrypt.CipherKeyGen;
 import org.wiztools.wizcrypt.WizCrypt;
+import org.wiztools.wizcrypt.WizCryptAlgorithms;
 import org.wiztools.wizcrypt.exception.FileFormatException;
 import org.wiztools.wizcrypt.exception.PasswordMismatchException;
 
@@ -83,12 +85,20 @@ public class WizCryptOld extends WizCrypt {
     }
     
     public void decrypt(final InputStream is, final OutputStream os,
-            final CipherKey ck, final Callback cb, final long size)
+            final String pwd, final Callback cb, final long size)
             throws IOException, PasswordMismatchException, FileFormatException{
         
         CipherOutputStream cos = null;
         
         try{
+            CipherKey ck = null;
+            try{
+                ck = CipherKeyGen.getCipherKeyForDecrypt(pwd, WizCryptAlgorithms.CRYPT_ALGO_RC4);
+            }
+            catch(Exception e){
+                assert true: "Cannot come here!";
+            }
+            
             if(cb != null){
                 cb.begin();
             }

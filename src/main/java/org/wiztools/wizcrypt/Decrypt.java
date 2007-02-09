@@ -26,6 +26,7 @@ public class Decrypt implements IProcess{
     private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
     
     private CipherKey ce;
+    private String keyStr;
     
     public void init(final String keyStr) 
         throws 
@@ -34,6 +35,7 @@ public class Decrypt implements IProcess{
             InvalidKeyException,
             NoSuchPaddingException{
         ce = CipherKeyGen.getCipherKeyForDecrypt(keyStr);
+        this.keyStr = keyStr;
     }
     
     public void process(final File file, final boolean forceOverwrite,
@@ -69,7 +71,12 @@ public class Decrypt implements IProcess{
             else{
                 wc = WizCrypt.get07Instance();
             }
-            wc.decrypt(fis, fos, ce);
+            try{
+                wc.decrypt(fis, fos, keyStr);
+            }
+            catch(Exception e){
+                assert true: e.getMessage();
+            }
             if(!keepSource){
                 canDelete = true;
             }

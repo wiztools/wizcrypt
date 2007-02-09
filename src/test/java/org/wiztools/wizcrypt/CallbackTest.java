@@ -89,7 +89,7 @@ public class CallbackTest {
             OutputStream os = new FileOutputStream(System.getProperty("java.io.tmpdir")
                             + File.separator + "logo.png");
             
-            WizCrypt.get07Instance().decrypt(is, os, ck, new TestCallback());
+            WizCrypt.get07Instance().decrypt(is, os, PASSWD, new TestCallback());
         }
         catch(Exception e){
             Assert.fail("An exception occurred: " + e.getMessage());
@@ -106,7 +106,7 @@ public class CallbackTest {
             OutputStream os = new FileOutputStream(System.getProperty("java.io.tmpdir")
                             + File.separator + "logo.png");
             
-            WizCrypt.get07Instance().decrypt(is, os, ck, new TestCallback(), new File(CIPHER_FILE).length());
+            WizCrypt.get07Instance().decrypt(is, os, PASSWD, new TestCallback(), new File(CIPHER_FILE).length());
         }
         catch(Exception e){
             Assert.fail("An exception occurred: " + e.getMessage());

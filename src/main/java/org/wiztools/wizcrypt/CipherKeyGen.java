@@ -11,7 +11,8 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import static org.wiztools.wizcrypt.WizCryptAlgorithms.PWD_HASH;
 import static org.wiztools.wizcrypt.WizCryptAlgorithms.STR_ENCODE;
-import static org.wiztools.wizcrypt.WizCryptAlgorithms.CRYPT_ALGO;
+import static org.wiztools.wizcrypt.WizCryptAlgorithms.CRYPT_ALGO_RC4;
+import static org.wiztools.wizcrypt.WizCryptAlgorithms.CRYPT_ALGO_AES;
 
 /**
  * This class has static methods to create <code>CipherKey</code> objects.
@@ -24,7 +25,7 @@ public final class CipherKeyGen{
     private CipherKeyGen(){
     }
     
-    private static byte[] passHash(final byte[] passKey)
+    public static byte[] passHash(final byte[] passKey)
             throws NoSuchAlgorithmException,
                 UnsupportedEncodingException{
         MessageDigest md = MessageDigest.getInstance(PWD_HASH);
@@ -33,7 +34,7 @@ public final class CipherKeyGen{
         return raw;
     }
     
-    private static CipherKey getCipherKey(final String keyStr, final int mode) 
+    private static CipherKey getCipherKey(final String keyStr, final int mode, final String algo) 
                 throws NoSuchAlgorithmException,
                     UnsupportedEncodingException,
                     InvalidKeyException, 
@@ -43,12 +44,12 @@ public final class CipherKeyGen{
         
         byte[] passKey = keyStr.getBytes(STR_ENCODE);
 
-        SecretKey key = new SecretKeySpec(passKey, CRYPT_ALGO);
-        cipher = Cipher.getInstance(CRYPT_ALGO);
+        SecretKey key = new SecretKeySpec(passKey, algo);
+        cipher = Cipher.getInstance(algo);
         cipher.init(mode, key);
         passKeyHash = CipherKeyGen.passHash(passKey);
         
-        CipherKey ck = new CipherKey(cipher, passKeyHash);
+        CipherKey ck = new CipherKey(cipher, passKeyHash, algo);
         
         return ck;
     }
@@ -71,7 +72,7 @@ public final class CipherKeyGen{
                 UnsupportedEncodingException,
                 InvalidKeyException,
                 NoSuchPaddingException{
-        return getCipherKey(keyStr, Cipher.ENCRYPT_MODE);
+        return getCipherKey(keyStr, Cipher.ENCRYPT_MODE, CRYPT_ALGO_RC4);
     }
     
     /**
@@ -92,6 +93,14 @@ public final class CipherKeyGen{
                 UnsupportedEncodingException,
                 InvalidKeyException,
                 NoSuchPaddingException{
-        return getCipherKey(keyStr, Cipher.DECRYPT_MODE);
+        return getCipherKey(keyStr, Cipher.DECRYPT_MODE, CRYPT_ALGO_RC4);
+    }
+    
+    public static CipherKey getCipherKeyForDecrypt(final String keyStr, final String algoName) 
+            throws NoSuchAlgorithmException,
+                UnsupportedEncodingException,
+                InvalidKeyException,
+                NoSuchPaddingException{
+        return getCipherKey(keyStr, Cipher.DECRYPT_MODE, algoName);
     }
 }

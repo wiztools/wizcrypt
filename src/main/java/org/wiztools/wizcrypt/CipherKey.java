@@ -13,6 +13,7 @@ public final class CipherKey{
     private CipherKey(){
         cipher = null;
         passKeyHash = null;
+        algo = null;
     }
     
     /**
@@ -21,9 +22,10 @@ public final class CipherKey{
      * @param cipher The cipher object created using the password.
      * @param passKeyHash The MD5 hash of the password.
      */
-    public CipherKey(Cipher cipher, byte[] passKeyHash){
+    public CipherKey(final Cipher cipher, final byte[] passKeyHash, final String algo){
         this.cipher = cipher;
         this.passKeyHash = passKeyHash;
+        this.algo = algo;
     }
     
     /** The cipher object created using the password. */
@@ -31,4 +33,6 @@ public final class CipherKey{
     
     /** The MD5 hash of the password. */
     public final byte[] passKeyHash;
+    
+    public final String algo;
 }

@@ -130,7 +130,7 @@ public class BackwardCompatibilityTest {
                     File.separator + "logo.png");
             OutputStream os = new FileOutputStream(outFile);
             
-            WizCrypt.getOldInstance().decrypt(is, os, ck);
+            WizCrypt.getOldInstance().decrypt(is, os, PASSWD);
             
             // 2. Hash for decrypted file
             byte[] newHash = fileHash(outFile);

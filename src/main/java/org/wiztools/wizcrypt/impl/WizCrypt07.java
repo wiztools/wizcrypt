@@ -12,6 +12,8 @@ package org.wiztools.wizcrypt.impl;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
@@ -19,8 +21,10 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
+import javax.crypto.NoSuchPaddingException;
 import org.wiztools.wizcrypt.Callback;
 import org.wiztools.wizcrypt.CipherKey;
+import org.wiztools.wizcrypt.CipherKeyGen;
 import org.wiztools.wizcrypt.FileFormatVersion;
 import org.wiztools.wizcrypt.exception.FileFormatException;
 import org.wiztools.wizcrypt.exception.PasswordMismatchException;
@@ -58,6 +62,18 @@ public class WizCrypt07 extends WizCrypt {
             
             // Write the hash in next 16 bytes
             gos.write(ck.passKeyHash);
+            
+            // Length of Algorithm
+            String lenStr = null;
+            int len = ck.algo.length();
+            if(len < 10){ // add 0 padding
+                lenStr = "0" + String.valueOf(len);
+            }
+            else{
+                lenStr = String.valueOf(len);
+            }
+            gos.write(lenStr.getBytes(WizCryptAlgorithms.STR_ENCODE));
+            gos.write(ck.algo.getBytes(WizCryptAlgorithms.STR_ENCODE));
             
             int i = -1;
             byte[] buffer = new byte[0xFFFF];
@@ -97,8 +113,9 @@ public class WizCrypt07 extends WizCrypt {
     }
     
     public void decrypt(final InputStream is, final OutputStream os, 
-            final CipherKey ck, final Callback cb, final long size) 
-            throws IOException, PasswordMismatchException, FileFormatException{
+            final String pwd, final Callback cb, final long size) 
+            throws IOException, PasswordMismatchException, FileFormatException,
+            NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException{
         
         CipherOutputStream cos = null;
         InputStream gis = new GZIPInputStream(is);
@@ -127,9 +144,35 @@ public class WizCrypt07 extends WizCrypt {
                 // TODO throw exception
             }
             
-            if(!Arrays.equals(ck.passKeyHash, filePassKeyHash)){
+            byte[] passKeyHash = CipherKeyGen.passHash(pwd.getBytes(WizCryptAlgorithms.STR_ENCODE));
+            if(!Arrays.equals(passKeyHash, filePassKeyHash)){
                 throw new PasswordMismatchException();
             }
+            
+            // next 2 bytes have the length of the algorithm
+            byte[] algoNameLength = new byte[2];
+            gis.read(algoNameLength, 0, 2);
+            
+            int len = -1;
+            try{
+                len = Integer.parseInt(new String(algoNameLength));
+                LOG.finest("algorithm name length: "+len);
+                if(len<1){
+                    throw new FileFormatException();
+                }
+            }
+            catch(NumberFormatException nfe){
+                throw new FileFormatException();
+            }
+            
+            // next few bytes have the algorithm name
+            byte[] algoName = new byte[len];
+            gis.read(algoName, 0, len);
+            
+            String algoNameStr = new String(algoName);
+            LOG.finest("algo name: " + algoNameStr);
+            
+            CipherKey ck = CipherKeyGen.getCipherKeyForDecrypt(pwd, algoNameStr);
             
             cos = new CipherOutputStream(os, ck.cipher);
             
