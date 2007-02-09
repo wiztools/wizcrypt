@@ -55,12 +55,13 @@
  This format gives the advantages:
 
  * The final output is compressed
- * GZip's CRC check
+ * GZip's CRC check validates consistency
  * Can use GZip's recovery tools in case of data-corruption
 
  This also has the disadvantage:
 
- * Encryption/Decryption of WizCrypt07 becomes slow
+ * Encryption/Decryption of WizCrypt07 has the additional overhead
+   of compressing/de-compressing in GZip format.
 
  The DATA PART is further divided into the following parts:
 
@@ -69,12 +70,21 @@
 
 3.2.1 MD5 KEY HASH
 
- The md5 hash of the key is computed thus in Java:
+ The md5 hash of the key (UTF-8 encoded) is computed thus:
 
- TODO
+        import java.security.MessageDigest;
+
+        // ...
+
+        byte[] passKey = "mypassword".getBytes("UTF-8");
+
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        md.update(passKey);
+        byte[] hash = md.digest();
 
  Note: The hash is stored as it is. It is not further encoded.
 
 3.2.2 RC4 Encryption
 
- 
+ RC4 algorithm is used to encrypt the input stream.
+
