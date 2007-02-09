@@ -14,6 +14,7 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.LogManager;
+import java.util.logging.Logger;
 import javax.crypto.NoSuchPaddingException;
 import java.security.InvalidKeyException;
 import java.io.IOException;
@@ -32,12 +33,15 @@ import org.wiztools.wizcrypt.exception.PasswordMismatchException;
  */
 public class MainTest {
     
+    private static Logger LOG;
+    
     @Before
     protected void setUp() throws Exception {
         try{
             LogManager.getLogManager().readConfiguration(
                 Main.class.getClassLoader()
                 .getResourceAsStream("org/wiztools/wizcrypt/logging.properties"));
+            LOG = Logger.getLogger(MainTest.class.getName());
         }
         catch(IOException ioe){
             assert true: "Logger configuration load failed!";
@@ -84,12 +88,20 @@ public class MainTest {
             e.init(password);
             e.process(fin, true, false, false);
         } catch(DestinationFileExistsException dfe){
+            dfe.printStackTrace();
+            LOG.severe(dfe.getMessage());
             Assert.fail(dfe.getMessage());
         } catch (InvalidKeyException ex) {
+            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             Assert.fail(ex.getMessage());
         } catch (NoSuchAlgorithmException ex) {
+            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             Assert.fail(ex.getMessage());
         } catch (NoSuchPaddingException ex) {
+            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             Assert.fail(ex.getMessage());
         }
         
@@ -102,25 +114,36 @@ public class MainTest {
         Decrypt d = new Decrypt();
         
         // test for wrong password
-        try {
+        /*try {
             d.init(wrongPassword);
             try {
                 d.process(fout, true, false, false);
+                System.out.println("My message!");
                 Assert.fail("Cannot process for wrong supplied password!!!");
             } catch(DestinationFileExistsException dfe){
+                dfe.printStackTrace();
+                LOG.severe(dfe.getMessage());
                 Assert.fail(dfe.getMessage());
             } catch (PasswordMismatchException ex) {
                 // should be visited here;
             } catch(FileFormatException ffe){
+                ffe.printStackTrace();
+                LOG.severe(ffe.getMessage());
                 Assert.fail(ffe.getMessage());
             }
         } catch (InvalidKeyException ex) {
+            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             Assert.fail(ex.getMessage());
         } catch (NoSuchPaddingException ex) {
+            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             Assert.fail(ex.getMessage());
         } catch (NoSuchAlgorithmException ex) {
+            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             Assert.fail(ex.getMessage());
-        }
+        }*/
         
         try {
             d.init(password);
@@ -132,27 +155,45 @@ public class MainTest {
             } catch(FileNotFoundException fnfe){
                 // should be visited here
             } catch(DestinationFileExistsException dfe){
+                dfe.printStackTrace();
+                LOG.severe(dfe.getMessage());
                 Assert.fail(dfe.getMessage());
             } catch(PasswordMismatchException ex){
+                ex.printStackTrace();
+                LOG.severe(ex.getMessage());
                 Assert.fail(ex.getMessage());
             } catch(FileFormatException ffe){
+                ffe.printStackTrace();
+                LOG.severe(ffe.getMessage());
                 Assert.fail(ffe.getMessage());
             }
             
             try{
                 d.process(fout, true, false, false);
             } catch (PasswordMismatchException ex) {
+                ex.printStackTrace();
+                LOG.severe(ex.getMessage());
                 Assert.fail(ex.getMessage());
             } catch(FileFormatException ffe){
+                ffe.printStackTrace();
+                LOG.severe(ffe.getMessage());
                 Assert.fail(ffe.getMessage());
             }
         } catch(DestinationFileExistsException dfe){
+            dfe.printStackTrace();
+            LOG.severe(dfe.getMessage());
             Assert.fail(dfe.getMessage());
         } catch (InvalidKeyException ex) {
+            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             Assert.fail(ex.getMessage());
         } catch (NoSuchAlgorithmException ex) {
+            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             Assert.fail(ex.getMessage());
         } catch (NoSuchPaddingException ex) {
+            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
             Assert.fail(ex.getMessage());
         }
         
