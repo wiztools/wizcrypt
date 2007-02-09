@@ -1,0 +1,80 @@
+
+
+     WizCrypt07 File Format Specification
+     ====================================
+
+
+1. INTRODUCTION
+
+ WizCrypt07 is an encryption file format used by OpenSource file
+ encryption software WizCrypt:
+
+ http://wizcrypt.wiztools.org/
+
+2. WizCrypt07 File Extension
+
+ The recommended file extension for this format is `.wiz'.
+
+3. FILE FORMAT
+
+ The WizCrypt07 file format:
+
+      +-----------------------+
+      | WizCrypt07 (in ASCII) | --- First 10 bytes - signature "WizCrypt07"
+      |-----------------------| --+
+      |   [Gzip Compressed]   |   |
+      |+---------------------+|   |
+      || md5 sum of password ||   |
+      |+---------------------+|   |
+      |+---------------------+|   |
+      ||                     ||   |
+      ||                     ||   |
+      ||                     ||   | GZip compressed
+      ||                     ||   |
+      ||    RC4 Encrypted    ||   |
+      ||        Data         ||   |
+      ||                     ||   |
+      ||                     ||   |
+      ||                     ||   |
+      ||                     ||   |
+      |+---------------------+|   |
+      +-----------------------+ --+
+
+3.1 MAGIC NUMBER (SIGNATURE)
+
+ The first 10 bytes of the file is the signature of the format. The
+ ASCII text:
+
+   W i z C r y p t 0 7
+
+ consisting of 10 characters identifies the format as WizCrypt07.
+
+3.2 DATA PART
+
+ The data part of a WizCrypt07 is compressed using the GZip format.
+ This format gives the advantages:
+
+ * The final output is compressed
+ * GZip's CRC check
+ * Can use GZip's recovery tools in case of data-corruption
+
+ This also has the disadvantage:
+
+ * Encryption/Decryption of WizCrypt07 becomes slow
+
+ The DATA PART is further divided into the following parts:
+
+ * MD5 hash of the key used in encryption
+ * The actual data encrypted using the key
+
+3.2.1 MD5 KEY HASH
+
+ The md5 hash of the key is computed thus in Java:
+
+ TODO
+
+ Note: The hash is stored as it is. It is not further encoded.
+
+3.2.2 RC4 Encryption
+
+ 
