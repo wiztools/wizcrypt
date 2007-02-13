@@ -32,7 +32,8 @@ public class CallbackTest {
     private static final String PASSWD = "password";
     
     @Before
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
+        System.out.println("setUp()");
         try{
             LogManager.getLogManager().readConfiguration(
                 Main.class.getClassLoader()
@@ -41,10 +42,11 @@ public class CallbackTest {
         catch(IOException ioe){
             assert true: "Logger configuration load failed!";
         }
+        System.out.println("setUp() End");
     }
     
     @After
-    protected void tearDown() throws Exception {
+    public void tearDown() throws Exception {
     }
 
     @Test
