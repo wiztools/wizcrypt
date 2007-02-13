@@ -3,6 +3,7 @@ package org.wiztools.wizcrypt;
 import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 import javax.crypto.NoSuchPaddingException;
 
 import java.security.NoSuchAlgorithmException;
@@ -20,23 +21,18 @@ import org.wiztools.wizcrypt.exception.DestinationFileExistsException;
  */
 public class Encrypt implements IProcess{
     
+    private static final Logger LOG = Logger.getLogger(Encrypt.class.getName());
     private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
     
-    private CipherKey ce;
-    
-    public void init(final String keyStr)
-        throws 
+    public void process(final File file, final WizCryptBean wcb,
+            final boolean forceOverwrite,
+            final boolean keepSource,
+            final boolean isOldFormat) 
+            throws FileNotFoundException, DestinationFileExistsException, IOException,
             NoSuchAlgorithmException,
             UnsupportedEncodingException,
             InvalidKeyException,
             NoSuchPaddingException{
-        ce = CipherKeyGen.getCipherKeyForEncrypt(keyStr);
-    }
-    
-    public void process(final File file, final boolean forceOverwrite,
-            final boolean keepSource,
-            final boolean isOldFormat) 
-            throws FileNotFoundException, DestinationFileExistsException, IOException{
         FileOutputStream fos = null;
         FileInputStream fis = null;
         boolean canDelete = false;
@@ -56,20 +52,16 @@ public class Encrypt implements IProcess{
             else{
                 wc = WizCrypt.get07Instance();
             }
-            wc.encrypt(fis, fos, ce);
+            wc.encrypt(fis, fos, wcb);
             if(!keepSource){
                 canDelete = true;
             }
         } finally{
             // fos & fis will be closed by WizCrypt.encrypt() API
             if(canDelete){
+                LOG.fine("Deleting file: " + file.getAbsolutePath());
                 file.delete();
             }
         }
-    }
-    
-    public void process(final File file) 
-            throws FileNotFoundException, DestinationFileExistsException, IOException{
-        process(file, false, false, false);
     }
 }

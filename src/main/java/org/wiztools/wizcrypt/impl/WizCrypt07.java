@@ -23,9 +23,9 @@ import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
 import javax.crypto.NoSuchPaddingException;
 import org.wiztools.wizcrypt.Callback;
-import org.wiztools.wizcrypt.CipherKey;
-import org.wiztools.wizcrypt.CipherKeyGen;
+import org.wiztools.wizcrypt.CipherHashGen;
 import org.wiztools.wizcrypt.FileFormatVersion;
+import org.wiztools.wizcrypt.WizCryptBean;
 import org.wiztools.wizcrypt.exception.FileFormatException;
 import org.wiztools.wizcrypt.exception.PasswordMismatchException;
 import org.wiztools.wizcrypt.WizCrypt;
@@ -45,27 +45,35 @@ public class WizCrypt07 extends WizCrypt {
     }
     
     public void encrypt(final InputStream is, final OutputStream os, 
-            final CipherKey ck, final Callback cb, final long size) throws IOException{
+            final WizCryptBean wcb) throws IOException, NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException{
         
+        OutputStream gos = null;
         CipherInputStream cis = null;
-        OutputStream gos = new GZIPOutputStream(os);
+        Callback cb = wcb.getCallback();
+        final long sizeOfStream = cb==null?-1:cb.getSize();
         try{
+            byte[] pwd = new String(wcb.getPassword()).getBytes(WizCryptAlgorithms.STR_ENCODE);
+            
             if(cb != null){
                 cb.begin();
             }
             
-            cis = new CipherInputStream(is, ck.cipher);
-            
             // Write the file-format magic number
             byte[] versionStr = FileFormatVersion.WC07.getBytes(WizCryptAlgorithms.STR_ENCODE);
-            os.write(versionStr);
+            LOG.fine("Length of bytearray containing version: "+versionStr.length);
+            os.write(versionStr, 0, versionStr.length);
+            os.flush();
+            
+            cis = new CipherInputStream(is, CipherHashGen.getCipherForEncrypt(pwd, wcb.getAlgo()));
             
             // Write the hash in next 16 bytes
-            gos.write(ck.passKeyHash);
+            gos = new GZIPOutputStream(os);
+            gos.write(CipherHashGen.passHash(pwd));
             
             // Length of Algorithm
+            final String ALGO = wcb.getAlgo();
             String lenStr = null;
-            int len = ck.algo.length();
+            int len = ALGO.length();
             if(len < 10){ // add 0 padding
                 lenStr = "0" + String.valueOf(len);
             }
@@ -73,7 +81,7 @@ public class WizCrypt07 extends WizCrypt {
                 lenStr = String.valueOf(len);
             }
             gos.write(lenStr.getBytes(WizCryptAlgorithms.STR_ENCODE));
-            gos.write(ck.algo.getBytes(WizCryptAlgorithms.STR_ENCODE));
+            gos.write(ALGO.getBytes(WizCryptAlgorithms.STR_ENCODE));
             
             int i = -1;
             byte[] buffer = new byte[0xFFFF];
@@ -82,11 +90,11 @@ public class WizCrypt07 extends WizCrypt {
                 gos.write(buffer, 0, i);
                 readSize += i;
                 if(cb != null){
-                    if(size == -1){
+                    if(sizeOfStream == -1){
                         cb.notifyProgress(readSize);
                     }
                     else{
-                        cb.notifyProgress(readSize * 100 / size);
+                        cb.notifyProgress(readSize * 100 / sizeOfStream);
                     }
                 }
             }
@@ -113,13 +121,17 @@ public class WizCrypt07 extends WizCrypt {
     }
     
     public void decrypt(final InputStream is, final OutputStream os, 
-            final String pwd, final Callback cb, final long size) 
+            final WizCryptBean wcb) 
             throws IOException, PasswordMismatchException, FileFormatException,
             NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException{
-        
+
         CipherOutputStream cos = null;
-        InputStream gis = new GZIPInputStream(is);
+        InputStream gis = null;
+        Callback cb = wcb.getCallback();
+        final long sizeOfStream = cb==null?-1:cb.getSize();
         try{
+            byte[] pwd = new String(wcb.getPassword()).getBytes(WizCryptAlgorithms.STR_ENCODE);
+            
             if(cb != null){
                 cb.begin();
             }
@@ -127,9 +139,12 @@ public class WizCrypt07 extends WizCrypt {
             // Read the magic number
             byte[] versionStr = FileFormatVersion.WC07.getBytes(WizCryptAlgorithms.STR_ENCODE);
             int versionByteLen = versionStr.length;
+            LOG.fine("Length of bytearray holding version: "+versionByteLen);
             byte[] magicNumber = new byte[versionByteLen];
             int bytesRead = is.read(magicNumber, 0, versionByteLen);
+            LOG.fine("Magic number read: " + new String(magicNumber));
             if(!Arrays.equals(versionStr, magicNumber)){
+                LOG.fine("Magic number does not match. . .");
                 throw new FileFormatException();
             }
             if(bytesRead < versionByteLen){
@@ -137,14 +152,16 @@ public class WizCrypt07 extends WizCrypt {
             }
             LOG.finest("magicNumber: "+new String(magicNumber));
             
-            // read 16 bytes from fis
+            // read 16 bytes from gis
+            LOG.fine("Creating GZip stream!");
+            gis = new GZIPInputStream(is);
             byte[] filePassKeyHash = new byte[16];
             bytesRead = gis.read(filePassKeyHash, 0, 16);
             if(bytesRead < 16){
                 // TODO throw exception
             }
             
-            byte[] passKeyHash = CipherKeyGen.passHash(pwd.getBytes(WizCryptAlgorithms.STR_ENCODE));
+            byte[] passKeyHash = CipherHashGen.passHash(pwd);
             if(!Arrays.equals(passKeyHash, filePassKeyHash)){
                 throw new PasswordMismatchException();
             }
@@ -156,7 +173,7 @@ public class WizCrypt07 extends WizCrypt {
             int len = -1;
             try{
                 len = Integer.parseInt(new String(algoNameLength));
-                LOG.finest("algorithm name length: "+len);
+                LOG.fine("algorithm name length: "+len);
                 if(len<1){
                     throw new FileFormatException();
                 }
@@ -170,11 +187,10 @@ public class WizCrypt07 extends WizCrypt {
             gis.read(algoName, 0, len);
             
             String algoNameStr = new String(algoName);
-            LOG.finest("algo name: " + algoNameStr);
+            LOG.fine("algo name: " + algoNameStr);
+            System.out.println("algo name: " + algoNameStr);
             
-            CipherKey ck = CipherKeyGen.getCipherKeyForDecrypt(pwd, algoNameStr);
-            
-            cos = new CipherOutputStream(os, ck.cipher);
+            cos = new CipherOutputStream(os, CipherHashGen.getCipherForDecrypt(pwd, algoNameStr));
             
             int i = -1;
             byte[] buffer = new byte[0xFFFF];
@@ -183,11 +199,11 @@ public class WizCrypt07 extends WizCrypt {
                 cos.write(buffer, 0, i);
                 readSize += i;
                 if(cb != null){
-                    if(size == -1){
+                    if(sizeOfStream == -1){
                         cb.notifyProgress(readSize);
                     }
                     else{
-                        cb.notifyProgress(readSize * 100 / size);
+                        cb.notifyProgress(readSize * 100 / sizeOfStream);
                     }
                 }
             }

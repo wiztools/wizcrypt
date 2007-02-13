@@ -35,41 +35,31 @@ public class MainTest {
     
     private static Logger LOG;
     
+    final String path = System.getProperty("java.io.tmpdir")+
+            File.separator + "wiztest.txt";
+    
+    final String password = "testpwd";
+    
+    final String wrongPassword = "wrongpwd";
+    
+    // Please provide content with NO new lines (\n):
+    final String content = "This is a dummy text!";
+    
+    File fin = new File(path);
+    File fout = new File(path+".wiz");
+    
     @Before
     protected void setUp() throws Exception {
         try{
             LogManager.getLogManager().readConfiguration(
-                Main.class.getClassLoader()
-                .getResourceAsStream("org/wiztools/wizcrypt/logging.properties"));
+                    Main.class.getClassLoader()
+                    .getResourceAsStream("org/wiztools/wizcrypt/logging.properties"));
             LOG = Logger.getLogger(MainTest.class.getName());
-        }
-        catch(IOException ioe){
+        } catch(IOException ioe){
+            ioe.printStackTrace();
             assert true: "Logger configuration load failed!";
         }
-    }
-    
-    @After
-    protected void tearDown() throws Exception {
-    }
-    
-    /**
-     * Test of main method, of class org.wiztools.crypt.Main.
-     */
-    @Test()
-    public void testMain() throws IOException {
-        System.out.println("main");
         
-        final String path = System.getProperty("java.io.tmpdir")+
-                File.separator + "wiztest.txt";
-        
-        final String password = "testpwd";
-        
-        final String wrongPassword = "wrongpwd";
-        
-        // Please provide content with NO new lines (\n):
-        final String content = "This is a dummy text!";
-        
-        File fin = new File(path);
         fin.deleteOnExit();
         
         // Write dummy content into the file
@@ -77,16 +67,34 @@ public class MainTest {
         PrintWriter pw = new PrintWriter(new FileWriter(fin));
         pw.println(content);
         pw.close();
+    }
+    
+    @After
+    protected void tearDown() throws Exception {
+        // Read content to verify
+        BufferedReader br = new BufferedReader(new FileReader(fin));
+        String str = br.readLine();
+        br.close();
         
-        String[] arg = new String[]{"-e", "-p", password, path};
+        Assert.assertEquals(content, str);
+    }
+    
+    /**
+     * Test of main method, of class org.wiztools.crypt.Main.
+     */
+    @Test()
+    public void testMain() throws Exception {
+        System.out.println("main");
         
         // Encryption
         
         Encrypt e = new Encrypt();
         
         try {
-            e.init(password);
-            e.process(fin, true, false, false);
+            WizCryptBean wcb = new WizCryptBean();
+            wcb.setPassword(password.toCharArray());
+            
+            e.process(fin, wcb, true, false, false);
         } catch(DestinationFileExistsException dfe){
             dfe.printStackTrace();
             LOG.severe(dfe.getMessage());
@@ -105,52 +113,41 @@ public class MainTest {
             Assert.fail(ex.getMessage());
         }
         
-        // Creation of fout
-        
-        File fout = new File(path+".wiz");
-        
         // Decryption
         
         Decrypt d = new Decrypt();
         
         // test for wrong password
-        /*try {
-            d.init(wrongPassword);
-            try {
-                d.process(fout, true, false, false);
-                System.out.println("My message!");
-                Assert.fail("Cannot process for wrong supplied password!!!");
-            } catch(DestinationFileExistsException dfe){
-                dfe.printStackTrace();
-                LOG.severe(dfe.getMessage());
-                Assert.fail(dfe.getMessage());
-            } catch (PasswordMismatchException ex) {
-                // should be visited here;
-            } catch(FileFormatException ffe){
-                ffe.printStackTrace();
-                LOG.severe(ffe.getMessage());
-                Assert.fail(ffe.getMessage());
-            }
-        } catch (InvalidKeyException ex) {
-            ex.printStackTrace();
-            LOG.severe(ex.getMessage());
-            Assert.fail(ex.getMessage());
-        } catch (NoSuchPaddingException ex) {
-            ex.printStackTrace();
-            LOG.severe(ex.getMessage());
-            Assert.fail(ex.getMessage());
-        } catch (NoSuchAlgorithmException ex) {
-            ex.printStackTrace();
-            LOG.severe(ex.getMessage());
-            Assert.fail(ex.getMessage());
-        }*/
-        
+
+        WizCryptBean wcb = new WizCryptBean();
+        wcb.setPassword(wrongPassword.toCharArray());
         try {
-            d.init(password);
+            d.process(fout, wcb, true, false, false);
+            System.out.println("My message!");
+            Assert.fail("Cannot process for wrong supplied password!!!");
+        } catch(DestinationFileExistsException dfe){
+            dfe.printStackTrace();
+            LOG.severe(dfe.getMessage());
+            Assert.fail(dfe.getMessage());
+        } catch (PasswordMismatchException ex) {
+            // should be visited here;
+        } catch(FileFormatException ffe){
+            ffe.printStackTrace();
+            LOG.severe(ffe.getMessage());
+            Assert.fail(ffe.getMessage());
+        }
+    }
+    
+    @Test()
+    public void fileExistenceTest() throws Exception{
+        Decrypt d = new Decrypt();
+        try {
+            WizCryptBean wcb = new WizCryptBean();
+            wcb.setPassword(password.toCharArray());
             
             // Try processing file not ending with .wiz
             try{
-                d.process(new File(path+".xxx"), true, false, false);
+                d.process(new File(path+".xxx"), wcb, true, false, false);
                 Assert.fail("Cannot process for file not ending with .wiz");
             } catch(FileNotFoundException fnfe){
                 // should be visited here
@@ -169,7 +166,7 @@ public class MainTest {
             }
             
             try{
-                d.process(fout, true, false, false);
+                d.process(fout, wcb, true, false, false);
             } catch (PasswordMismatchException ex) {
                 ex.printStackTrace();
                 LOG.severe(ex.getMessage());
@@ -183,25 +180,6 @@ public class MainTest {
             dfe.printStackTrace();
             LOG.severe(dfe.getMessage());
             Assert.fail(dfe.getMessage());
-        } catch (InvalidKeyException ex) {
-            ex.printStackTrace();
-            LOG.severe(ex.getMessage());
-            Assert.fail(ex.getMessage());
-        } catch (NoSuchAlgorithmException ex) {
-            ex.printStackTrace();
-            LOG.severe(ex.getMessage());
-            Assert.fail(ex.getMessage());
-        } catch (NoSuchPaddingException ex) {
-            ex.printStackTrace();
-            LOG.severe(ex.getMessage());
-            Assert.fail(ex.getMessage());
         }
-        
-        // Read content to verify
-        BufferedReader br = new BufferedReader(new FileReader(fin));
-        String str = br.readLine();
-        br.close();
-        
-        Assert.assertEquals(content, str);
-    }   
+    }
 }

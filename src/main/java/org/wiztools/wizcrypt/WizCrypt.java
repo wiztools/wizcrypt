@@ -76,24 +76,14 @@ public abstract class WizCrypt {
      *     faced with IO issues during read/write.
      */
     abstract public void encrypt(final InputStream is, final OutputStream os, 
-            final CipherKey ck, final Callback cb, final long size) throws IOException;
+            final WizCryptBean wcb) throws IOException, NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException;
     
     /**
      * @see #encrypt(InputStream is, OutputStream os, 
      *      CipherKey ck, Callback cb, long size)
      */
-    public void encrypt(final InputStream is, final OutputStream os, 
-            final CipherKey ck) throws IOException{
-        encrypt(is, os, ck, null, -1);
-    }
-    
-    /**
-     * @see #encrypt(InputStream is, OutputStream os, 
-     *      CipherKey ck, Callback cb, long size)
-     */
-    public void encrypt(final InputStream is, final OutputStream os, 
-            final CipherKey ck, final Callback cb) throws IOException{
-        encrypt(is, os, ck, cb, -1);
+    public void encrypt(final InputStream is, final OutputStream os) throws IOException, NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException{
+        encrypt(is, os, null);
     }
     
     /**
@@ -120,26 +110,15 @@ public abstract class WizCrypt {
      *      IO issues during read/write.
      */
     abstract public void decrypt(final InputStream is, final OutputStream os, 
-            final String pwd, final Callback cb, final long size) 
+            final WizCryptBean wcb) 
             throws IOException, PasswordMismatchException, FileFormatException, NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException;
     
     /**
      * @see #decrypt(InputStream is, OutputStream os, 
      *      CipherKey ck, Callback cb, long size)
      */
-    public void decrypt(final InputStream is, final OutputStream os, 
-            final String pwd) 
+    public void decrypt(final InputStream is, final OutputStream os) 
             throws IOException, PasswordMismatchException, FileFormatException, NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException{
-        decrypt(is, os, pwd, null, -1);
-    }
-    
-    /**
-     * @see #decrypt(InputStream is, OutputStream os, 
-     *      CipherKey ck, Callback cb, long size)
-     */
-    public void decrypt(final InputStream is, final OutputStream os, 
-            final String pwd, final Callback cb) throws IOException, 
-                PasswordMismatchException, FileFormatException, NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException{
-        decrypt(is, os, pwd, cb, -1);
+        decrypt(is, os, null);
     }
 }

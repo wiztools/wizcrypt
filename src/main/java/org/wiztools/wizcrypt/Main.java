@@ -106,6 +106,12 @@ public class Main{
                 .withDescription(rb.getString("msg.old.format"))
                 .create('o');
         options.addOption(option);
+        option = OptionBuilder.withLongOpt("algorithm")
+                .isRequired(false)
+                .hasArg()
+                .withDescription(rb.getString("msg.algorithm"))
+                .create('a');
+        options.addOption(option);
         return options;
     }
     
@@ -180,6 +186,7 @@ public class Main{
             boolean verbose = false;
             boolean oldFormat = false;
             boolean keepSource = false;
+            String algo = WizCryptAlgorithms.CRYPT_ALGO_RC4;
             CommandLineParser parser = new GnuParser();
             CommandLine cmd = parser.parse(options, arg);
             if(cmd.hasOption('h')){
@@ -216,6 +223,9 @@ public class Main{
             if(cmd.hasOption('k')){
                 keepSource = true;
             }
+            if(cmd.hasOption('a')){
+                algo = cmd.getOptionValue('a');
+            }
             if(encrypt && decrypt){
                 throw new ParseException(rb.getString("err.both.selected"));
             }
@@ -241,12 +251,15 @@ public class Main{
             } else if(decrypt){
                 iprocess = new Decrypt();
             }
-            iprocess.init(new String(pwd));
+            
+            WizCryptBean wcb = new WizCryptBean();
+            wcb.setAlgo(algo);
+            wcb.setPassword(pwd);
             
             for(int i=0;i<args.length;i++){
                 File f = new File(args[i]);
                 try{
-                    iprocess.process(f, forceOverwrite, keepSource, oldFormat);
+                    iprocess.process(f, wcb, forceOverwrite, keepSource, oldFormat);
                     if(verbose){
                         System.out.println(
                                 MessageFormat.format(
@@ -267,7 +280,7 @@ public class Main{
                 } catch(IOException ioe){
                     IO_EXCEPTION = true;
                     System.err.println(ioe.getMessage());
-                }
+                } 
             }
         } catch(ParseException pe){
             PARSE_EXCEPTION = true;
@@ -282,10 +295,10 @@ public class Main{
         } catch(InvalidKeyException ike){
             INVALID_PWD = true;
             System.err.println(rb.getString("err.invalid.pwd"));
-        } catch(UnsupportedEncodingException uee){
+        } /*catch(UnsupportedEncodingException uee){
             PWD_ENCODING_EXCEPTION = true;
             System.err.println(uee.getMessage());
-        } catch(GeneralSecurityException gse){
+        }*/ catch(GeneralSecurityException gse){
             SECURITY_EXCEPTION = true;
             System.err.println(gse.getMessage());
         }
