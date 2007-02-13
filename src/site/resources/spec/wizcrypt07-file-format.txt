@@ -43,7 +43,7 @@
       |+---------------------+|   |
       +-----------------------+ --+
 
-3.1 MAGIC NUMBER (SIGNATURE)
+3.1. MAGIC NUMBER (SIGNATURE)
 
  The first 10 bytes of the file is the signature of the format. The
  ASCII text:
@@ -52,7 +52,7 @@
 
  consisting of 10 characters identifies the format as WizCrypt07.
 
-3.2 DATA PART
+3.2. DATA PART
 
  The data part of a WizCrypt07 is compressed using the GZip format.
  This format gives the advantages:
@@ -69,9 +69,10 @@
  The DATA PART is further divided into the following parts:
 
  * MD5 hash of the key used in encryption
+ * Algorithm length and name
  * The actual data encrypted using the key
 
-3.2.1 MD5 KEY HASH
+3.2.1. MD5 KEY HASH
 
  The md5 hash of the key (UTF-8 encoded) is computed thus:
 
@@ -87,7 +88,42 @@
 
  Note: The hash is stored as it is. It is not further encoded.
 
-3.2.2 RC4 Encryption
+3.2.2. ALGORITHM LENGTH AND NAME
 
- RC4 algorithm is used to encrypt the input stream.
+ The next sequence of two bytes have the length of the algorithm. For example,
+ if `RC4' algorithm is used, the length stored is three. For `Blowfish', the
+ length is eight.
 
+ The length of the algorithm can be of maximum size 99. The length is stored as
+ ASCII text. For example, the value three is stored as: `03'.
+
+ The 5 bytes following the password hash would be like this if `RC4' is used:
+
+         +-------------------+
+         | 0 | 3 | R | C | 4 |
+         +-------------------+
+
+ If `Blowfish' algorithm is used, the 10 bytes would be:
+
+         +---------------------------------------+
+         | 0 | 8 | B | l | o | w | f | i | s | h |
+         +---------------------------------------+
+
+3.2.3. ENCRYPTED DATA
+
+ The data of the source is encrypted using the key and algorithm specified in
+ the previous headers.
+
+4. AUTHOR
+
+ This file-format specification is written by SUBHASH CHANDRAN S. Address:
+
+ SUBHASH CHANDRAN S
+ Software Engineer
+ SpikeSource Software Pvt. Ltd.
+ Tower A, 7th Floor, Diamond District,
+ 150, Airport Road,
+ Bangalore - 560 008
+ Ph: +91 80 41810800
+ 
+ Email: subwiz@gmail.com
