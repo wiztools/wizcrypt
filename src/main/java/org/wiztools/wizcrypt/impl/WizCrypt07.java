@@ -68,7 +68,7 @@ public class WizCrypt07 extends WizCrypt {
             
             // Write the hash in next 16 bytes
             gos = new GZIPOutputStream(os);
-            gos.write(CipherHashGen.passHash(pwd));
+            gos.write(CipherHashGen.getPasswordMD5Hash(pwd));
             
             // Length of Algorithm
             final String ALGO = wcb.getAlgo();
@@ -161,7 +161,7 @@ public class WizCrypt07 extends WizCrypt {
                 // TODO throw exception
             }
             
-            byte[] passKeyHash = CipherHashGen.passHash(pwd);
+            byte[] passKeyHash = CipherHashGen.getPasswordMD5Hash(pwd);
             if(!Arrays.equals(passKeyHash, filePassKeyHash)){
                 throw new PasswordMismatchException();
             }

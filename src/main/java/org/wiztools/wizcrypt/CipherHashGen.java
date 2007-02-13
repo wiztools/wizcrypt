@@ -15,7 +15,12 @@ import static org.wiztools.wizcrypt.WizCryptAlgorithms.CRYPT_ALGO_RC4;
 import static org.wiztools.wizcrypt.WizCryptAlgorithms.CRYPT_ALGO_AES;
 
 /**
- * This class has static methods to create <code>CipherKey</code> objects.
+ * This class has static methods to:
+ * <ol>
+ *  <li><code>getPasswordMD5Hash</code>: For generating the MD5 hash of
+ *          the password.</li>
+ *  <li><code>getCipher</code>: To get the Cipher instance for encrypting/decrypting.</li>
+ * </ol>
  * @see CipherKey
  * @see WizCrypt
  */
@@ -25,7 +30,10 @@ public final class CipherHashGen{
     private CipherHashGen(){
     }
     
-    public static byte[] passHash(final byte[] passKey)
+    /**
+     * Method to generate the MD5 sum of the password.
+     */
+    public static byte[] getPasswordMD5Hash(final byte[] passKey)
             throws NoSuchAlgorithmException,
                 UnsupportedEncodingException{
         MessageDigest md = MessageDigest.getInstance(PWD_HASH);
@@ -47,6 +55,9 @@ public final class CipherHashGen{
         return cipher;
     }
     
+    /**
+     * Method to generate the Cipher object for encryption.
+     */
     public static Cipher getCipherForEncrypt(final byte[] passKey, final String algo)
                 throws NoSuchAlgorithmException,
                     UnsupportedEncodingException,
@@ -55,6 +66,9 @@ public final class CipherHashGen{
         return getCipher(passKey, Cipher.ENCRYPT_MODE, algo);
     }
     
+    /**
+     * Method to generate the Cipher object for decryption.
+     */
     public static Cipher getCipherForDecrypt(final byte[] passKey, final String algo)
                 throws NoSuchAlgorithmException,
                     UnsupportedEncodingException,

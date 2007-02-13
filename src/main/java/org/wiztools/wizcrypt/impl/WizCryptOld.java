@@ -55,7 +55,7 @@ public class WizCryptOld extends WizCrypt {
             
             cis = new CipherInputStream(is, CipherHashGen.getCipherForEncrypt(pwd, WizCryptAlgorithms.CRYPT_ALGO_RC4));
             // Write the hash in first 16 bytes
-            byte[] passKeyHash = CipherHashGen.passHash(pwd);
+            byte[] passKeyHash = CipherHashGen.getPasswordMD5Hash(pwd);
             os.write(passKeyHash);
             
             int i = -1;
@@ -102,7 +102,7 @@ public class WizCryptOld extends WizCrypt {
         final long sizeOfStream = cb==null?-1:cb.getSize();
         try{
             byte[] pwd = new String(wcb.getPassword()).getBytes(WizCryptAlgorithms.STR_ENCODE);
-            byte[] passKeyHash = CipherHashGen.passHash(pwd);
+            byte[] passKeyHash = CipherHashGen.getPasswordMD5Hash(pwd);
             
             Cipher cipher = CipherHashGen.getCipherForDecrypt(pwd, WizCryptAlgorithms.CRYPT_ALGO_RC4);
 

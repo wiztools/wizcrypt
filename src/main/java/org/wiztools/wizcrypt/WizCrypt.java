@@ -29,8 +29,7 @@ import org.wiztools.wizcrypt.impl.WizCryptOld;
 
 /**
  * This class has the public APIs of WizCrypt application to do encryption and decryption.
- * @see CipherKeyGen
- * @see CipherKey
+ * @see WizCryptBean
  * @author subhash
  */
 public abstract class WizCrypt {
@@ -40,6 +39,10 @@ public abstract class WizCrypt {
     private static WizCrypt __instance07;
     private static WizCrypt __instanceOld;
     
+    /**
+     * Use this method to get the instance of WizCrypt to process the WizCrypt07
+     * format files.
+     */
     public static WizCrypt get07Instance(){
         if(__instance07 == null){
             __instance07 = new WizCrypt07();
@@ -47,6 +50,10 @@ public abstract class WizCrypt {
         return __instance07;
     }
     
+    /**
+     * Use this method to get the instance of WizCrypt to process the old WizCrypt
+     * format files (WizCrypt 1.x/2.x).
+     */
     public static WizCrypt getOldInstance(){
         if(__instanceOld == null){
             __instanceOld = new WizCryptOld();
@@ -60,30 +67,43 @@ public abstract class WizCrypt {
      * 
      * @param is The input stream that needs to be encrypted.
      * @param os The output stream where the encrypted content 
-     *     of <code>is</code> need to be written.
-     * @param ck The <code>CipherKey</code> object. This has to be 
-     *     created by passing the password to 
-     *     <code>CipherKeyGen.getCipherKeyForEncrypt(String keyStr)</code>.
-     * @param cb <code>Callback</code> object for monitoring the progress.
-     * @param size The size of the <code>is</code> stream. When this is passed,
-     *      the <code>Callback.notifyProgress(long value)</code> will receive
-     *      the percentage completed. If this is not passed, it will get the
-     *      number of bytes read and processed.
-     * @see CipherKeyGen#getCipherKeyForEncrypt(String keyStr)
-     * @see CipherKey
-     * @see Callback
+     *      of <code>is</code> need to be written.
+     * @param wcb The <code>WizCryptBean</code> object. This object encapsulates
+     *      various WizCrypt needed parameters like password, <code>Callback</code>
+     *      object and algorithm to be used for encryption.
+     * @see WizCryptBean
      * @throws IOException <code>IOException</code> is thrown when 
      *     faced with IO issues during read/write.
+     * @throws NoSuchAlgorithmException <code>NoSuchAlgorithmException</code> is
+     *      thrown when the JVM's JCE does not have the requested algorithm installed.
+     * @throws InvalidKeyException <code>InvalidKeyException</code> is thrown
+     *      when the key is not of the specified size/range as required by the
+     *      specified algorithm.
+     * @throws NoSuchPaddingException <code>NoSuchPaddingException</code> is
+     *      thrown when a particular padding mechanism is requested but is not 
+     *      available in the environment.
      */
     abstract public void encrypt(final InputStream is, final OutputStream os, 
-            final WizCryptBean wcb) throws IOException, NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException;
+            final WizCryptBean wcb)
+            throws IOException,
+            NoSuchAlgorithmException,
+            InvalidKeyException,
+            NoSuchPaddingException;
     
     /**
+     * Does encryption using the default algorithm for WizCrypt (RC4), and no
+     * Callback configured.
      * @see #encrypt(InputStream is, OutputStream os, 
-     *      CipherKey ck, Callback cb, long size)
+     *      WizCryptBean wcb)
      */
-    public void encrypt(final InputStream is, final OutputStream os) throws IOException, NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException{
-        encrypt(is, os, null);
+    public void encrypt(final InputStream is, final OutputStream os, final char[] password) 
+            throws IOException,
+            NoSuchAlgorithmException,
+            InvalidKeyException,
+            NoSuchPaddingException{
+        WizCryptBean wcb = new WizCryptBean();
+        wcb.setPassword(password);
+        encrypt(is, os, wcb);
     }
     
     /**
@@ -93,32 +113,48 @@ public abstract class WizCrypt {
      * @param is The input stream that needs to be decrypted.
      * @param os The output stream where the decrypted content 
      *      of <code>is</code> need to be written.
-     * @param ck The <code>CipherKey</code> object. This has to be 
-     *      created by passing the password to 
-     *      <code>CipherKeyGen.getCipherKeyForDecrypt(String keyStr)</code>.
-     * @param cb <code>Callback</code> object for monitoring the progress.
-     * @param size The size of the <code>is</code> stream. When this is passed,
-     *      the <code>Callback.notifyProgress(long value)</code> will receive
-     *      the percentage completed. If this is not passed, it will get the
-     *      number of bytes read and processed.
-     * @see CipherKeyGen#getCipherKeyForDecrypt(String keyStr)
-     * @see CipherKey
-     * @see Callback
+     * @param wcb The <code>WizCryptBean</code> object. This object encapsulates
+     *      various WizCrypt needed parameters like password, <code>Callback</code>
+     *      object.
+     * @see WizCryptBean
      * @throws PasswordMismatchException <code>PasswordMismatchException</code> 
      *      is thrown when the supplied password is wrong.
      * @throws IOException <code>IOException</code> is thrown when faced with 
      *      IO issues during read/write.
+     * @throws FileFormatException <code>FileFormatException</code> is thrown
+     *      when the file to decrypt does not match the specification.
+     * @throws NoSuchAlgorithmException <code>NoSuchAlgorithmException</code> is
+     *      thrown when the JVM's JCE does not have the requested algorithm installed.
+     * @throws InvalidKeyException <code>InvalidKeyException</code> is thrown
+     *      when the key is not of the specified size/range as required by the
+     *      specified algorithm.
+     * @throws NoSuchPaddingException <code>NoSuchPaddingException</code> is
+     *      thrown when a particular padding mechanism is requested but is not 
+     *      available in the environment.
      */
     abstract public void decrypt(final InputStream is, final OutputStream os, 
             final WizCryptBean wcb) 
-            throws IOException, PasswordMismatchException, FileFormatException, NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException;
+            throws IOException,
+            PasswordMismatchException,
+            FileFormatException,
+            NoSuchAlgorithmException,
+            InvalidKeyException,
+            NoSuchPaddingException;
     
     /**
+     * Does decryption using the default configurations.
      * @see #decrypt(InputStream is, OutputStream os, 
-     *      CipherKey ck, Callback cb, long size)
+     *      WizCryptBean wcb)
      */
-    public void decrypt(final InputStream is, final OutputStream os) 
-            throws IOException, PasswordMismatchException, FileFormatException, NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException{
-        decrypt(is, os, null);
+    public void decrypt(final InputStream is, final OutputStream os, final char[] password) 
+            throws IOException,
+            PasswordMismatchException,
+            FileFormatException,
+            NoSuchAlgorithmException,
+            InvalidKeyException,
+            NoSuchPaddingException{
+        WizCryptBean wcb = new WizCryptBean();
+        wcb.setPassword(password);
+        decrypt(is, os, wcb);
     }
 }

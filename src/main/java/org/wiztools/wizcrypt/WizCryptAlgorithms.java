@@ -13,14 +13,12 @@ package org.wiztools.wizcrypt;
  *
  * @author schandran
  */
-public final class WizCryptAlgorithms {
-    
-    /** Creates a new instance of Algorithms */
-    private WizCryptAlgorithms() {
-    }
+public interface WizCryptAlgorithms {
     
     public static final String CRYPT_ALGO_RC4 = "RC4";
+    public static final String CRYPT_ALGO_RC5 = "RC5";
     public static final String CRYPT_ALGO_AES = "AES";
+    public static final String CRYPT_ALGO_BLOWFISH = "Blowfish";
     public static final String STR_ENCODE = "UTF-8";
     public static final String PWD_HASH = "MD5";
     

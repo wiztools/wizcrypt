@@ -20,11 +20,11 @@
  The WizCrypt07 file format:
 
       +-----------------------+
-      | WizCrypt07 (in ASCII) | --- First 10 bytes - signature "WizCrypt07"
+      | WizCrypt07 (in ASCII) | --- First 10 bytes - signature `WizCrypt07'
       |-----------------------| --+
       |   [Gzip Compressed]   |   |
       |+---------------------+|   |
-      || md5 sum of password || --|-> The hash of the password
+      ||   md5 sum of key    || --|-> The hash of the key
       |+---------------------+|   |
       |+---------------------+|   |
       || len |   algorithm   || --|-> Algorithm name length, and algorithm
@@ -32,10 +32,10 @@
       |+---------------------+|   |
       ||                     ||   |
       ||                     ||   |
-      ||                     ||   | GZip compressed
-      ||                     ||   |
-      ||  [ALGO] Encrypted   ||   |
-      ||        Data         ||   |
+      ||                     ||   | G
+      ||                     ||   | Z
+      ||      Encrypted      ||   | i
+      ||        Data         ||   | p
       ||                     ||   |
       ||                     ||   |
       ||                     ||   |
@@ -74,7 +74,7 @@
 
 3.2.1. MD5 KEY HASH
 
- The md5 hash of the key (UTF-8 encoded) is computed thus:
+ The md5 hash of the key (UTF-8 encoded) is computed thus (in Java):
 
         import java.security.MessageDigest;
 
