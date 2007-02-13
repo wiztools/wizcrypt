@@ -14,25 +14,18 @@ import org.wiztools.wizcrypt.exception.FileFormatException;
 import org.wiztools.wizcrypt.exception.PasswordMismatchException;
 
 public interface IProcess{
-    public void init(String password)
-    throws NoSuchAlgorithmException,
-            UnsupportedEncodingException,
-            InvalidKeyException,
-            NoSuchPaddingException;
     
-    public void process(File file, boolean forceOverwrite,
+    public void process(File file, WizCryptBean wcb, boolean forceOverwrite,
             final boolean keepSource,
             boolean isOldFormat)
     throws IOException,
             FileNotFoundException,
             DestinationFileExistsException,
             FileFormatException,
-            PasswordMismatchException;
+            PasswordMismatchException,
+            NoSuchAlgorithmException,
+            UnsupportedEncodingException,
+            InvalidKeyException,
+            NoSuchPaddingException;
     
-    public void process(File file)
-    throws IOException,
-            FileNotFoundException,
-            DestinationFileExistsException,
-            FileFormatException,
-            PasswordMismatchException;
 }

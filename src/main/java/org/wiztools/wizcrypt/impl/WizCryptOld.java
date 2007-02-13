@@ -12,15 +12,19 @@ package org.wiztools.wizcrypt.impl;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
+import javax.crypto.NoSuchPaddingException;
 import org.wiztools.wizcrypt.Callback;
-import org.wiztools.wizcrypt.CipherKey;
-import org.wiztools.wizcrypt.CipherKeyGen;
+import org.wiztools.wizcrypt.CipherHashGen;
 import org.wiztools.wizcrypt.WizCrypt;
 import org.wiztools.wizcrypt.WizCryptAlgorithms;
+import org.wiztools.wizcrypt.WizCryptBean;
 import org.wiztools.wizcrypt.exception.FileFormatException;
 import org.wiztools.wizcrypt.exception.PasswordMismatchException;
 
@@ -37,17 +41,22 @@ public class WizCryptOld extends WizCrypt {
     }
     
     public void encrypt(final InputStream is, final OutputStream os,
-            final CipherKey ck, final Callback cb, final long size) throws IOException{
+            final WizCryptBean wcb) throws IOException, NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException{
         
         CipherInputStream cis = null;
+        Callback cb = wcb.getCallback();
+        final long sizeOfStream = cb==null?-1:cb.getSize();
         try{
+            byte[] pwd = new String(wcb.getPassword()).getBytes(WizCryptAlgorithms.STR_ENCODE);
+            
             if(cb != null){
                 cb.begin();
             }
             
-            cis = new CipherInputStream(is, ck.cipher);
+            cis = new CipherInputStream(is, CipherHashGen.getCipherForEncrypt(pwd, WizCryptAlgorithms.CRYPT_ALGO_RC4));
             // Write the hash in first 16 bytes
-            os.write(ck.passKeyHash);
+            byte[] passKeyHash = CipherHashGen.passHash(pwd);
+            os.write(passKeyHash);
             
             int i = -1;
             byte[] buffer = new byte[0xFFFF];
@@ -56,10 +65,10 @@ public class WizCryptOld extends WizCrypt {
                 os.write(buffer, 0, i);
                 readSize += i;
                 if(cb != null){
-                    if(size == -1){
+                    if(sizeOfStream == -1){
                         cb.notifyProgress(readSize);
                     } else{
-                        cb.notifyProgress(readSize * 100 / size);
+                        cb.notifyProgress(readSize * 100 / sizeOfStream);
                     }
                 }
             }
@@ -85,20 +94,18 @@ public class WizCryptOld extends WizCrypt {
     }
     
     public void decrypt(final InputStream is, final OutputStream os,
-            final String pwd, final Callback cb, final long size)
-            throws IOException, PasswordMismatchException, FileFormatException{
+            final WizCryptBean wcb)
+            throws IOException, PasswordMismatchException, FileFormatException, NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException{
         
         CipherOutputStream cos = null;
-        
+        Callback cb = wcb.getCallback();
+        final long sizeOfStream = cb==null?-1:cb.getSize();
         try{
-            CipherKey ck = null;
-            try{
-                ck = CipherKeyGen.getCipherKeyForDecrypt(pwd, WizCryptAlgorithms.CRYPT_ALGO_RC4);
-            }
-            catch(Exception e){
-                assert true: "Cannot come here!";
-            }
+            byte[] pwd = new String(wcb.getPassword()).getBytes(WizCryptAlgorithms.STR_ENCODE);
+            byte[] passKeyHash = CipherHashGen.passHash(pwd);
             
+            Cipher cipher = CipherHashGen.getCipherForDecrypt(pwd, WizCryptAlgorithms.CRYPT_ALGO_RC4);
+
             if(cb != null){
                 cb.begin();
             }
@@ -107,11 +114,11 @@ public class WizCryptOld extends WizCrypt {
             byte[] filePassKeyHash = new byte[16];
             is.read(filePassKeyHash, 0, 16);
             
-            if(!Arrays.equals(ck.passKeyHash, filePassKeyHash)){
+            if(!Arrays.equals(passKeyHash, filePassKeyHash)){
                 throw new PasswordMismatchException(rb.getString("err.pwd.not.match"));
             }
             
-            cos = new CipherOutputStream(os, ck.cipher);
+            cos = new CipherOutputStream(os, cipher);
             
             int i = -1;
             byte[] buffer = new byte[0xFFFF];
@@ -120,10 +127,10 @@ public class WizCryptOld extends WizCrypt {
                 cos.write(buffer, 0, i);
                 readSize += i;
                 if(cb != null){
-                    if(size == -1){
+                    if(sizeOfStream == -1){
                         cb.notifyProgress(readSize);
                     } else{
-                        cb.notifyProgress(readSize * 100 / size);
+                        cb.notifyProgress(readSize * 100 / sizeOfStream);
                     }
                 }
             }

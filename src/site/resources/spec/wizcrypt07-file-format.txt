@@ -24,14 +24,17 @@
       |-----------------------| --+
       |   [Gzip Compressed]   |   |
       |+---------------------+|   |
-      || md5 sum of password ||   |
+      || md5 sum of password || --|-> The hash of the password
+      |+---------------------+|   |
+      |+---------------------+|   |
+      || len |   algorithm   || --|-> Algorithm name length, and algorithm
       |+---------------------+|   |
       |+---------------------+|   |
       ||                     ||   |
       ||                     ||   |
       ||                     ||   | GZip compressed
       ||                     ||   |
-      ||    RC4 Encrypted    ||   |
+      ||  [ALGO] Encrypted   ||   |
       ||        Data         ||   |
       ||                     ||   |
       ||                     ||   |

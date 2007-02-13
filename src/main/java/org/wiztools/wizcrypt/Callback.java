@@ -18,12 +18,27 @@ package org.wiztools.wizcrypt;
  * @see WizCrypt#decrypt(InputStream is, OutputStream os, 
  *      CipherKey ck, Callback cb, long size)
  */
-public interface Callback {
+public abstract class Callback {
+    
+    private final long size;
+    
+    public Callback(){
+        size = -1;
+    }
+    
+    public Callback(long size){
+        this.size = size;
+    }
+    
+    public final long getSize(){
+        return size;
+    }
+    
     /**
      * <code>begin()</code> is called just before the encryption/decryption
      * process starts.
      */
-    public void begin();
+    public abstract void begin();
     
     /**
      * The encryption/decryption process works this way: it loads a bunch of
@@ -41,11 +56,11 @@ public interface Callback {
      * @see WizCrypt#decrypt(InputStream is, OutputStream os, 
      *      CipherKey ck, Callback cb, long size)
      */
-    public void notifyProgress(long value);
+    public abstract void notifyProgress(long value);
     
     /**
      * <code>end()</code> is called immediately after the encryption/decryption
      * process ends.
      */
-    public void end();
+    public abstract void end();
 }

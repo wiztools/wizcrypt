@@ -2,6 +2,7 @@ package org.wiztools.wizcrypt;
 
 import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
+import java.util.logging.Logger;
 import javax.crypto.NoSuchPaddingException;
 
 import java.security.NoSuchAlgorithmException;
@@ -23,29 +24,24 @@ import org.wiztools.wizcrypt.exception.PasswordMismatchException;
  */
 public class Decrypt implements IProcess{
     
+    private static final Logger LOG = Logger.getLogger(Decrypt.class.getName());
     private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
     
-    private CipherKey ce;
     private String keyStr;
     
-    public void init(final String keyStr) 
-        throws 
-            NoSuchAlgorithmException,
-            UnsupportedEncodingException,
-            InvalidKeyException,
-            NoSuchPaddingException{
-        ce = CipherKeyGen.getCipherKeyForDecrypt(keyStr);
-        this.keyStr = keyStr;
-    }
-    
-    public void process(final File file, final boolean forceOverwrite,
+    public void process(final File file, final WizCryptBean wcb,
+            final boolean forceOverwrite,
             final boolean keepSource,
             final boolean isOldFormat) 
             throws FileNotFoundException,
                 DestinationFileExistsException,
                 PasswordMismatchException,
                 FileFormatException,
-                IOException{
+                IOException,
+                NoSuchAlgorithmException,
+                UnsupportedEncodingException,
+                InvalidKeyException,
+                NoSuchPaddingException{
         FileInputStream fis = null;
         FileOutputStream fos = null;
         boolean canDelete = false;
@@ -71,29 +67,17 @@ public class Decrypt implements IProcess{
             else{
                 wc = WizCrypt.get07Instance();
             }
-            try{
-                wc.decrypt(fis, fos, keyStr);
-            }
-            catch(Exception e){
-                assert true: e.getMessage();
-            }
+            wc.decrypt(fis, fos, wcb);
+
             if(!keepSource){
                 canDelete = true;
             }
         } finally{
             // fos & fis will be closed by WizCrypt.decrypt() API
             if(canDelete){
+                LOG.fine("Deleting: " + file.getAbsolutePath());
                 file.delete();
             }
         }
-    }
-    
-    public void process(final File file) 
-            throws FileNotFoundException,
-                DestinationFileExistsException,
-                PasswordMismatchException,
-                FileFormatException,
-                IOException{
-        process(file, false, false, false);
     }
 }

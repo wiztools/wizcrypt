@@ -95,13 +95,14 @@ public class BackwardCompatibilityTest {
         System.out.println("\ntestEncryptBackwardCompatibility()");
         try{
             // 1. Encrypt the file
-            CipherKey ck = CipherKeyGen.getCipherKeyForEncrypt(PASSWD);
+            WizCryptBean wcb = new WizCryptBean();
+            wcb.setPassword(PASSWD.toCharArray());
             InputStream is = new FileInputStream(PLAIN_FILE);
             File outFile = new File(System.getProperty("java.io.tmpdir") +
                     File.separator + "logo.png.wiz");
             OutputStream os = new FileOutputStream(outFile);
             
-            WizCrypt.getOldInstance().encrypt(is, os, ck);
+            WizCrypt.getOldInstance().encrypt(is, os, wcb);
             
             // 2. Hash for encrypted file
             byte[] newHash = fileHash(outFile);
@@ -124,13 +125,14 @@ public class BackwardCompatibilityTest {
         System.out.println("\ntestDecryptBackwardCompatibility()");
         try{
             // 1. Decrypt the file
-            CipherKey ck = CipherKeyGen.getCipherKeyForDecrypt(PASSWD);
+            WizCryptBean wcb = new WizCryptBean();
+            wcb.setPassword(PASSWD.toCharArray());
             InputStream is = new FileInputStream(CIPHER_FILE);
             File outFile = new File(System.getProperty("java.io.tmpdir") +
                     File.separator + "logo.png");
             OutputStream os = new FileOutputStream(outFile);
             
-            WizCrypt.getOldInstance().decrypt(is, os, PASSWD);
+            WizCrypt.getOldInstance().decrypt(is, os, wcb);
             
             // 2. Hash for decrypted file
             byte[] newHash = fileHash(outFile);

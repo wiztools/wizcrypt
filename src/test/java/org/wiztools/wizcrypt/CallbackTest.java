@@ -51,12 +51,14 @@ public class CallbackTest {
     public void testEncryptCallback(){
         System.out.println("\ntestEncryptCallback()");
         try{
-            CipherKey ck = CipherKeyGen.getCipherKeyForEncrypt(PASSWD);
+            WizCryptBean wcb = new WizCryptBean();
+            wcb.setPassword(PASSWD.toCharArray());
+            wcb.setCallback(new TestCallback());
             InputStream is = new FileInputStream(PLAIN_FILE);
             OutputStream os = new FileOutputStream(System.getProperty("java.io.tmpdir")
                             + File.separator + "logo.png.wiz");
             
-            WizCrypt.get07Instance().encrypt(is, os, ck, new TestCallback());
+            WizCrypt.get07Instance().encrypt(is, os, wcb);
         }
         catch(Exception e){
             Assert.fail("An exception occurred: " + e.getMessage());
@@ -67,12 +69,14 @@ public class CallbackTest {
     public void testEncryptPercentageCallback(){
         System.out.println("\ntestEncryptPercentageCallback()");
         try{
-            CipherKey ck = CipherKeyGen.getCipherKeyForEncrypt(PASSWD);
+            WizCryptBean wcb = new WizCryptBean();
+            wcb.setPassword(PASSWD.toCharArray());
+            wcb.setCallback(new TestCallback(new File(PLAIN_FILE).length()));
             InputStream is = new FileInputStream(PLAIN_FILE);
             OutputStream os = new FileOutputStream(System.getProperty("java.io.tmpdir")
                             + File.separator + "logo.png.wiz");
             
-            WizCrypt.get07Instance().encrypt(is, os, ck, new TestCallback(), new File(PLAIN_FILE).length());
+            WizCrypt.get07Instance().encrypt(is, os, wcb);
         }
         catch(Exception e){
             Assert.fail("An exception occurred: " + e.getMessage());
@@ -83,13 +87,15 @@ public class CallbackTest {
     public void testDecryptCallback(){
         System.out.println("\ntestDecryptCallback()");
         try{
-            CipherKey ck = CipherKeyGen.getCipherKeyForDecrypt(PASSWD);
+            WizCryptBean wcb = new WizCryptBean();
+            wcb.setPassword(PASSWD.toCharArray());
+            wcb.setCallback(new TestCallback());
             InputStream is = new FileInputStream(System.getProperty("java.io.tmpdir")
                             + File.separator + "logo.png.wiz");
             OutputStream os = new FileOutputStream(System.getProperty("java.io.tmpdir")
                             + File.separator + "logo.png");
             
-            WizCrypt.get07Instance().decrypt(is, os, PASSWD, new TestCallback());
+            WizCrypt.get07Instance().decrypt(is, os, wcb);
         }
         catch(Exception e){
             Assert.fail("An exception occurred: " + e.getMessage());
@@ -100,20 +106,30 @@ public class CallbackTest {
     public void testDecryptPercentageCallback(){
         System.out.println("\ntestDecryptCallback()");
         try{
-            CipherKey ck = CipherKeyGen.getCipherKeyForDecrypt(PASSWD);
+            WizCryptBean wcb = new WizCryptBean();
+            wcb.setPassword(PASSWD.toCharArray());
+            wcb.setCallback(new TestCallback(new File(CIPHER_FILE).length()));
             InputStream is = new FileInputStream(System.getProperty("java.io.tmpdir")
                             + File.separator + "logo.png.wiz");
             OutputStream os = new FileOutputStream(System.getProperty("java.io.tmpdir")
                             + File.separator + "logo.png");
             
-            WizCrypt.get07Instance().decrypt(is, os, PASSWD, new TestCallback(), new File(CIPHER_FILE).length());
+            WizCrypt.get07Instance().decrypt(is, os, wcb);
         }
         catch(Exception e){
             Assert.fail("An exception occurred: " + e.getMessage());
         }
     }
     
-    class TestCallback implements Callback{
+    class TestCallback extends Callback{
+        public TestCallback(){
+            
+        }
+        
+        public TestCallback(final long size){
+            super(size);
+        }
+        
         public void begin() {
             System.out.println("~~~~ Callback output ~~~~");
             System.out.print("Begin,");
@@ -128,5 +144,4 @@ public class CallbackTest {
         }
         
     }
-    
 }
