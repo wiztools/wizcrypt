@@ -10,22 +10,31 @@
 package org.wiztools.wizcrypt;
 
 /**
- * Implement this interface to write your own monitoring class.
+ * Extend this abstract class to write your own monitoring class.
  * @author subhash
  * @see WizCrypt
  * @see WizCrypt#encrypt(InputStream is, OutputStream os, 
- *      CipherKey ck, Callback cb, long size)
+ *      WizCryptBean wcb)
  * @see WizCrypt#decrypt(InputStream is, OutputStream os, 
- *      CipherKey ck, Callback cb, long size)
+ *      WizCryptBean wcb)
  */
 public abstract class Callback {
     
     private final long size;
     
+    /**
+     * Use this constructor when encryption/decryption progress has to be displayed
+     * in terms of bytes processed.
+     */
     public Callback(){
         size = -1;
     }
     
+    /**
+     * Use this constructor when encryption/decryption progress has to be displayed
+     * in terms of percentage completed.
+     * @param size The size of the stream/file.
+     */
     public Callback(long size){
         this.size = size;
     }
@@ -52,9 +61,9 @@ public abstract class Callback {
      * <code>encrypt()</code>/<code>decrypt()</code> method.
      * 
      * @see WizCrypt#encrypt(InputStream is, OutputStream os, 
-     *      CipherKey ck, Callback cb, long size)
+     *      WizCryptBean wcb)
      * @see WizCrypt#decrypt(InputStream is, OutputStream os, 
-     *      CipherKey ck, Callback cb, long size)
+     *      WizCryptBean wcb)
      */
     public abstract void notifyProgress(long value);
     
