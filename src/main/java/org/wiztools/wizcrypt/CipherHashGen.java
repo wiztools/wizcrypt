@@ -21,7 +21,6 @@ import static org.wiztools.wizcrypt.WizCryptAlgorithms.CRYPT_ALGO_AES;
  *          the password.</li>
  *  <li><code>getCipher</code>: To get the Cipher instance for encrypting/decrypting.</li>
  * </ol>
- * @see CipherKey
  * @see WizCrypt
  */
 public final class CipherHashGen{
