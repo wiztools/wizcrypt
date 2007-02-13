@@ -49,7 +49,8 @@ public class MainTest {
     File fout = new File(path+".wiz");
     
     @Before
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
+        System.out.println("setUp()");
         try{
             LogManager.getLogManager().readConfiguration(
                     Main.class.getClassLoader()
@@ -67,23 +68,28 @@ public class MainTest {
         PrintWriter pw = new PrintWriter(new FileWriter(fin));
         pw.println(content);
         pw.close();
+        System.out.println("setUp() End");
     }
     
     @After
-    protected void tearDown() throws Exception {
+    public void tearDown() throws Exception {
+        System.out.println("tearDown()");
         // Read content to verify
         BufferedReader br = new BufferedReader(new FileReader(fin));
         String str = br.readLine();
         br.close();
         
+        System.out.println("Checking for equality");
         Assert.assertEquals(content, str);
+        System.out.println("tearDown() End");
     }
     
     /**
      * Test of main method, of class org.wiztools.crypt.Main.
      */
-    @Test()
+    @Test
     public void testMain() throws Exception {
+        setUp();
         System.out.println("main");
         
         // Encryption
@@ -93,8 +99,10 @@ public class MainTest {
         try {
             WizCryptBean wcb = new WizCryptBean();
             wcb.setPassword(password.toCharArray());
-            
+
+            System.out.println("before processing...");
             e.process(fin, wcb, true, false, false);
+            System.out.println("processing over...");
         } catch(DestinationFileExistsException dfe){
             dfe.printStackTrace();
             LOG.severe(dfe.getMessage());
@@ -138,7 +146,7 @@ public class MainTest {
         }
     }
     
-    @Test()
+    @Test
     public void fileExistenceTest() throws Exception{
         Decrypt d = new Decrypt();
         try {
@@ -181,5 +189,6 @@ public class MainTest {
             LOG.severe(dfe.getMessage());
             Assert.fail(dfe.getMessage());
         }
+        tearDown();
     }
 }
