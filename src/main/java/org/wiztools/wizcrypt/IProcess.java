@@ -15,9 +15,7 @@ import org.wiztools.wizcrypt.exception.PasswordMismatchException;
 
 public interface IProcess{
     
-    public void process(File file, WizCryptBean wcb, boolean forceOverwrite,
-            final boolean keepSource,
-            boolean isOldFormat)
+    public void process(File file, WizCryptBean wcb, CliParamBean cpb)
     throws IOException,
             FileNotFoundException,
             DestinationFileExistsException,

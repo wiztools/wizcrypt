@@ -252,14 +252,21 @@ public class Main{
                 iprocess = new Decrypt();
             }
             
+            // Create WizCryptBean object
             WizCryptBean wcb = new WizCryptBean();
             wcb.setAlgo(algo);
             wcb.setPassword(pwd);
             
+            // Create CliParamBean object
+            CliParamBean cpb = new CliParamBean();
+            cpb.setForceOverwrite(forceOverwrite);
+            cpb.setIsOldFormat(keepSource);
+            cpb.setKeepSource(oldFormat);
+            
             for(int i=0;i<args.length;i++){
                 File f = new File(args[i]);
                 try{
-                    iprocess.process(f, wcb, forceOverwrite, keepSource, oldFormat);
+                    iprocess.process(f, wcb, cpb);
                     if(verbose){
                         System.out.println(
                                 MessageFormat.format(

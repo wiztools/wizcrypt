@@ -24,15 +24,17 @@ public class Encrypt implements IProcess{
     private static final Logger LOG = Logger.getLogger(Encrypt.class.getName());
     private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
     
-    public void process(final File file, final WizCryptBean wcb,
-            final boolean forceOverwrite,
-            final boolean keepSource,
-            final boolean isOldFormat) 
+    public void process(final File file, final WizCryptBean wcb, final CliParamBean cpb) 
             throws FileNotFoundException, DestinationFileExistsException, IOException,
             NoSuchAlgorithmException,
             UnsupportedEncodingException,
             InvalidKeyException,
             NoSuchPaddingException{
+        
+        final boolean forceOverwrite = cpb.getForceOverwrite();
+        final boolean keepSource = cpb.getKeepSource();
+        final boolean isOldFormat = cpb.getIsOldFormat();
+        
         FileOutputStream fos = null;
         FileInputStream fis = null;
         boolean canDelete = false;

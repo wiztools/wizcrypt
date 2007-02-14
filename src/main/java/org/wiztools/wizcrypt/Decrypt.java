@@ -30,9 +30,7 @@ public class Decrypt implements IProcess{
     private String keyStr;
     
     public void process(final File file, final WizCryptBean wcb,
-            final boolean forceOverwrite,
-            final boolean keepSource,
-            final boolean isOldFormat) 
+            final CliParamBean cpb) 
             throws FileNotFoundException,
                 DestinationFileExistsException,
                 PasswordMismatchException,
@@ -42,6 +40,11 @@ public class Decrypt implements IProcess{
                 UnsupportedEncodingException,
                 InvalidKeyException,
                 NoSuchPaddingException{
+        
+        final boolean forceOverwrite = cpb.getForceOverwrite();
+        final boolean keepSource = cpb.getKeepSource();
+        final boolean isOldFormat = cpb.getIsOldFormat();
+        
         FileInputStream fis = null;
         FileOutputStream fos = null;
         boolean canDelete = false;
