@@ -269,8 +269,8 @@ public class Main{
             // Create CliParamBean object
             CliParamBean cpb = new CliParamBean();
             cpb.setForceOverwrite(forceOverwrite);
-            cpb.setIsOldFormat(keepSource);
-            cpb.setKeepSource(oldFormat);
+            cpb.setIsOldFormat(oldFormat);
+            cpb.setKeepSource(keepSource);
             cpb.setRecurseIntoDir(recurseIntoDir);
             
             for(int i=0;i<args.length;i++){
