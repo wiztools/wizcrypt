@@ -12,7 +12,7 @@ VERSION=2.2
 
 if which java > /dev/null 2>&1
 then
-	java -jar /usr/share/java/wizcrypt-${VERSION}-jar-with-dependencies.jar $*
+	java -client -jar /usr/share/java/wizcrypt-${VERSION}-jar-with-dependencies.jar $*
 else
 	echo Java not in PATH
 	exit 1
