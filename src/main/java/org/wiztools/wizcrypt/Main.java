@@ -112,6 +112,11 @@ public class Main{
                 .withDescription(rb.getString("msg.algorithm"))
                 .create('a');
         options.addOption(option);
+        option = OptionBuilder.withLongOpt("recursive")
+                .isRequired(false)
+                .withDescription(rb.getString("msg.recursive"))
+                .create('r');
+        options.addOption(option);
         return options;
     }
     
@@ -186,6 +191,7 @@ public class Main{
             boolean verbose = false;
             boolean oldFormat = false;
             boolean keepSource = false;
+            boolean recurseIntoDir = false;
             String algo = WizCryptAlgorithms.CRYPT_ALGO_RC4;
             CommandLineParser parser = new GnuParser();
             CommandLine cmd = parser.parse(options, arg);
@@ -226,6 +232,9 @@ public class Main{
             if(cmd.hasOption('a')){
                 algo = cmd.getOptionValue('a');
             }
+            if(cmd.hasOption('r')){
+                recurseIntoDir = true;
+            }
             if(encrypt && decrypt){
                 throw new ParseException(rb.getString("err.both.selected"));
             }
@@ -262,6 +271,7 @@ public class Main{
             cpb.setForceOverwrite(forceOverwrite);
             cpb.setIsOldFormat(keepSource);
             cpb.setKeepSource(oldFormat);
+            cpb.setRecurseIntoDir(recurseIntoDir);
             
             for(int i=0;i<args.length;i++){
                 File f = new File(args[i]);
