@@ -188,7 +188,6 @@ public class WizCrypt07 extends WizCrypt {
             
             String algoNameStr = new String(algoName);
             LOG.fine("algo name: " + algoNameStr);
-            System.out.println("algo name: " + algoNameStr);
             
             cos = new CipherOutputStream(os, CipherHashGen.getCipherForDecrypt(pwd, algoNameStr));
             
