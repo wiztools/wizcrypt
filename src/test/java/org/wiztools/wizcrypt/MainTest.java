@@ -48,6 +48,8 @@ public class MainTest {
     File fin = new File(path);
     File fout = new File(path+".wiz");
     
+    CliParamBean cpb = new CliParamBean();
+    
     @Before
     public void setUp() throws Exception {
         System.out.println("setUp()");
@@ -60,6 +62,10 @@ public class MainTest {
             ioe.printStackTrace();
             assert true: "Logger configuration load failed!";
         }
+        
+        cpb.setForceOverwrite(true);
+        cpb.setIsOldFormat(false);
+        cpb.setKeepSource(false);
         
         fin.deleteOnExit();
         
@@ -101,7 +107,7 @@ public class MainTest {
             wcb.setPassword(password.toCharArray());
 
             System.out.println("before processing...");
-            e.process(fin, wcb, true, false, false);
+            e.process(fin, wcb, cpb);
             System.out.println("processing over...");
         } catch(DestinationFileExistsException dfe){
             dfe.printStackTrace();
@@ -130,7 +136,7 @@ public class MainTest {
         WizCryptBean wcb = new WizCryptBean();
         wcb.setPassword(wrongPassword.toCharArray());
         try {
-            d.process(fout, wcb, true, false, false);
+            d.process(fout, wcb, cpb);
             System.out.println("My message!");
             Assert.fail("Cannot process for wrong supplied password!!!");
         } catch(DestinationFileExistsException dfe){
@@ -155,7 +161,7 @@ public class MainTest {
             
             // Try processing file not ending with .wiz
             try{
-                d.process(new File(path+".xxx"), wcb, true, false, false);
+                d.process(new File(path+".xxx"), wcb, cpb);
                 Assert.fail("Cannot process for file not ending with .wiz");
             } catch(FileNotFoundException fnfe){
                 // should be visited here
@@ -174,7 +180,7 @@ public class MainTest {
             }
             
             try{
-                d.process(fout, wcb, true, false, false);
+                d.process(fout, wcb, cpb);
             } catch (PasswordMismatchException ex) {
                 ex.printStackTrace();
                 LOG.severe(ex.getMessage());
