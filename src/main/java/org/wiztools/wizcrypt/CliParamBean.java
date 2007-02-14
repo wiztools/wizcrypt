@@ -18,7 +18,7 @@ public class CliParamBean {
     private boolean forceOverwrite = false;
     private boolean keepSource = false;
     private boolean isOldFormat = false;
-    private boolean recurseIntoDirs = false;
+    private boolean recurseIntoDir = false;
     
     /** Creates a new instance of CliParamBean */
     public CliParamBean() {
@@ -48,11 +48,11 @@ public class CliParamBean {
         return isOldFormat;
     }
     
-    public void setRecurseIntoDirs(final boolean recurseIntoDirs){
-        this.recurseIntoDirs = recurseIntoDirs;
+    public void setRecurseIntoDir(final boolean recurseIntoDir){
+        this.recurseIntoDir = recurseIntoDir;
     }
     
-    public boolean getRecurseIntoDirs(){
-        return recurseIntoDirs;
+    public boolean getRecurseIntoDir(){
+        return recurseIntoDir;
     }
 }
