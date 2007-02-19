@@ -12,15 +12,8 @@ package org.wiztools.wizcrypt;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.charset.Charset;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.ResourceBundle;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
-import javax.crypto.CipherInputStream;
-import javax.crypto.CipherOutputStream;
 import javax.crypto.NoSuchPaddingException;
 import org.wiztools.wizcrypt.exception.FileFormatException;
 import org.wiztools.wizcrypt.exception.PasswordMismatchException;
@@ -33,8 +26,6 @@ import org.wiztools.wizcrypt.impl.WizCryptOld;
  * @author subhash
  */
 public abstract class WizCrypt {
-    
-    private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
     
     private static WizCrypt __instance07;
     private static WizCrypt __instanceOld;

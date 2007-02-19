@@ -2,7 +2,6 @@ package org.wiztools.wizcrypt;
 
 import java.io.Console;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.logging.LogManager;
@@ -38,14 +37,14 @@ public class Main{
     // Note: Even when just one of the input file
     // triggers any of these Exceptions, the flag
     // is set.
-    private static boolean IO_EXCEPTION = false;
-    private static boolean INVALID_PWD = false;
-    private static boolean PWD_MISMATCH = false;
-    private static boolean SECURITY_EXCEPTION = false;
-    private static boolean PARSE_EXCEPTION = false;
-    private static boolean CONSOLE_NOT_AVBL_EXCEPTION = false;
-    private static boolean DEST_FILE_EXISTS = false;
-    private static boolean PWD_ENCODING_EXCEPTION = false;
+    private boolean IO_EXCEPTION = false;
+    private boolean INVALID_PWD = false;
+    private boolean PWD_MISMATCH = false;
+    private boolean SECURITY_EXCEPTION = false;
+    private boolean PARSE_EXCEPTION = false;
+    private boolean CONSOLE_NOT_AVBL_EXCEPTION = false;
+    private boolean DEST_FILE_EXISTS = false;
+    private boolean PWD_ENCODING_EXCEPTION = false;
     
     // Error codes
     private static final int C_IO_EXCEPTION = 1;
@@ -173,7 +172,38 @@ public class Main{
         return passwd;
     }
     
-    public Main(String[] arg){
+    public int getExitStatus(){
+        int exitVal = 0;
+        if(PARSE_EXCEPTION){
+            exitVal = C_PARSE_EXCEPTION;
+        } else if(CONSOLE_NOT_AVBL_EXCEPTION){
+            exitVal = C_CONSOLE_NOT_AVBL_EXCEPTION;
+        } else if(INVALID_PWD){
+            exitVal = C_INVALID_PWD;
+        } else if(SECURITY_EXCEPTION || PWD_ENCODING_EXCEPTION){
+            exitVal = C_SECURITY_EXCEPTION;
+        } else{
+            int count = 0; // count the number of exceptions
+            if(DEST_FILE_EXISTS){
+                exitVal = C_DEST_FILE_EXISTS;
+                count++;
+            }
+            if(IO_EXCEPTION){
+                exitVal = C_IO_EXCEPTION;
+                count++;
+            }
+            if(PWD_MISMATCH){
+                exitVal = C_PWD_MISMATCH;
+                count++;
+            }
+            if(count > 1){
+                exitVal = C_MULTIPLE_EXCEPTION;
+            }
+        }
+        return exitVal;
+    }
+    
+    public void process(String[] arg){
         try{
             LogManager.getLogManager().readConfiguration(
                 Main.class.getClassLoader()
@@ -322,37 +352,9 @@ public class Main{
     }
     
     public static void main(String[] arg){
-        new Main(arg);
-        
-        // Set program exit value
-        int exitVal = 0;
-        if(PARSE_EXCEPTION){
-            exitVal = C_PARSE_EXCEPTION;
-        } else if(CONSOLE_NOT_AVBL_EXCEPTION){
-            exitVal = C_CONSOLE_NOT_AVBL_EXCEPTION;
-        } else if(INVALID_PWD){
-            exitVal = C_INVALID_PWD;
-        } else if(SECURITY_EXCEPTION || PWD_ENCODING_EXCEPTION){
-            exitVal = C_SECURITY_EXCEPTION;
-        } else{
-            int count = 0; // count the number of exceptions
-            if(DEST_FILE_EXISTS){
-                exitVal = C_DEST_FILE_EXISTS;
-                count++;
-            }
-            if(IO_EXCEPTION){
-                exitVal = C_IO_EXCEPTION;
-                count++;
-            }
-            if(PWD_MISMATCH){
-                exitVal = C_PWD_MISMATCH;
-                count++;
-            }
-            if(count > 1){
-                exitVal = C_MULTIPLE_EXCEPTION;
-            }
-        }
-        System.exit(exitVal);
+        Main m = new Main();
+        m.process(arg);
+        System.exit(m.getExitStatus());
     }
 
 }

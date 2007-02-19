@@ -15,7 +15,6 @@ import java.io.OutputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.ResourceBundle;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -38,7 +37,6 @@ import org.wiztools.wizcrypt.WizCryptAlgorithms;
 public class WizCrypt07 extends WizCrypt {
     
     private static final Logger LOG = Logger.getLogger(WizCrypt07.class.getName());
-    private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
     
     /** Creates a new instance of WizCrypt07 */
     public WizCrypt07() {

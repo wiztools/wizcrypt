@@ -27,8 +27,6 @@ public class Decrypt implements IProcess{
     private static final Logger LOG = Logger.getLogger(Decrypt.class.getName());
     private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
     
-    private String keyStr;
-    
     public void process(final File file, final WizCryptBean wcb,
             final CliParamBean cpb) 
             throws FileNotFoundException,
