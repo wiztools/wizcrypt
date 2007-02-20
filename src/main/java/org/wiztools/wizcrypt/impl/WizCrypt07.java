@@ -66,7 +66,8 @@ public class WizCrypt07 extends WizCrypt {
             
             // Write the hash in next 16 bytes
             gos = new GZIPOutputStream(os);
-            gos.write(CipherHashGen.getPasswordMD5Hash(pwd));
+            LOG.fine("Length of Sha hash: "+CipherHashGen.getPasswordSha256Hash(pwd).length);
+            gos.write(CipherHashGen.getPasswordSha256Hash(pwd));
             
             // Length of Algorithm
             final String ALGO = wcb.getAlgo();
@@ -153,13 +154,14 @@ public class WizCrypt07 extends WizCrypt {
             // read 16 bytes from gis
             LOG.fine("Creating GZip stream!");
             gis = new GZIPInputStream(is);
-            byte[] filePassKeyHash = new byte[16];
-            bytesRead = gis.read(filePassKeyHash, 0, 16);
-            if(bytesRead < 16){
+            int LEN_OF_PWD_HASH = 32;
+            byte[] filePassKeyHash = new byte[LEN_OF_PWD_HASH];
+            bytesRead = gis.read(filePassKeyHash, 0, LEN_OF_PWD_HASH);
+            if(bytesRead < LEN_OF_PWD_HASH){
                 // TODO throw exception
             }
             
-            byte[] passKeyHash = CipherHashGen.getPasswordMD5Hash(pwd);
+            byte[] passKeyHash = CipherHashGen.getPasswordSha256Hash(pwd);
             if(!Arrays.equals(passKeyHash, filePassKeyHash)){
                 throw new PasswordMismatchException();
             }

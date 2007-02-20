@@ -19,6 +19,7 @@ public class CliParamBean {
     private boolean keepSource = false;
     private boolean isOldFormat = false;
     private boolean recurseIntoDir = false;
+    private boolean verbose = false;
     
     /** Creates a new instance of CliParamBean */
     public CliParamBean() {
@@ -54,5 +55,13 @@ public class CliParamBean {
     
     public boolean getRecurseIntoDir(){
         return recurseIntoDir;
+    }
+    
+    public void setVerbose(final boolean verbose){
+        this.verbose = verbose;
+    }
+    
+    public boolean getVerbose(){
+        return verbose;
     }
 }

@@ -24,6 +24,7 @@ public interface WizCryptAlgorithms {
     public static final String CRYPT_ALGO_AES = "AES";
     
     public static final String STR_ENCODE = "UTF-8";
-    public static final String PWD_HASH = "MD5";
+    public static final String PWD_HASH_OLD = "MD5";
+    public static final String PWD_HASH_07 = "SHA-256";
     
 }

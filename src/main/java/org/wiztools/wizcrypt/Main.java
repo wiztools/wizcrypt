@@ -2,9 +2,11 @@ package org.wiztools.wizcrypt;
 
 import java.io.Console;
 import java.io.InputStream;
+import java.security.NoSuchAlgorithmException;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.logging.LogManager;
+import javax.crypto.NoSuchPaddingException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.GnuParser;
@@ -203,6 +205,54 @@ public class Main{
         return exitVal;
     }
     
+    private void process(final IProcess iprocess,
+            final File f,
+            final WizCryptBean wcb,
+            final CliParamBean cpb)
+            throws NoSuchAlgorithmException,
+                InvalidKeyException,
+                NoSuchPaddingException{
+        boolean verbose = cpb.getVerbose();
+        boolean recursive = cpb.getRecurseIntoDir();
+        if(f.isDirectory()){
+            if(recursive){
+                for(File ff: f.listFiles()){
+                    process(iprocess, ff, wcb, cpb);
+                }
+            }
+            else{
+                System.err.println(MessageFormat.format(
+                        rb.getString("err.is.dir"),
+                        f.getAbsolutePath()));
+            }
+        }
+        else{
+            try{
+                iprocess.process(f, wcb, cpb);
+                if(verbose){
+                    System.out.println(
+                            MessageFormat.format(
+                                rb.getString("msg.verbose.success"),
+                                f.getAbsolutePath()));
+                }
+            } catch(DestinationFileExistsException dfe){
+                DEST_FILE_EXISTS = true;
+                System.err.println(dfe.getMessage());
+            } catch(PasswordMismatchException pme){
+                PWD_MISMATCH = true;
+                String msg = rb.getString("err.pwd.not.match");
+                msg = MessageFormat.format(msg, f.getAbsolutePath());
+                System.err.println(msg);
+            } catch(FileFormatException ffe){
+                String msg = rb.getString("err.file.format");
+                System.err.println(msg);
+            } catch(IOException ioe){
+                IO_EXCEPTION = true;
+                System.err.println(ioe.getMessage());
+            }
+        }
+    }
+    
     public void process(String[] arg){
         try{
             LogManager.getLogManager().readConfiguration(
@@ -302,32 +352,11 @@ public class Main{
             cpb.setIsOldFormat(oldFormat);
             cpb.setKeepSource(keepSource);
             cpb.setRecurseIntoDir(recurseIntoDir);
+            cpb.setVerbose(verbose);
             
             for(int i=0;i<args.length;i++){
                 File f = new File(args[i]);
-                try{
-                    iprocess.process(f, wcb, cpb);
-                    if(verbose){
-                        System.out.println(
-                                MessageFormat.format(
-                                    rb.getString("msg.verbose.success"),
-                                    f.getAbsolutePath()));
-                    }
-                } catch(DestinationFileExistsException dfe){
-                    DEST_FILE_EXISTS = true;
-                    System.err.println(dfe.getMessage());
-                } catch(PasswordMismatchException pme){
-                    PWD_MISMATCH = true;
-                    String msg = rb.getString("err.pwd.not.match");
-                    msg = MessageFormat.format(msg, f.getAbsolutePath());
-                    System.err.println(msg);
-                } catch(FileFormatException ffe){
-                    String msg = rb.getString("err.file.format");
-                    System.err.println(msg);
-                } catch(IOException ioe){
-                    IO_EXCEPTION = true;
-                    System.err.println(ioe.getMessage());
-                } 
+                process(iprocess, f, wcb, cpb);
             }
         } catch(ParseException pe){
             PARSE_EXCEPTION = true;
