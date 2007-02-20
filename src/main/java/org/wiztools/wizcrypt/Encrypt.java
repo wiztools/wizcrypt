@@ -39,6 +39,11 @@ public class Encrypt implements IProcess{
         FileInputStream fis = null;
         boolean canDelete = false;
         File outFile = null;
+        
+        // This variable should be set to true after successful processing of
+        // Encryption. Remember, if any branch condition creeps into this code
+        // subsequently, this has to be updated in that branch.
+        boolean isSuccessful = false;
         try{
             outFile = new File(file.getAbsolutePath()+".wiz");
             if(!forceOverwrite && outFile.exists()){
@@ -55,58 +60,26 @@ public class Encrypt implements IProcess{
             else{
                 wc = WizCrypt.get07Instance();
             }
+            
             wc.encrypt(fis, fos, wcb);
+            
             if(!keepSource){
                 canDelete = true;
             }
-        }
-        catch(FileNotFoundException ex){
-            if(outFile != null){
-                LOG.fine("Deleting: " + outFile.getAbsolutePath());
-                outFile.delete();
-            }
-            throw ex;
-        }
-        catch(DestinationFileExistsException ex){
-            if(outFile != null){
-                LOG.fine("Deleting: " + outFile.getAbsolutePath());
-                outFile.delete();
-            }
-            throw ex;
-        }
-        catch(IOException ex){
-            if(outFile != null){
-                LOG.fine("Deleting: " + outFile.getAbsolutePath());
-                outFile.delete();
-            }
-            throw ex;
-        }
-        catch(NoSuchAlgorithmException ex){
-            if(outFile != null){
-                LOG.fine("Deleting: " + outFile.getAbsolutePath());
-                outFile.delete();
-            }
-            throw ex;
-        }
-        catch(InvalidKeyException ex){
-            if(outFile != null){
-                LOG.fine("Deleting: " + outFile.getAbsolutePath());
-                outFile.delete();
-            }
-            throw ex;
-        }
-        catch(NoSuchPaddingException ex){
-            if(outFile != null){
-                LOG.fine("Deleting: " + outFile.getAbsolutePath());
-                outFile.delete();
-            }
-            throw ex;
+            
+            isSuccessful = true;
         }
         finally{
             // fos & fis will be closed by WizCrypt.encrypt() API
             if(canDelete){
                 LOG.fine("Deleting file: " + file.getAbsolutePath());
                 file.delete();
+            }
+            if(!isSuccessful){
+                if(outFile != null && outFile.exists()){
+                    LOG.fine("Deleting: " + outFile.getAbsolutePath());
+                    outFile.delete();
+                }
             }
         }
     }
