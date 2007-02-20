@@ -8,7 +8,7 @@ import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import static org.wiztools.wizcrypt.WizCryptAlgorithms.PWD_HASH;
+import static org.wiztools.wizcrypt.WizCryptAlgorithms.PWD_HASH_OLD;
 import static org.wiztools.wizcrypt.WizCryptAlgorithms.STR_ENCODE;
 import static org.wiztools.wizcrypt.WizCryptAlgorithms.CRYPT_ALGO_RC4;
 import static org.wiztools.wizcrypt.WizCryptAlgorithms.CRYPT_ALGO_AES;
@@ -31,13 +31,25 @@ public final class CipherHashGen{
     /**
      * Method to generate the MD5 sum of the password.
      */
-    public static byte[] getPasswordMD5Hash(final byte[] passKey)
+    public static byte[] getPasswordHash(final byte[] passKey, final String algo)
             throws NoSuchAlgorithmException,
                 UnsupportedEncodingException{
-        MessageDigest md = MessageDigest.getInstance(PWD_HASH);
+        MessageDigest md = MessageDigest.getInstance(algo);
         md.update(passKey);
         byte[] raw = md.digest();
         return raw;
+    }
+    
+    public static byte[] getPasswordMD5Hash(final byte[] passKey)
+            throws NoSuchAlgorithmException,
+                UnsupportedEncodingException{
+        return getPasswordHash(passKey, PWD_HASH_OLD);
+    }
+    
+    public static byte[] getPasswordSha256Hash(final byte[] passKey)
+            throws NoSuchAlgorithmException,
+                UnsupportedEncodingException{
+        return getPasswordHash(passKey, "SHA-256");
     }
     
     private static Cipher getCipher(final byte[] passKey, final int mode, final String algo)
