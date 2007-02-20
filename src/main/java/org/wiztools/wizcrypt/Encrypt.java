@@ -38,8 +38,9 @@ public class Encrypt implements IProcess{
         FileOutputStream fos = null;
         FileInputStream fis = null;
         boolean canDelete = false;
+        File outFile = null;
         try{
-            File outFile = new File(file.getAbsolutePath()+".wiz");
+            outFile = new File(file.getAbsolutePath()+".wiz");
             if(!forceOverwrite && outFile.exists()){
                 throw new DestinationFileExistsException(
                         MessageFormat.format(rb.getString("err.destination.file.exists"),
@@ -58,7 +59,50 @@ public class Encrypt implements IProcess{
             if(!keepSource){
                 canDelete = true;
             }
-        } finally{
+        }
+        catch(FileNotFoundException ex){
+            if(outFile != null){
+                LOG.fine("Deleting: " + outFile.getAbsolutePath());
+                outFile.delete();
+            }
+            throw ex;
+        }
+        catch(DestinationFileExistsException ex){
+            if(outFile != null){
+                LOG.fine("Deleting: " + outFile.getAbsolutePath());
+                outFile.delete();
+            }
+            throw ex;
+        }
+        catch(IOException ex){
+            if(outFile != null){
+                LOG.fine("Deleting: " + outFile.getAbsolutePath());
+                outFile.delete();
+            }
+            throw ex;
+        }
+        catch(NoSuchAlgorithmException ex){
+            if(outFile != null){
+                LOG.fine("Deleting: " + outFile.getAbsolutePath());
+                outFile.delete();
+            }
+            throw ex;
+        }
+        catch(InvalidKeyException ex){
+            if(outFile != null){
+                LOG.fine("Deleting: " + outFile.getAbsolutePath());
+                outFile.delete();
+            }
+            throw ex;
+        }
+        catch(NoSuchPaddingException ex){
+            if(outFile != null){
+                LOG.fine("Deleting: " + outFile.getAbsolutePath());
+                outFile.delete();
+            }
+            throw ex;
+        }
+        finally{
             // fos & fis will be closed by WizCrypt.encrypt() API
             if(canDelete){
                 LOG.fine("Deleting file: " + file.getAbsolutePath());

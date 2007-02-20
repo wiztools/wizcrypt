@@ -1,6 +1,5 @@
 package org.wiztools.wizcrypt;
 
-import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 import java.util.logging.Logger;
 import javax.crypto.NoSuchPaddingException;
@@ -35,7 +34,6 @@ public class Decrypt implements IProcess{
                 FileFormatException,
                 IOException,
                 NoSuchAlgorithmException,
-                UnsupportedEncodingException,
                 InvalidKeyException,
                 NoSuchPaddingException{
         
@@ -46,6 +44,7 @@ public class Decrypt implements IProcess{
         FileInputStream fis = null;
         FileOutputStream fos = null;
         boolean canDelete = false;
+        File outFile = null;
         try{
             String path = file.getAbsolutePath();
             if(!path.endsWith(".wiz")){
@@ -53,14 +52,13 @@ public class Decrypt implements IProcess{
                         MessageFormat.format(rb.getString("err.file.not.end.wiz"), path));
             }
             String newPath = path.replaceFirst(".wiz$", "");
-            File outFile = new File(newPath);
+            outFile = new File(newPath);
             if(!forceOverwrite && outFile.exists()){
                 throw new DestinationFileExistsException(
                         MessageFormat.format(rb.getString("err.destination.file.exists"),
                         outFile.getAbsolutePath()));
             }
-            fis = new FileInputStream(file);
-            fos = new FileOutputStream(outFile);
+            
             WizCrypt wc = null;
             if(isOldFormat){
                 wc = WizCrypt.getOldInstance();
@@ -68,12 +66,72 @@ public class Decrypt implements IProcess{
             else{
                 wc = WizCrypt.get07Instance();
             }
+            
+            fis = new FileInputStream(file);
+            fos = new FileOutputStream(outFile);
             wc.decrypt(fis, fos, wcb);
 
             if(!keepSource){
                 canDelete = true;
             }
-        } finally{
+        }
+        catch(FileNotFoundException ex){
+            if(outFile != null){
+                LOG.fine("Deleting: " + outFile.getAbsolutePath());
+                outFile.delete();
+            }
+            throw ex;
+        }
+        catch(DestinationFileExistsException ex){
+            if(outFile != null){
+                LOG.fine("Deleting: " + outFile.getAbsolutePath());
+                outFile.delete();
+            }
+            throw ex;
+        }
+        catch(PasswordMismatchException ex){
+            if(outFile != null){
+                LOG.fine("Deleting: " + outFile.getAbsolutePath());
+                outFile.delete();
+            }
+            throw ex;
+        }
+        catch(FileFormatException ex){
+            if(outFile != null){
+                LOG.fine("Deleting: " + outFile.getAbsolutePath());
+                outFile.delete();
+            }
+            throw ex;
+        }
+        catch(IOException ex){
+            if(outFile != null){
+                LOG.fine("Deleting: " + outFile.getAbsolutePath());
+                outFile.delete();
+            }
+            throw ex;
+        }
+        catch(NoSuchAlgorithmException ex){
+            if(outFile != null){
+                LOG.fine("Deleting: " + outFile.getAbsolutePath());
+                outFile.delete();
+            }
+            throw ex;
+        }
+        catch(InvalidKeyException ex){
+            if(outFile != null){
+                LOG.fine("Deleting: " + outFile.getAbsolutePath());
+                outFile.delete();
+            }
+            throw ex;
+        }
+        catch(NoSuchPaddingException ex){
+            if(outFile != null){
+                LOG.fine("Deleting: " + outFile.getAbsolutePath());
+                outFile.delete();
+            }
+            throw ex;
+        }
+        finally{
             // fos & fis will be closed by WizCrypt.decrypt() API
             if(canDelete){
                 LOG.fine("Deleting: " + file.getAbsolutePath());
