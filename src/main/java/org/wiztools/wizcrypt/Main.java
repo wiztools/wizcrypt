@@ -107,16 +107,40 @@ public class Main{
                 .withDescription(rb.getString("msg.old.format"))
                 .create('o');
         options.addOption(option);
-        option = OptionBuilder.withLongOpt("algorithm")
-                .isRequired(false)
-                .hasArg()
-                .withDescription(rb.getString("msg.algorithm"))
-                .create('a');
-        options.addOption(option);
         option = OptionBuilder.withLongOpt("recursive")
                 .isRequired(false)
                 .withDescription(rb.getString("msg.recursive"))
                 .create('r');
+        options.addOption(option);
+        option = OptionBuilder.withLongOpt("jce-provider")
+                .isRequired(false)
+                .hasArg()
+                .withDescription(rb.getString("msg.jce.provider"))
+                .create();
+        options.addOption(option);
+        option = OptionBuilder.withLongOpt("jce-transformation")
+                .isRequired(false)
+                .hasArg()
+                .withDescription(rb.getString("msg.jce.transformation"))
+                .create();
+        options.addOption(option);
+        option = OptionBuilder.withLongOpt("jce-key")
+                .isRequired(false)
+                .hasArg()
+                .withDescription(rb.getString("msg.jce.key"))
+                .create();
+        options.addOption(option);
+        option = OptionBuilder.withLongOpt("jce-password-salt")
+                .isRequired(false)
+                .hasArg()
+                .withDescription(rb.getString("msg.jce.password.salt"))
+                .create();
+        options.addOption(option);
+        option = OptionBuilder.withLongOpt("jce-iv")
+                .isRequired(false)
+                .hasArg()
+                .withDescription(rb.getString("msg.jce.iv"))
+                .create();
         options.addOption(option);
         return options;
     }
