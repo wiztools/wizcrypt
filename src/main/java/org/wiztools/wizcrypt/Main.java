@@ -112,36 +112,7 @@ public class Main{
                 .withDescription(rb.getString("msg.recursive"))
                 .create('r');
         options.addOption(option);
-        option = OptionBuilder.withLongOpt("jce-provider")
-                .isRequired(false)
-                .hasArg()
-                .withDescription(rb.getString("msg.jce.provider"))
-                .create();
-        options.addOption(option);
-        option = OptionBuilder.withLongOpt("jce-transformation")
-                .isRequired(false)
-                .hasArg()
-                .withDescription(rb.getString("msg.jce.transformation"))
-                .create();
-        options.addOption(option);
-        option = OptionBuilder.withLongOpt("jce-key")
-                .isRequired(false)
-                .hasArg()
-                .withDescription(rb.getString("msg.jce.key"))
-                .create();
-        options.addOption(option);
-        option = OptionBuilder.withLongOpt("jce-password-salt")
-                .isRequired(false)
-                .hasArg()
-                .withDescription(rb.getString("msg.jce.password.salt"))
-                .create();
-        options.addOption(option);
-        option = OptionBuilder.withLongOpt("jce-iv")
-                .isRequired(false)
-                .hasArg()
-                .withDescription(rb.getString("msg.jce.iv"))
-                .create();
-        options.addOption(option);
+
         return options;
     }
     
@@ -296,7 +267,7 @@ public class Main{
             boolean oldFormat = false;
             boolean keepSource = false;
             boolean recurseIntoDir = false;
-            String algo = WizCryptAlgorithms.CRYPT_ALGO_RC4;
+
             CommandLineParser parser = new GnuParser();
             CommandLine cmd = parser.parse(options, arg);
             if(cmd.hasOption('h')){
@@ -333,9 +304,6 @@ public class Main{
             if(cmd.hasOption('k')){
                 keepSource = true;
             }
-            if(cmd.hasOption('a')){
-                algo = cmd.getOptionValue('a');
-            }
             if(cmd.hasOption('r')){
                 recurseIntoDir = true;
             }
@@ -367,7 +335,6 @@ public class Main{
             
             // Create WizCryptBean object
             WizCryptBean wcb = new WizCryptBean();
-            wcb.setAlgo(algo);
             wcb.setPassword(pwd);
             
             // Create CliParamBean object

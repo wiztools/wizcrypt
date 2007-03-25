@@ -26,4 +26,15 @@ public interface IProcess{
             InvalidKeyException,
             NoSuchPaddingException;
     
+    public void process(File file, File outFile, WizCryptBean wcb, CliParamBean cpb)
+    throws IOException,
+            FileNotFoundException,
+            DestinationFileExistsException,
+            FileFormatException,
+            PasswordMismatchException,
+            NoSuchAlgorithmException,
+            UnsupportedEncodingException,
+            InvalidKeyException,
+            NoSuchPaddingException;
+    
 }

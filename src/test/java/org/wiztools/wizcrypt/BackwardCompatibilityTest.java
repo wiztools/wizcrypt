@@ -116,6 +116,7 @@ public class BackwardCompatibilityTest {
             }
         }
         catch(Exception e){
+            e.printStackTrace();
             Assert.fail("An exception occured during run of test case: "+e.getMessage());
         }
     }
@@ -146,6 +147,7 @@ public class BackwardCompatibilityTest {
             }
         }
         catch(Exception e){
+            e.printStackTrace();
             Assert.fail("An exception occured during run of test case: "+e.getMessage());
         }
     }

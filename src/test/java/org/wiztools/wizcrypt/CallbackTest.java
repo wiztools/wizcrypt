@@ -30,6 +30,7 @@ public class CallbackTest {
     private static final String PLAIN_FILE = "src/test/resources/logo.png";
     private static final String CIPHER_FILE = "src/test/resources/logo.png.wiz";
     private static final String PASSWD = "password";
+    private static final CliParamBean cpb = new CliParamBean();
     
     @Before
     public void setUp() throws Exception {
@@ -42,6 +43,8 @@ public class CallbackTest {
         catch(IOException ioe){
             assert true: "Logger configuration load failed!";
         }
+        cpb.setForceOverwrite(true);
+        cpb.setKeepSource(true);
         System.out.println("setUp() End");
     }
     
@@ -56,13 +59,14 @@ public class CallbackTest {
             WizCryptBean wcb = new WizCryptBean();
             wcb.setPassword(PASSWD.toCharArray());
             wcb.setCallback(new TestCallback());
-            InputStream is = new FileInputStream(PLAIN_FILE);
-            OutputStream os = new FileOutputStream(System.getProperty("java.io.tmpdir")
+            File in = new File(PLAIN_FILE);
+            File out = new File(System.getProperty("java.io.tmpdir")
                             + File.separator + "logo.png.wiz");
-            
-            WizCrypt.get07Instance().encrypt(is, os, wcb);
+            IProcess ip = new Encrypt();
+            ip.process(in, out, wcb, cpb);
         }
         catch(Exception e){
+            e.printStackTrace();
             Assert.fail("An exception occurred: " + e.getMessage());
         }
     }
@@ -74,13 +78,14 @@ public class CallbackTest {
             WizCryptBean wcb = new WizCryptBean();
             wcb.setPassword(PASSWD.toCharArray());
             wcb.setCallback(new TestCallback(new File(PLAIN_FILE).length()));
-            InputStream is = new FileInputStream(PLAIN_FILE);
-            OutputStream os = new FileOutputStream(System.getProperty("java.io.tmpdir")
+            File in = new File(PLAIN_FILE);
+            File out = new File(System.getProperty("java.io.tmpdir")
                             + File.separator + "logo.png.wiz");
-            
-            WizCrypt.get07Instance().encrypt(is, os, wcb);
+            IProcess ip = new Encrypt();
+            ip.process(in, out, wcb, cpb);
         }
         catch(Exception e){
+            e.printStackTrace();
             Assert.fail("An exception occurred: " + e.getMessage());
         }
     }
@@ -92,14 +97,16 @@ public class CallbackTest {
             WizCryptBean wcb = new WizCryptBean();
             wcb.setPassword(PASSWD.toCharArray());
             wcb.setCallback(new TestCallback());
-            InputStream is = new FileInputStream(System.getProperty("java.io.tmpdir")
+            File in = new File(System.getProperty("java.io.tmpdir")
                             + File.separator + "logo.png.wiz");
-            OutputStream os = new FileOutputStream(System.getProperty("java.io.tmpdir")
+            File out = new File(System.getProperty("java.io.tmpdir")
                             + File.separator + "logo.png");
-            
-            WizCrypt.get07Instance().decrypt(is, os, wcb);
+            IProcess ip = new Decrypt();
+            ip.process(in, out, wcb, cpb);
+            // WizCrypt.get07Instance().decrypt(is, os, wcb);
         }
         catch(Exception e){
+            e.printStackTrace();
             Assert.fail("An exception occurred: " + e.getMessage());
         }
     }
@@ -111,14 +118,16 @@ public class CallbackTest {
             WizCryptBean wcb = new WizCryptBean();
             wcb.setPassword(PASSWD.toCharArray());
             wcb.setCallback(new TestCallback(new File(CIPHER_FILE).length()));
-            InputStream is = new FileInputStream(System.getProperty("java.io.tmpdir")
+            File in = new File(System.getProperty("java.io.tmpdir")
                             + File.separator + "logo.png.wiz");
-            OutputStream os = new FileOutputStream(System.getProperty("java.io.tmpdir")
+            File out = new File(System.getProperty("java.io.tmpdir")
                             + File.separator + "logo.png");
-            
-            WizCrypt.get07Instance().decrypt(is, os, wcb);
+            IProcess ip = new Decrypt();
+            ip.process(in, out, wcb, cpb);
+            // WizCrypt.get07Instance().decrypt(is, os, wcb);
         }
         catch(Exception e){
+            e.printStackTrace();
             Assert.fail("An exception occurred: " + e.getMessage());
         }
     }
