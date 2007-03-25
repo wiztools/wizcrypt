@@ -11,7 +11,6 @@ import javax.crypto.spec.SecretKeySpec;
 import static org.wiztools.wizcrypt.WizCryptAlgorithms.PWD_HASH_OLD;
 import static org.wiztools.wizcrypt.WizCryptAlgorithms.STR_ENCODE;
 import static org.wiztools.wizcrypt.WizCryptAlgorithms.CRYPT_ALGO_RC4;
-import static org.wiztools.wizcrypt.WizCryptAlgorithms.CRYPT_ALGO_AES;
 
 /**
  * This class has static methods to:
@@ -52,16 +51,15 @@ public final class CipherHashGen{
         return getPasswordHash(passKey, "SHA-256");
     }
     
-    private static Cipher getCipher(final byte[] passKey, final int mode, final String algo)
+    private static Cipher getCipher(final byte[] passKey, final int mode)
                 throws NoSuchAlgorithmException,
                     UnsupportedEncodingException,
                     InvalidKeyException, 
                     NoSuchPaddingException{
         Cipher cipher = null;
         
-        // TODO remove algo param and hardcode RC4
-        SecretKey key = new SecretKeySpec(passKey, algo);
-        cipher = Cipher.getInstance(algo);
+        SecretKey key = new SecretKeySpec(passKey, WizCryptAlgorithms.CRYPT_ALGO_RC4);
+        cipher = Cipher.getInstance(WizCryptAlgorithms.CRYPT_ALGO_RC4);
         cipher.init(mode, key);
         return cipher;
     }
@@ -74,7 +72,7 @@ public final class CipherHashGen{
                     UnsupportedEncodingException,
                     InvalidKeyException, 
                     NoSuchPaddingException{
-        return getCipher(passKey, Cipher.ENCRYPT_MODE, algo);
+        return getCipher(passKey, Cipher.ENCRYPT_MODE);
     }
     
     /**
@@ -85,6 +83,6 @@ public final class CipherHashGen{
                     UnsupportedEncodingException,
                     InvalidKeyException, 
                     NoSuchPaddingException{
-        return getCipher(passKey, Cipher.DECRYPT_MODE, algo);
+        return getCipher(passKey, Cipher.DECRYPT_MODE);
     }
 }

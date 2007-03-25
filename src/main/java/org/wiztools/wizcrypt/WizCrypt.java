@@ -17,7 +17,6 @@ import java.security.NoSuchAlgorithmException;
 import javax.crypto.NoSuchPaddingException;
 import org.wiztools.wizcrypt.exception.FileFormatException;
 import org.wiztools.wizcrypt.exception.PasswordMismatchException;
-import org.wiztools.wizcrypt.impl.WizCrypt07;
 import org.wiztools.wizcrypt.impl.WizCryptOld;
 
 /**
@@ -29,17 +28,6 @@ public abstract class WizCrypt {
     
     private static WizCrypt __instance07;
     private static WizCrypt __instanceOld;
-    
-    /**
-     * Use this method to get the instance of WizCrypt to process the WizCrypt07
-     * format files.
-     */
-    public static WizCrypt get07Instance(){
-        if(__instance07 == null){
-            __instance07 = new WizCrypt07();
-        }
-        return __instance07;
-    }
     
     /**
      * Use this method to get the instance of WizCrypt to process the old WizCrypt

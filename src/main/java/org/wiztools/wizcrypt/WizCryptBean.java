@@ -28,7 +28,6 @@ package org.wiztools.wizcrypt;
 public class WizCryptBean {
     
     private Callback callback = null;
-    private String algo = WizCryptAlgorithms.CRYPT_ALGO_RC4;
     private char[] password;
     
     /** Creates a new instance of WizCryptParam */
@@ -41,14 +40,6 @@ public class WizCryptBean {
     
     public Callback getCallback(){
         return callback;
-    }
-    
-    public void setAlgo(final String algo){
-        this.algo = algo;
-    }
-    
-    public String getAlgo(){
-        return algo;
     }
     
     public void setPassword(final char[] password){

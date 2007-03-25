@@ -28,7 +28,16 @@ public class Encrypt implements IProcess{
     private static final Logger LOG = Logger.getLogger(Encrypt.class.getName());
     private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
     
-    public void process(final File file, final WizCryptBean wcb, final CliParamBean cpb) 
+    public void process(final File inFile, final WizCryptBean wcb, final CliParamBean cpb) 
+            throws FileNotFoundException, DestinationFileExistsException, IOException,
+            NoSuchAlgorithmException,
+            UnsupportedEncodingException,
+            InvalidKeyException,
+            NoSuchPaddingException{
+        process(inFile, null, wcb, cpb);
+    }
+    
+    public void process(final File file, File outFileTmp, final WizCryptBean wcb, final CliParamBean cpb) 
             throws FileNotFoundException, DestinationFileExistsException, IOException,
             NoSuchAlgorithmException,
             UnsupportedEncodingException,
@@ -42,7 +51,6 @@ public class Encrypt implements IProcess{
         FileOutputStream fos = null;
         FileInputStream fis = null;
         boolean canDelete = false;
-        File outFileTmp = null;
         RandomAccessFile outFile = null;
         
         CipherInputStream cis = null;
@@ -53,7 +61,9 @@ public class Encrypt implements IProcess{
         // subsequently, this has to be updated in that branch.
         boolean isSuccessful = false;
         try{
-            outFileTmp = new File(file.getAbsolutePath()+".wiz");
+            if(outFileTmp == null){
+                outFileTmp = new File(file.getAbsolutePath()+".wiz");
+            }
             if(!forceOverwrite && outFileTmp.exists()){
                 throw new DestinationFileExistsException(
                         MessageFormat.format(rb.getString("err.destination.file.exists"),
@@ -81,7 +91,7 @@ public class Encrypt implements IProcess{
             outFile.write(versionStr, 0, versionStr.length);
             crcHeaderSkipLen += versionStr.length;
 
-            cis = new CipherInputStream(fis, CipherHashGen.getCipherForEncrypt(pwd, wcb.getAlgo()));
+            cis = new CipherInputStream(fis, CipherHashGen.getCipherForEncrypt(pwd, WizCryptAlgorithms.CRYPT_ALGO_RC4));
             
             byte[] pwdHash = CipherHashGen.getPasswordSha256Hash(pwd);
             LOG.fine("Length of Sha hash: " + pwdHash.length);

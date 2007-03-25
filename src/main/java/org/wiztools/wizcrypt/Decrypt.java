@@ -41,6 +41,19 @@ public class Decrypt implements IProcess{
                 NoSuchAlgorithmException,
                 InvalidKeyException,
                 NoSuchPaddingException{
+        process(file, null, wcb, cpb);
+    }
+    
+    public void process(final File file, File outFile, final WizCryptBean wcb,
+            final CliParamBean cpb) 
+            throws FileNotFoundException,
+                DestinationFileExistsException,
+                PasswordMismatchException,
+                FileFormatException,
+                IOException,
+                NoSuchAlgorithmException,
+                InvalidKeyException,
+                NoSuchPaddingException{
         
         final boolean forceOverwrite = cpb.getForceOverwrite();
         final boolean keepSource = cpb.getKeepSource();
@@ -50,7 +63,6 @@ public class Decrypt implements IProcess{
         DataInputStream dis = null;
         FileOutputStream fos = null;
         boolean canDelete = false;
-        File outFile = null;
         
         CipherOutputStream cos = null;
         Callback cb = wcb.getCallback();
@@ -67,19 +79,18 @@ public class Decrypt implements IProcess{
                         MessageFormat.format(rb.getString("err.file.not.end.wiz"), path));
             }
             String newPath = path.replaceFirst(".wiz$", "");
-            outFile = new File(newPath);
+            if(outFile == null){
+                outFile = new File(newPath);
+            }
             if(!forceOverwrite && outFile.exists()){
                 throw new DestinationFileExistsException(
                         MessageFormat.format(rb.getString("err.destination.file.exists"),
                         outFile.getAbsolutePath()));
             }
             
-            WizCrypt wc = null;
             if(isOldFormat){
-                wc = WizCrypt.getOldInstance();
-            }
-            else{
-                wc = WizCrypt.get07Instance();
+                WizCrypt wc = WizCrypt.getOldInstance();
+                // TODO process, then return
             }
             
             fis = new FileInputStream(file);
