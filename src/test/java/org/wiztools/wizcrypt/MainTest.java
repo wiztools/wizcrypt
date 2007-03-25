@@ -50,6 +50,15 @@ public class MainTest {
     
     CliParamBean cpb = new CliParamBean();
     
+    private void createFile() throws IOException{
+        // Write dummy content into the file
+        
+        PrintWriter pw = new PrintWriter(new FileWriter(fin));
+        pw.println(content);
+        pw.close();
+        
+    }
+    
     @Before
     public void setUp() throws Exception {
         System.out.println("setUp()");
@@ -65,28 +74,31 @@ public class MainTest {
         
         cpb.setForceOverwrite(true);
         cpb.setIsOldFormat(false);
-        cpb.setKeepSource(false);
+        cpb.setKeepSource(true);
         
         fin.deleteOnExit();
         
-        // Write dummy content into the file
+        createFile();
         
-        PrintWriter pw = new PrintWriter(new FileWriter(fin));
-        pw.println(content);
-        pw.close();
         System.out.println("setUp() End");
     }
     
     @After
     public void tearDown() throws Exception {
         System.out.println("tearDown()");
-        // Read content to verify
-        BufferedReader br = new BufferedReader(new FileReader(fin));
-        String str = br.readLine();
-        br.close();
         
-        System.out.println("Checking for equality");
-        Assert.assertEquals(content, str);
+        try{
+            // Read content to verify
+            BufferedReader br = new BufferedReader(new FileReader(fin));
+            String str = br.readLine();
+            br.close();
+
+            System.out.println("Checking for equality");
+            Assert.assertEquals(content, str);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
         System.out.println("tearDown() End");
     }
     
@@ -107,6 +119,7 @@ public class MainTest {
             wcb.setPassword(password.toCharArray());
 
             System.out.println("before processing...");
+            cpb.setKeepSource(true);
             e.process(fin, wcb, cpb);
             System.out.println("processing over...");
         } catch(DestinationFileExistsException dfe){
@@ -144,7 +157,10 @@ public class MainTest {
             LOG.severe(dfe.getMessage());
             Assert.fail(dfe.getMessage());
         } catch (PasswordMismatchException ex) {
+            System.out.println("Should visit here!");
             // should be visited here;
+            // create deleted file:
+            createFile();
         } catch(FileFormatException ffe){
             ffe.printStackTrace();
             LOG.severe(ffe.getMessage());
