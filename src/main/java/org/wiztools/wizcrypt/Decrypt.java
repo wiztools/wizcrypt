@@ -215,7 +215,7 @@ public class Decrypt implements IProcess{
             }
             if(!isSuccessful){
                 if(outFile != null && outFile.exists()){
-                    LOG.fine("Deleting: " + outFile.getAbsolutePath());
+                    LOG.fine("Deleting (Not successful): " + outFile.getAbsolutePath());
                     outFile.delete();
                 }
             }
