@@ -40,15 +40,16 @@ public class BackwardCompatibilityTest {
     private static final String PASSWD = "password";
     
     @Before
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
+        System.out.println("setUp() called...");
     }
     
     @After
-    protected void tearDown() throws Exception {
+    public void tearDown() throws Exception {
     }
     
     // method taken from JavaAlmanac!
-    private static byte[] getBytesFromFile(File file) throws IOException {
+    private byte[] getBytesFromFile(File file) throws IOException {
         InputStream is = new FileInputStream(file);
     
         // Get the size of the file
@@ -83,7 +84,7 @@ public class BackwardCompatibilityTest {
         return bytes;
     }
     
-    private static byte[] fileHash(final File file) throws NoSuchAlgorithmException, IOException{
+    private byte[] fileHash(final File file) throws NoSuchAlgorithmException, IOException{
         MessageDigest md = MessageDigest.getInstance("MD5");
         md.update(getBytesFromFile(file));
         byte[] raw = md.digest();
@@ -103,6 +104,7 @@ public class BackwardCompatibilityTest {
             OutputStream os = new FileOutputStream(outFile);
             
             WizCrypt.getOldInstance().encrypt(is, os, wcb);
+            System.out.println("Encrypt step completed...");
             
             // 2. Hash for encrypted file
             byte[] newHash = fileHash(outFile);
