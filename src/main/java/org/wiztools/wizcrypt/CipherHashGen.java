@@ -59,6 +59,7 @@ public final class CipherHashGen{
                     NoSuchPaddingException{
         Cipher cipher = null;
         
+        // TODO remove algo param and hardcode RC4
         SecretKey key = new SecretKeySpec(passKey, algo);
         cipher = Cipher.getInstance(algo);
         cipher.init(mode, key);
