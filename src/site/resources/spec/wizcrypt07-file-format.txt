@@ -20,37 +20,61 @@
  The WizCrypt07 file format:
 
       +-----------------------+
-      | WizCrypt07 (in ASCII) | --- First 10 bytes - signature `WizCrypt07'
-      |-----------------------| --+
-      |   [Gzip Compressed]   |   |
-      |+---------------------+|   |
-      ||   md5 sum of key    || --|-> The hash of the key
-      |+---------------------+|   |
-      |+---------------------+|   |
-      || len |   algorithm   || --|-> Algorithm name length, and algorithm
-      |+---------------------+|   |
-      |+---------------------+|   |
-      ||                     ||   |
-      ||                     ||   |
-      ||                     ||   | G
-      ||                     ||   | Z
-      ||      Encrypted      ||   | i
-      ||        Data         ||   | p
-      ||                     ||   |
-      ||                     ||   |
-      ||                     ||   |
-      ||                     ||   |
-      |+---------------------+|   |
-      +-----------------------+ --+
+      |+---------------------+|
+      ||        Header       ||
+      |+---------------------+|
+      |+---------------------+|
+      ||                     ||
+      ||                     ||
+      ||                     ||
+      ||                     ||
+      ||      Encrypted      ||
+      ||        Data         ||
+      ||                     ||
+      ||                     ||
+      ||                     ||
+      ||                     ||
+      |+---------------------+|
+      +-----------------------+
 
-3.1. MAGIC NUMBER (SIGNATURE)
+3.1 Header
 
- The first 10 bytes of the file is the signature of the format. The
- ASCII text:
+      +-----------------------+
+      |+---------------------+|
+      ||       W C 0 7       || -> Magic number in ASCII
+      |+---------------------+|
+      |+---------------------+|
+      ||       CRC of        ||
+      ||       Header        ||
+      |+---------------------+|
+      |+---------------------+|
+      ||                     ||
+      ||                     ||
+      ||                     ||
+      ||      Password       ||
+      ||        Hash         ||
+      ||                     ||
+      ||                     ||
+      ||                     ||
+      |+---------------------+|
+      |+---------------------+|
+      ||       CRC of        ||
+      ||   Encrypted Data    ||
+      |+---------------------+|
+      |+---------------------+|
+      ||     Length of       ||
+      ||   Encrypted Data    ||
+      |+---------------------+|
+      +-----------------------+
 
-   W i z C r y p t 0 7
+ The header section of WizCrypt07 format file has the following
+ content:
 
- consisting of 10 characters identifies the format as WizCrypt07.
+ * Magic Number (4 bytes) -> ASCII characters `WC07'
+ * Password hash (32 bytes) -> SHA-256 based password hash
+ * CRC checksum of password hash (8 bytes)
+ * Length of data (8 bytes) -> The length of the encrypted data
+ * CRC checksum of encrypted data (8 bytes)
 
 3.2. DATA PART
 

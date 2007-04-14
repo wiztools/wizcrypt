@@ -1,6 +1,8 @@
 package org.wiztools.wizcrypt;
 
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.logging.Logger;
@@ -120,10 +122,21 @@ public class Decrypt implements IProcess{
             }
             LOG.finest("magicNumber: "+new String(magicNumber));
             
+            Checksum checksumEngine = new Adler32();
+            
+            // Read header CRC
+            long headerCRC = dis.readLong();
+            LOG.info("Recorded header CRC: " + headerCRC);
+            
+            // Datastructure to hold header bytes
+            ByteArrayOutputStream headerByteArrayOS = new ByteArrayOutputStream();
+            DataOutputStream headerOS = new DataOutputStream(headerByteArrayOS);
+            
             // read 16 bytes from fis
             int LEN_OF_PWD_HASH = 32;
             byte[] filePassKeyHash = new byte[LEN_OF_PWD_HASH];
             bytesRead = dis.read(filePassKeyHash, 0, LEN_OF_PWD_HASH);
+            headerOS.write(filePassKeyHash, 0, bytesRead);
             if(bytesRead < LEN_OF_PWD_HASH){
                 // TODO throw exception
             }
@@ -133,15 +146,28 @@ public class Decrypt implements IProcess{
                 throw new PasswordMismatchException();
             }
             
-            long crc = dis.readLong();
-            LOG.info("Recorded CRC: " + crc);
+            long dataCRC = dis.readLong();
+            headerOS.writeLong(dataCRC);
+            LOG.info("Recorded data CRC: " + dataCRC);
             
             long dataLen = dis.readLong();
+            headerOS.writeLong(dataLen);
             LOG.info("Recorder data length: " + dataLen);
+            
+            // Check if header CRC matches
+            byte[] headerBytes = headerByteArrayOS.toByteArray();
+            checksumEngine.update(headerBytes, 0, headerBytes.length);
+            long computedHeaderCRC = checksumEngine.getValue();
+            if(computedHeaderCRC != headerCRC){
+                LOG.severe("computed/header CRC: " + computedHeaderCRC + " / " + headerCRC);
+                throw new FileFormatException(); // TODO define CRC exception
+            }
+            LOG.info("***Computed and actual header CRC matches!!***");
             
             cos = new CipherOutputStream(fos, CipherHashGen.getCipherForDecrypt(pwd, WizCryptAlgorithms.CRYPT_ALGO_RC4));
             
-            Checksum checksumEngine = new Adler32();
+            checksumEngine.reset();
+            
             int i = -1;
             byte[] buffer = new byte[0xFFFF];
             long readSize = 0;
@@ -178,7 +204,7 @@ public class Decrypt implements IProcess{
             
             LOG.info("Computed CRC: " + checksumEngine.getValue());
             
-            if(crc != checksumEngine.getValue()){
+            if(dataCRC != checksumEngine.getValue()){
                 throw new FileFormatException(); // TODO i18n msg
             }
             
