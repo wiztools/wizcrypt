@@ -1,5 +1,7 @@
 package org.wiztools.wizcrypt;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
@@ -85,17 +87,27 @@ public class Encrypt implements IProcess{
                 cb.begin();
             }
             
+            // Byte array having header info: used for computing header CRC
+            ByteArrayOutputStream headerByteArrayOS = new ByteArrayOutputStream();
+            DataOutputStream headerOS = new DataOutputStream(headerByteArrayOS);
+            
             // Write the file-format magic number
             byte[] versionStr = FileFormatVersion.WC07.getBytes(WizCryptAlgorithms.STR_ENCODE);
             LOG.fine("Length of bytearray containing version: "+versionStr.length);
             outFile.write(versionStr, 0, versionStr.length);
             crcHeaderSkipLen += versionStr.length;
+            
+            // Leave space for header CRC
+            outFile.writeLong(0);
+            crcHeaderSkipLen += 8; // Long takes 8 bytes
 
             cis = new CipherInputStream(fis, CipherHashGen.getCipherForEncrypt(pwd, WizCryptAlgorithms.CRYPT_ALGO_RC4));
             
+            // Write password hash
             byte[] pwdHash = CipherHashGen.getPasswordSha256Hash(pwd);
             LOG.fine("Length of Sha hash: " + pwdHash.length);
             outFile.write(pwdHash);
+            headerOS.write(pwdHash);
             crcHeaderSkipLen += pwdHash.length;
             
             // Skip bytes for CRC info
@@ -125,13 +137,22 @@ public class Encrypt implements IProcess{
             // Write computed checksum to header
             outFile.seek(crcHeaderSkipLen);
             outFile.writeLong(checksumEngine.getValue());
+            headerOS.writeLong(checksumEngine.getValue());
             LOG.finest("Length of crc data written: " + (outFile.getFilePointer()-crcHeaderSkipLen));
             LOG.finest("CRC: " + checksumEngine.getValue());
             
             // Write data length to header
             outFile.writeLong(readSize);
+            headerOS.writeLong(readSize);
             LOG.finest("read/write data size: " + readSize);
-            //***end encryption code
+            
+            // Write header checksum
+            byte[] headerBytes = headerByteArrayOS.toByteArray();
+            checksumEngine.reset();
+            checksumEngine.update(headerBytes, 0, headerBytes.length);
+            outFile.seek(FileFormatVersion.WC07.getBytes(WizCryptAlgorithms.STR_ENCODE).length);
+            outFile.writeLong(checksumEngine.getValue());
+            /***end encryption code*/
             
             if(!keepSource){
                 canDelete = true;
