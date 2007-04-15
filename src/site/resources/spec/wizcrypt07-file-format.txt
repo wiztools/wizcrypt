@@ -71,34 +71,9 @@
  content:
 
  * Magic Number (4 bytes) -> ASCII characters `WC07'
- * Password hash (32 bytes) -> SHA-256 based password hash
- * CRC checksum of password hash (8 bytes)
- * Length of data (8 bytes) -> The length of the encrypted data
- * CRC checksum of encrypted data (8 bytes)
 
-3.2. DATA PART
-
- The data part of a WizCrypt07 is compressed using the GZip format.
- This format gives the advantages:
-
- * The final output is compressed
- * GZip's CRC check validates consistency
- * Can use GZip's recovery tools in case of data-corruption
-
- This also has the disadvantage:
-
- * Encryption/Decryption of WizCrypt07 has the additional overhead
-   of compressing/de-compressing in GZip format.
-
- The DATA PART is further divided into the following parts:
-
- * MD5 hash of the key used in encryption
- * Algorithm length and name
- * The actual data encrypted using the key
-
-3.2.1. MD5 KEY HASH
-
- The md5 hash of the key (UTF-8 encoded) is computed thus (in Java):
+ * Password hash (32 bytes) -> SHA-256 based password hash. In Java
+   it is computed thus:
 
         import java.security.MessageDigest;
 
@@ -106,41 +81,30 @@
 
         byte[] passKey = "mypassword".getBytes("UTF-8");
 
-        MessageDigest md = MessageDigest.getInstance("MD5");
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(passKey);
         byte[] hash = md.digest();
+   
+ * CRC checksum of header (8 bytes) -> This is the checksum computed
+   on:
 
- Note: The hash is stored as it is. It is not further encoded.
+   ^ Password Hash
+   ^ CRC of encrypted data
+   ^ Length of encrypted data
 
-3.2.2. ALGORITHM LENGTH AND NAME
+ * Length of data (8 bytes) -> The length of the encrypted data
 
- The next sequence of two bytes have the length of the algorithm. For example,
- if `RC4' algorithm is used, the length stored is three. For `Blowfish', the
- length is eight.
+ * CRC checksum of encrypted data (8 bytes)
 
- The length of the algorithm can be of maximum size 99. The length is stored as
- ASCII text. For example, the value three is stored as: `03'.
+3.2. ENCRYPTED DATA
 
- The 5 bytes following the password hash would be like this if `RC4' is used:
-
-         +-------------------+
-         | 0 | 3 | R | C | 4 |
-         +-------------------+
-
- If `Blowfish' algorithm is used, the 10 bytes would be:
-
-         +---------------------------------------+
-         | 0 | 8 | B | l | o | w | f | i | s | h |
-         +---------------------------------------+
-
-3.2.3. ENCRYPTED DATA
-
- The data of the source is encrypted using the key and algorithm specified in
- the previous headers.
+ The data of the source is encrypted using the key and algorithm 
+ specified in the previous headers.
 
 4. AUTHOR
 
- This file-format specification is written by SUBHASH CHANDRAN S. Address:
+ This file-format specification is written by SUBHASH CHANDRAN S.
+ Address:
 
  SUBHASH CHANDRAN S
  Software Engineer
@@ -151,3 +115,4 @@
  Ph: +91 80 41810800
  
  Email: subwiz@gmail.com
+
