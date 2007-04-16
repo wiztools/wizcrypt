@@ -1,5 +1,5 @@
-Subhash's WizCrypt
-==================
+WizCrypt
+========
 
 About the application:
 
@@ -16,22 +16,18 @@ Cross platform personal commandline encryption program. It runs in 2 modes:
 
    You have to pass command line argument `-d' for operating in this mode.
 
-Limitation:
-
-You have to supply password through the command line :-(.
-
 Requirement:
 
-JRE 1.5 or above.
+JRE 1.6 or above.
 
 Usage:
 
-$ java -jar WizCrypt-XX-jar-with-dependencies.jar --help
+$ java -jar wizcrypt-XX-jar-with-dependencies.jar --help
 
 [Note: `XX' to be substituted with the version number.]
 
 Example usage:
 
-$ java -jar WizCrypt-XX-jar-with-dependencies.jar -e -p mypwd *.jpg
-$ java -jar WizCrypt-XX-jar-with-dependencies.jar -d -p mypwd *.jpg.wiz
+$ java -jar wizcrypt-XX-jar-with-dependencies.jar -e -p mypwd *.jpg
+$ java -jar wizcrypt-XX-jar-with-dependencies.jar -d -p mypwd *.jpg.wiz
 
