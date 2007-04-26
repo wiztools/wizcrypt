@@ -32,12 +32,21 @@ import org.wiztools.wizcrypt.exception.PasswordMismatchException;
  *
  * @author subhash
  */
-public class WizCryptOld extends WizCrypt {
+final class WizCryptOld {
     
     private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
     
+    private static WizCryptOld wco;
+    
+    public static WizCryptOld getInstance(){
+        if(wco == null){
+            wco = new WizCryptOld();
+        }
+        return wco;
+    }
+    
     /** Creates a new instance of WizCryptOld */
-    public WizCryptOld() {
+    private WizCryptOld() {
     }
     
     public void encrypt(final InputStream is, final OutputStream os,

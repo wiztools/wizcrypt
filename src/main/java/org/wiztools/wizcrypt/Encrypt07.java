@@ -48,7 +48,6 @@ public class Encrypt07 implements IProcess{
         
         final boolean forceOverwrite = cpb.getForceOverwrite();
         final boolean keepSource = cpb.getKeepSource();
-        final boolean isOldFormat = cpb.getIsOldFormat();
         
         FileOutputStream fos = null;
         FileInputStream fis = null;
