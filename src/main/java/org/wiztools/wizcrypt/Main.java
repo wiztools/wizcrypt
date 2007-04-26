@@ -328,9 +328,9 @@ public class Main{
             }
             IProcess iprocess = null;
             if(encrypt){
-                iprocess = new Encrypt();
+                iprocess = new Encrypt07();
             } else if(decrypt){
-                iprocess = new Decrypt();
+                iprocess = new Decrypt07();
             }
             
             // Create WizCryptBean object

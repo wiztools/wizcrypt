@@ -28,9 +28,9 @@ import org.wiztools.wizcrypt.exception.PasswordMismatchException;
 /**
  * Class to do the decryption using the WizCrypt naming convention (*.wiz).
  */
-public class Decrypt implements IProcess{
+public class Decrypt07 implements IProcess{
     
-    private static final Logger LOG = Logger.getLogger(Decrypt.class.getName());
+    private static final Logger LOG = Logger.getLogger(Decrypt07.class.getName());
     private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
     
     public void process(final File file, final WizCryptBean wcb,

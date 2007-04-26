@@ -62,7 +62,7 @@ public class CallbackTest {
             File in = new File(PLAIN_FILE);
             File out = new File(System.getProperty("java.io.tmpdir")
                             + File.separator + "logo.png.wiz");
-            IProcess ip = new Encrypt();
+            IProcess ip = new Encrypt07();
             ip.process(in, out, wcb, cpb);
         }
         catch(Exception e){
@@ -81,7 +81,7 @@ public class CallbackTest {
             File in = new File(PLAIN_FILE);
             File out = new File(System.getProperty("java.io.tmpdir")
                             + File.separator + "logo.png.wiz");
-            IProcess ip = new Encrypt();
+            IProcess ip = new Encrypt07();
             ip.process(in, out, wcb, cpb);
         }
         catch(Exception e){
@@ -101,7 +101,7 @@ public class CallbackTest {
                             + File.separator + "logo.png.wiz");
             File out = new File(System.getProperty("java.io.tmpdir")
                             + File.separator + "logo.png");
-            IProcess ip = new Decrypt();
+            IProcess ip = new Decrypt07();
             ip.process(in, out, wcb, cpb);
             // WizCrypt.get07Instance().decrypt(is, os, wcb);
         }
@@ -122,7 +122,7 @@ public class CallbackTest {
                             + File.separator + "logo.png.wiz");
             File out = new File(System.getProperty("java.io.tmpdir")
                             + File.separator + "logo.png");
-            IProcess ip = new Decrypt();
+            IProcess ip = new Decrypt07();
             ip.process(in, out, wcb, cpb);
             // WizCrypt.get07Instance().decrypt(is, os, wcb);
         }

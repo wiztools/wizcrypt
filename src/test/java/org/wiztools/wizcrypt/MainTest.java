@@ -112,7 +112,7 @@ public class MainTest {
         
         // Encryption
         
-        Encrypt e = new Encrypt();
+        Encrypt07 e = new Encrypt07();
         
         try {
             WizCryptBean wcb = new WizCryptBean();
@@ -142,7 +142,7 @@ public class MainTest {
         
         // Decryption
         
-        Decrypt d = new Decrypt();
+        Decrypt07 d = new Decrypt07();
         
         // test for wrong password
 
@@ -170,7 +170,7 @@ public class MainTest {
     
     @Test
     public void fileExistenceTest() throws Exception{
-        Decrypt d = new Decrypt();
+        Decrypt07 d = new Decrypt07();
         try {
             WizCryptBean wcb = new WizCryptBean();
             wcb.setPassword(password.toCharArray());
