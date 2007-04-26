@@ -106,7 +106,7 @@
  generating Key. Key is the exact equivalent of the password
  converted to byte array using UTF-8 encoding.
 
- No IV (Initialization Vector) is used by WizCrypt.
+ Uses ECB mode (no IV [Initialization Vector] is used).
 
 5. AUTHOR
 
