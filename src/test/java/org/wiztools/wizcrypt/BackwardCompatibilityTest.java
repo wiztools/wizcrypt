@@ -118,6 +118,8 @@ public class BackwardCompatibilityTest {
             
             // 4. Compare!
             if(!Arrays.equals(oldHash, newHash)){
+                System.out.println("Encryption fails backward compatibility test!");
+                System.out.println("Length: " + new File(CIPHER_FILE).length() + " / " + outFile.length());
                 Assert.fail("Encryption fails backward compatibility test!");
             }
         }
@@ -151,7 +153,8 @@ public class BackwardCompatibilityTest {
             
             // 4. Compare!
             if(!Arrays.equals(oldHash, newHash)){
-                Assert.fail("Encryption fails backward compatibility test!");
+                System.out.println("Decryption fails backward compatibility test!");
+                Assert.fail("Decryption fails backward compatibility test!");
             }
         }
         catch(Exception e){
