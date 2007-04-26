@@ -17,7 +17,6 @@ public class ParamBean {
     
     private boolean forceOverwrite = false;
     private boolean keepSource = false;
-    private boolean isOldFormat = false;
     private boolean recurseIntoDir = false;
     private boolean verbose = false;
     
@@ -39,14 +38,6 @@ public class ParamBean {
     
     public boolean getKeepSource(){
         return keepSource;
-    }
-    
-    public void setIsOldFormat(final boolean isOldFormat){
-        this.isOldFormat = isOldFormat;
-    }
-    
-    public boolean getIsOldFormat(){
-        return isOldFormat;
     }
     
     public void setRecurseIntoDir(final boolean recurseIntoDir){

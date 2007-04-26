@@ -59,7 +59,6 @@ public class Decrypt07 implements IProcess{
         
         final boolean forceOverwrite = cpb.getForceOverwrite();
         final boolean keepSource = cpb.getKeepSource();
-        final boolean isOldFormat = cpb.getIsOldFormat();
         
         FileInputStream fis = null;
         DataInputStream dis = null;
@@ -88,11 +87,6 @@ public class Decrypt07 implements IProcess{
                 throw new DestinationFileExistsException(
                         MessageFormat.format(rb.getString("err.destination.file.exists"),
                         outFile.getAbsolutePath()));
-            }
-            
-            if(isOldFormat){
-                WizCrypt wc = WizCrypt.getOldInstance();
-                // TODO process, then return
             }
             
             fis = new FileInputStream(file);

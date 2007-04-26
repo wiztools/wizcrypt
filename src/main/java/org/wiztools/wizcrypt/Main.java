@@ -340,7 +340,6 @@ public class Main{
             // Create CliParamBean object
             ParamBean cpb = new ParamBean();
             cpb.setForceOverwrite(forceOverwrite);
-            cpb.setIsOldFormat(oldFormat);
             cpb.setKeepSource(keepSource);
             cpb.setRecurseIntoDir(recurseIntoDir);
             cpb.setVerbose(verbose);
