@@ -41,7 +41,7 @@
 
       +-----------------------+
       |+---------------------+|
-      ||       W C 0 7       || -> Magic number in ASCII
+      ||       W C 0 7       ||
       |+---------------------+|
       |+---------------------+|
       ||       CRC of        ||
@@ -98,10 +98,17 @@
 
 3.2. ENCRYPTED DATA
 
- The data of the source is encrypted using the key and algorithm 
- specified in the previous headers.
+ The data of the source is encrypted using the RC4 algorithm.
 
-4. AUTHOR
+4. Key Generation
+
+ WizCrypt does not use PBE (Password Based Encryption) for
+ generating Key. Key is the exact equivalent of the password
+ converted to byte array using UTF-8 encoding.
+
+ No IV (Initialization Vector) is used by WizCrypt.
+
+5. AUTHOR
 
  This file-format specification is written by SUBHASH CHANDRAN S.
  Address:
