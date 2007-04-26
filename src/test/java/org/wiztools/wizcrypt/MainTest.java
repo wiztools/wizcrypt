@@ -26,6 +26,8 @@ import org.junit.Test;
 import org.wiztools.wizcrypt.exception.DestinationFileExistsException;
 import org.wiztools.wizcrypt.exception.FileFormatException;
 import org.wiztools.wizcrypt.exception.PasswordMismatchException;
+import org.wiztools.wizcrypt.impl.Decrypt07;
+import org.wiztools.wizcrypt.impl.Encrypt07;
 
 /**
  *
