@@ -30,7 +30,7 @@ public class Encrypt07 implements IProcess{
     private static final Logger LOG = Logger.getLogger(Encrypt07.class.getName());
     private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
     
-    public void process(final File inFile, final WizCryptBean wcb, final CliParamBean cpb) 
+    public void process(final File inFile, final WizCryptBean wcb, final ParamBean cpb) 
             throws FileNotFoundException, DestinationFileExistsException, IOException,
             NoSuchAlgorithmException,
             UnsupportedEncodingException,
@@ -39,7 +39,7 @@ public class Encrypt07 implements IProcess{
         process(inFile, null, wcb, cpb);
     }
     
-    public void process(final File file, File outFileTmp, final WizCryptBean wcb, final CliParamBean cpb) 
+    public void process(final File file, File outFileTmp, final WizCryptBean wcb, final ParamBean cpb) 
             throws FileNotFoundException, DestinationFileExistsException, IOException,
             NoSuchAlgorithmException,
             UnsupportedEncodingException,

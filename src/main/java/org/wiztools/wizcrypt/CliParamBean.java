@@ -13,7 +13,7 @@ package org.wiztools.wizcrypt;
  *
  * @author subhash
  */
-public class CliParamBean {
+public class ParamBean {
     
     private boolean forceOverwrite = false;
     private boolean keepSource = false;
@@ -22,7 +22,7 @@ public class CliParamBean {
     private boolean verbose = false;
     
     /** Creates a new instance of CliParamBean */
-    public CliParamBean() {
+    public ParamBean() {
     }
     
     public void setForceOverwrite(final boolean forceOverwrite){

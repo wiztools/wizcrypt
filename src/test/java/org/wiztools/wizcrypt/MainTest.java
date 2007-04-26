@@ -48,7 +48,7 @@ public class MainTest {
     File fin = new File(path);
     File fout = new File(path+".wiz");
     
-    CliParamBean cpb = new CliParamBean();
+    ParamBean cpb = new ParamBean();
     
     private void createFile() throws IOException{
         // Write dummy content into the file

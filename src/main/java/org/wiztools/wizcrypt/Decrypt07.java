@@ -34,7 +34,7 @@ public class Decrypt07 implements IProcess{
     private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
     
     public void process(final File file, final WizCryptBean wcb,
-            final CliParamBean cpb) 
+            final ParamBean cpb) 
             throws FileNotFoundException,
                 DestinationFileExistsException,
                 PasswordMismatchException,
@@ -47,7 +47,7 @@ public class Decrypt07 implements IProcess{
     }
     
     public void process(final File file, File outFile, final WizCryptBean wcb,
-            final CliParamBean cpb) 
+            final ParamBean cpb) 
             throws FileNotFoundException,
                 DestinationFileExistsException,
                 PasswordMismatchException,

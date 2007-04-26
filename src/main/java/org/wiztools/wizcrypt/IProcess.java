@@ -15,7 +15,7 @@ import org.wiztools.wizcrypt.exception.PasswordMismatchException;
 
 public interface IProcess{
     
-    public void process(File file, WizCryptBean wcb, CliParamBean cpb)
+    public void process(File file, WizCryptBean wcb, ParamBean cpb)
     throws IOException,
             FileNotFoundException,
             DestinationFileExistsException,
@@ -26,7 +26,7 @@ public interface IProcess{
             InvalidKeyException,
             NoSuchPaddingException;
     
-    public void process(File file, File outFile, WizCryptBean wcb, CliParamBean cpb)
+    public void process(File file, File outFile, WizCryptBean wcb, ParamBean cpb)
     throws IOException,
             FileNotFoundException,
             DestinationFileExistsException,
