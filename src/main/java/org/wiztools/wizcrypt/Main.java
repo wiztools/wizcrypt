@@ -203,7 +203,7 @@ public class Main{
     private void process(final IProcess iprocess,
             final File f,
             final WizCryptBean wcb,
-            final CliParamBean cpb)
+            final ParamBean cpb)
             throws NoSuchAlgorithmException,
                 InvalidKeyException,
                 NoSuchPaddingException{
@@ -338,7 +338,7 @@ public class Main{
             wcb.setPassword(pwd);
             
             // Create CliParamBean object
-            CliParamBean cpb = new CliParamBean();
+            ParamBean cpb = new ParamBean();
             cpb.setForceOverwrite(forceOverwrite);
             cpb.setIsOldFormat(oldFormat);
             cpb.setKeepSource(keepSource);

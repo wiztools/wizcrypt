@@ -30,7 +30,7 @@ public class CallbackTest {
     private static final String PLAIN_FILE = "src/test/resources/logo.png";
     private static final String CIPHER_FILE = "src/test/resources/logo.png.wiz";
     private static final String PASSWD = "password";
-    private static final CliParamBean cpb = new CliParamBean();
+    private static final ParamBean cpb = new ParamBean();
     
     @Before
     public void setUp() throws Exception {
