@@ -29,10 +29,23 @@ import org.wiztools.wizcrypt.exception.PasswordMismatchException;
 /**
  * Class to do the decryption using the WizCrypt naming convention (*.wiz).
  */
-public class Decrypt07 implements IProcess{
+public final class Decrypt07 extends IProcess{
     
     private static final Logger LOG = Logger.getLogger(Decrypt07.class.getName());
     private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
+    
+    private static Decrypt07 _instance;
+    
+    private Decrypt07(){
+        
+    }
+    
+    public static IProcess getInstance(){
+        if(_instance == null){
+            _instance = new Decrypt07();
+        }
+        return _instance;
+    }
     
     public void process(final File file, final WizCryptBean wcb,
             final ParamBean cpb) 

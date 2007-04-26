@@ -330,9 +330,9 @@ public class Main{
             }
             IProcess iprocess = null;
             if(encrypt){
-                iprocess = new Encrypt07();
+                iprocess = IProcess.getEncryptInstance();
             } else if(decrypt){
-                iprocess = new Decrypt07();
+                iprocess = IProcess.getDecryptInstance();
             }
             
             // Create WizCryptBean object

@@ -22,6 +22,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.Assert;
+import org.wiztools.wizcrypt.impl.DecryptOld;
+import org.wiztools.wizcrypt.impl.EncryptOld;
 
 /**
  * The test works this way:
@@ -98,12 +100,14 @@ public class BackwardCompatibilityTest {
             // 1. Encrypt the file
             WizCryptBean wcb = new WizCryptBean();
             wcb.setPassword(PASSWD.toCharArray());
-            InputStream is = new FileInputStream(PLAIN_FILE);
             File outFile = new File(System.getProperty("java.io.tmpdir") +
                     File.separator + "logo.png.wiz");
-            OutputStream os = new FileOutputStream(outFile);
             
-            WizCrypt.getOldInstance().encrypt(is, os, wcb);
+            IProcess p = EncryptOld.getInstance();
+            ParamBean pb = new ParamBean();
+            pb.setForceOverwrite(true);
+            pb.setKeepSource(true);
+            p.process(new File(PLAIN_FILE), outFile, wcb, pb);
             System.out.println("Encrypt step completed...");
             
             // 2. Hash for encrypted file
@@ -130,12 +134,14 @@ public class BackwardCompatibilityTest {
             // 1. Decrypt the file
             WizCryptBean wcb = new WizCryptBean();
             wcb.setPassword(PASSWD.toCharArray());
-            InputStream is = new FileInputStream(CIPHER_FILE);
             File outFile = new File(System.getProperty("java.io.tmpdir") +
                     File.separator + "logo.png");
-            OutputStream os = new FileOutputStream(outFile);
             
-            WizCrypt.getOldInstance().decrypt(is, os, wcb);
+            IProcess p = DecryptOld.getInstance();
+            ParamBean pb = new ParamBean();
+            pb.setForceOverwrite(true);
+            pb.setKeepSource(true);
+            p.process(new File(CIPHER_FILE), outFile, wcb, pb);
             
             // 2. Hash for decrypted file
             byte[] newHash = fileHash(outFile);

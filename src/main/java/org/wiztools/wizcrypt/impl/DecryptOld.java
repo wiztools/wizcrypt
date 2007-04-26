@@ -35,13 +35,22 @@ import org.wiztools.wizcrypt.exception.PasswordMismatchException;
  *
  * @author schandran
  */
-public class DecryptOld implements IProcess {
+public final class DecryptOld extends IProcess {
     
     private static final Logger LOG = Logger.getLogger(DecryptOld.class.getName());
     private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
     
-    /** Creates a new instance of DecryptOld */
-    public DecryptOld() {
+    private static DecryptOld _instance;
+    
+    private DecryptOld(){
+        
+    }
+    
+    public static IProcess getInstance(){
+        if(_instance == null){
+            _instance = new DecryptOld();
+        }
+        return _instance;
     }
 
     public void process(File file, WizCryptBean wcb, ParamBean cpb) throws IOException, FileNotFoundException, DestinationFileExistsException, FileFormatException, PasswordMismatchException, NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException, NoSuchPaddingException {

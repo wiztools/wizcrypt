@@ -22,7 +22,6 @@ import javax.crypto.CipherOutputStream;
 import javax.crypto.NoSuchPaddingException;
 import org.wiztools.wizcrypt.Callback;
 import org.wiztools.wizcrypt.CipherHashGen;
-import org.wiztools.wizcrypt.WizCrypt;
 import org.wiztools.wizcrypt.WizCryptAlgorithms;
 import org.wiztools.wizcrypt.WizCryptBean;
 import org.wiztools.wizcrypt.exception.FileFormatException;
