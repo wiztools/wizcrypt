@@ -25,9 +25,9 @@ import org.wiztools.wizcrypt.exception.DestinationFileExistsException;
 /**
  * Class to do the encryption using the WizCrypt naming convention (*.wiz).
  */
-public class Encrypt implements IProcess{
+public class Encrypt07 implements IProcess{
     
-    private static final Logger LOG = Logger.getLogger(Encrypt.class.getName());
+    private static final Logger LOG = Logger.getLogger(Encrypt07.class.getName());
     private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
     
     public void process(final File inFile, final WizCryptBean wcb, final CliParamBean cpb) 
