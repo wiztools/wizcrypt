@@ -26,10 +26,23 @@ import org.wiztools.wizcrypt.exception.DestinationFileExistsException;
 /**
  * Class to do the encryption using the WizCrypt naming convention (*.wiz).
  */
-public class Encrypt07 implements IProcess{
+public final class Encrypt07 extends IProcess{
     
     private static final Logger LOG = Logger.getLogger(Encrypt07.class.getName());
     private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
+    
+    private static Encrypt07 _instance;
+    
+    private Encrypt07(){
+        
+    }
+    
+    public static IProcess getInstance(){
+        if(_instance == null){
+            _instance = new Encrypt07();
+        }
+        return _instance;
+    }
     
     public void process(final File inFile, final WizCryptBean wcb, final ParamBean cpb) 
             throws FileNotFoundException, DestinationFileExistsException, IOException,

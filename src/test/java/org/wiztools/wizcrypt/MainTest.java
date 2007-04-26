@@ -75,7 +75,6 @@ public class MainTest {
         }
         
         cpb.setForceOverwrite(true);
-        cpb.setIsOldFormat(false);
         cpb.setKeepSource(true);
         
         fin.deleteOnExit();
@@ -114,7 +113,7 @@ public class MainTest {
         
         // Encryption
         
-        Encrypt07 e = new Encrypt07();
+        IProcess e = Encrypt07.getInstance();
         
         try {
             WizCryptBean wcb = new WizCryptBean();
@@ -144,7 +143,7 @@ public class MainTest {
         
         // Decryption
         
-        Decrypt07 d = new Decrypt07();
+        IProcess d = Decrypt07.getInstance();
         
         // test for wrong password
 
@@ -172,7 +171,7 @@ public class MainTest {
     
     @Test
     public void fileExistenceTest() throws Exception{
-        Decrypt07 d = new Decrypt07();
+        IProcess d = Decrypt07.getInstance();
         try {
             WizCryptBean wcb = new WizCryptBean();
             wcb.setPassword(password.toCharArray());
