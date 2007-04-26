@@ -1,4 +1,4 @@
-package org.wiztools.wizcrypt;
+package org.wiztools.wizcrypt.impl;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -20,6 +20,7 @@ import java.io.FileOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.FileNotFoundException;
+import org.wiztools.wizcrypt.*;
 import org.wiztools.wizcrypt.exception.DestinationFileExistsException;
 
 /**

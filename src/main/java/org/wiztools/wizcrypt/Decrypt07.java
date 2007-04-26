@@ -1,4 +1,4 @@
-package org.wiztools.wizcrypt;
+package org.wiztools.wizcrypt.impl;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.FileNotFoundException;
 
 import java.util.ResourceBundle;
+import org.wiztools.wizcrypt.*;
 import org.wiztools.wizcrypt.exception.DestinationFileExistsException;
 import org.wiztools.wizcrypt.exception.FileFormatException;
 import org.wiztools.wizcrypt.exception.PasswordMismatchException;
