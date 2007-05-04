@@ -24,7 +24,6 @@ import org.wiztools.wizcrypt.Callback;
 import org.wiztools.wizcrypt.CipherHashGen;
 import org.wiztools.wizcrypt.WizCryptAlgorithms;
 import org.wiztools.wizcrypt.WizCryptBean;
-import org.wiztools.wizcrypt.exception.FileFormatException;
 import org.wiztools.wizcrypt.exception.PasswordMismatchException;
 
 /**
@@ -103,7 +102,7 @@ final class WizCryptOld {
     
     public void decrypt(final InputStream is, final OutputStream os,
             final WizCryptBean wcb)
-            throws IOException, PasswordMismatchException, FileFormatException, NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException{
+            throws IOException, PasswordMismatchException, NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException{
         
         CipherOutputStream cos = null;
         Callback cb = wcb.getCallback();
@@ -113,7 +112,7 @@ final class WizCryptOld {
             byte[] passKeyHash = CipherHashGen.getPasswordMD5Hash(pwd);
             
             Cipher cipher = CipherHashGen.getCipherForDecrypt(pwd, WizCryptAlgorithms.CRYPT_ALGO_RC4);
-
+            
             if(cb != null){
                 cb.begin();
             }

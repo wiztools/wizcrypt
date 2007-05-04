@@ -16,7 +16,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.InvalidKeyException;
 
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.FileNotFoundException;
@@ -44,8 +43,8 @@ public final class Encrypt07 extends IProcess{
         return _instance;
     }
     
-    public void process(final File inFile, final WizCryptBean wcb, final ParamBean cpb) 
-            throws FileNotFoundException, DestinationFileExistsException, IOException,
+    public void process(final File inFile, final WizCryptBean wcb, final ParamBean cpb)
+    throws FileNotFoundException, DestinationFileExistsException, IOException,
             NoSuchAlgorithmException,
             UnsupportedEncodingException,
             InvalidKeyException,
@@ -53,8 +52,8 @@ public final class Encrypt07 extends IProcess{
         process(inFile, null, wcb, cpb);
     }
     
-    public void process(final File file, File outFileTmp, final WizCryptBean wcb, final ParamBean cpb) 
-            throws FileNotFoundException, DestinationFileExistsException, IOException,
+    public void process(final File file, File outFileTmp, final WizCryptBean wcb, final ParamBean cpb)
+    throws FileNotFoundException, DestinationFileExistsException, IOException,
             NoSuchAlgorithmException,
             UnsupportedEncodingException,
             InvalidKeyException,
@@ -63,7 +62,6 @@ public final class Encrypt07 extends IProcess{
         final boolean forceOverwrite = cpb.getForceOverwrite();
         final boolean keepSource = cpb.getKeepSource();
         
-        FileOutputStream fos = null;
         FileInputStream fis = null;
         boolean canDelete = false;
         RandomAccessFile outFile = null;
@@ -113,7 +111,7 @@ public final class Encrypt07 extends IProcess{
             // Leave space for header CRC
             outFile.writeLong(0);
             crcHeaderSkipLen += 8; // Long takes 8 bytes
-
+            
             cis = new CipherInputStream(fis, CipherHashGen.getCipherForEncrypt(pwd, WizCryptAlgorithms.CRYPT_ALGO_RC4));
             
             // Write password hash
@@ -140,8 +138,7 @@ public final class Encrypt07 extends IProcess{
                 if(cb != null){
                     if(sizeOfStream == -1){
                         cb.notifyProgress(readSize);
-                    }
-                    else{
+                    } else{
                         cb.notifyProgress(readSize * 100 / sizeOfStream);
                     }
                 }
@@ -172,8 +169,7 @@ public final class Encrypt07 extends IProcess{
             }
             
             isSuccessful = true;
-        }
-        finally{
+        } finally{
             try{
                 if(cis != null){
                     cis.close();
@@ -187,8 +183,7 @@ public final class Encrypt07 extends IProcess{
             if(outFile != null){
                 try{
                     outFile.close();
-                }
-                catch(IOException ioe){
+                } catch(IOException ioe){
                     System.err.println(ioe.getMessage());
                 }
             }

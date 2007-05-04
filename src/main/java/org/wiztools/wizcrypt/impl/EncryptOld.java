@@ -12,7 +12,6 @@ package org.wiztools.wizcrypt.impl;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
@@ -28,7 +27,6 @@ import org.wiztools.wizcrypt.IProcess;
 import org.wiztools.wizcrypt.ParamBean;
 import org.wiztools.wizcrypt.WizCryptBean;
 import org.wiztools.wizcrypt.exception.DestinationFileExistsException;
-import org.wiztools.wizcrypt.exception.FileFormatException;
 import org.wiztools.wizcrypt.exception.PasswordMismatchException;
 
 /**
@@ -52,21 +50,18 @@ public final class EncryptOld extends IProcess {
         }
         return _instance;
     }
-
-    public void process(final File inFile, final WizCryptBean wcb, final ParamBean cpb) throws IOException, FileNotFoundException, DestinationFileExistsException, FileFormatException, PasswordMismatchException, NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException, NoSuchPaddingException {
+    
+    public void process(final File inFile, final WizCryptBean wcb, final ParamBean cpb) throws IOException, FileNotFoundException, DestinationFileExistsException, PasswordMismatchException, NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException, NoSuchPaddingException {
         process(inFile, null, wcb, cpb);
     }
-
-    public void process(final File file, File outFileTmp, final WizCryptBean wcb, final ParamBean cpb) throws IOException, FileNotFoundException, DestinationFileExistsException, FileFormatException, PasswordMismatchException, NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException, NoSuchPaddingException {
+    
+    public void process(final File file, File outFileTmp, final WizCryptBean wcb, final ParamBean cpb) throws IOException, FileNotFoundException, DestinationFileExistsException, PasswordMismatchException, NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException, NoSuchPaddingException {
         final boolean forceOverwrite = cpb.getForceOverwrite();
         final boolean keepSource = cpb.getKeepSource();
         
-        FileOutputStream fos = null;
-        FileInputStream fis = null;
         boolean canDelete = false;
         RandomAccessFile outFile = null;
         
-        CipherInputStream cis = null;
         Callback cb = wcb.getCallback();
         
         // This variable should be set to true after successful processing of
@@ -82,7 +77,6 @@ public final class EncryptOld extends IProcess {
                         MessageFormat.format(rb.getString("err.destination.file.exists"),
                         outFileTmp.getAbsolutePath()));
             }
-            fis = new FileInputStream(file);
             
             outFile = new RandomAccessFile(outFileTmp, "rw");
             if(!keepSource){
@@ -90,23 +84,14 @@ public final class EncryptOld extends IProcess {
             }
             
             isSuccessful = true;
-        }
-        finally{
-            try{
-                if(cis != null){
-                    cis.close();
-                }
-            } catch(IOException ioe){
-                System.err.println(ioe.getMessage());
-            }
+        } finally{
             if(cb != null){
                 cb.end();
             }
             if(outFile != null){
                 try{
                     outFile.close();
-                }
-                catch(IOException ioe){
+                } catch(IOException ioe){
                     System.err.println(ioe.getMessage());
                 }
             }

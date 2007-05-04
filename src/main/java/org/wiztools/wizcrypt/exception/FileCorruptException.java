@@ -18,12 +18,17 @@ public class FileCorruptException extends Exception {
     public static final int HEADER_CRC_ERROR = 1;
     public static final int DATA_CRC_ERROR = 2;
     public static final int FILE_TRUNCATED = 3;
+    public static final int FILE_MAGIC_NUMBER_ERROR = 4;
     
     private int type;
     
     /** Creates a new instance of FileCorruptException */
     public FileCorruptException(final int type) {
         this.type = type;
+    }
+    
+    public int getErrorType(){
+        return type;
     }
     
 }

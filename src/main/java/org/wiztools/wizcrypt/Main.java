@@ -25,7 +25,7 @@ import java.io.File;
 import java.util.ResourceBundle;
 import org.wiztools.wizcrypt.exception.ConsoleNotAvailableException;
 import org.wiztools.wizcrypt.exception.DestinationFileExistsException;
-import org.wiztools.wizcrypt.exception.FileFormatException;
+import org.wiztools.wizcrypt.exception.FileCorruptException;
 import org.wiztools.wizcrypt.exception.PasswordMismatchException;
 import org.wiztools.wizcrypt.impl.Decrypt07;
 import org.wiztools.wizcrypt.impl.Encrypt07;
@@ -64,57 +64,57 @@ public class Main{
     private Options generateOptions(){
         Options options = new Options();
         Option option = OptionBuilder.withLongOpt("password")
-                .hasOptionalArg()
-                .isRequired(false)
-                .withDescription(rb.getString("msg.password"))
-                .create('p');
+        .hasOptionalArg()
+        .isRequired(false)
+        .withDescription(rb.getString("msg.password"))
+        .create('p');
         options.addOption(option);
         option = OptionBuilder.withLongOpt("encrypt")
-                .isRequired(false)
-                .withDescription(rb.getString("msg.encrypt"))
-                .create('e');
+        .isRequired(false)
+        .withDescription(rb.getString("msg.encrypt"))
+        .create('e');
         options.addOption(option);
         option = OptionBuilder.withLongOpt("decrypt")
-                .isRequired(false)
-                .withDescription(rb.getString("msg.decrypt"))
-                .create('d');
+        .isRequired(false)
+        .withDescription(rb.getString("msg.decrypt"))
+        .create('d');
         options.addOption(option);
         option = OptionBuilder.withLongOpt("help")
-                .isRequired(false)
-                .withDescription(rb.getString("msg.help"))
-                .create('h');
+        .isRequired(false)
+        .withDescription(rb.getString("msg.help"))
+        .create('h');
         options.addOption(option);
         option = OptionBuilder.withLongOpt("version")
-                .isRequired(false)
-                .withDescription(rb.getString("msg.version"))
-                .create();
+        .isRequired(false)
+        .withDescription(rb.getString("msg.version"))
+        .create();
         options.addOption(option);
         option = OptionBuilder.withLongOpt("verbose")
-                .isRequired(false)
-                .withDescription(rb.getString("msg.verbose"))
-                .create('v');
+        .isRequired(false)
+        .withDescription(rb.getString("msg.verbose"))
+        .create('v');
         options.addOption(option);
         option = OptionBuilder.withLongOpt("force-overwrite")
-                .isRequired(false)
-                .withDescription(rb.getString("msg.force.overwrite"))
-                .create('f');
+        .isRequired(false)
+        .withDescription(rb.getString("msg.force.overwrite"))
+        .create('f');
         options.addOption(option);
         option = OptionBuilder.withLongOpt("keep")
-                .isRequired(false)
-                .withDescription(rb.getString("msg.keep"))
-                .create('k');
+        .isRequired(false)
+        .withDescription(rb.getString("msg.keep"))
+        .create('k');
         options.addOption(option);
         option = OptionBuilder.withLongOpt("old-format")
-                .isRequired(false)
-                .withDescription(rb.getString("msg.old.format"))
-                .create('o');
+        .isRequired(false)
+        .withDescription(rb.getString("msg.old.format"))
+        .create('o');
         options.addOption(option);
         option = OptionBuilder.withLongOpt("recursive")
-                .isRequired(false)
-                .withDescription(rb.getString("msg.recursive"))
-                .create('r');
+        .isRequired(false)
+        .withDescription(rb.getString("msg.recursive"))
+        .create('r');
         options.addOption(option);
-
+        
         return options;
     }
     
@@ -142,7 +142,7 @@ public class Main{
     }
     
     private char[] getConsolePassword(String msg) throws PasswordMismatchException,
-                    ConsoleNotAvailableException{
+            ConsoleNotAvailableException{
         Console cons = System.console();
         if(cons == null){
             throw new ConsoleNotAvailableException();
@@ -152,17 +152,17 @@ public class Main{
         if(passwd == null){
             throw new PasswordMismatchException(rb.getString("err.no.pwd"));
         }
-
+        
         return passwd;
     }
     
     private char[] getConsolePassword() throws PasswordMismatchException,
-                    ConsoleNotAvailableException{
+            ConsoleNotAvailableException{
         return getConsolePassword(rb.getString("msg.interactive.password"));
     }
     
     private char[] getConsolePasswordVerify() throws PasswordMismatchException,
-                    ConsoleNotAvailableException{
+            ConsoleNotAvailableException{
         char[] passwd = getConsolePassword(rb.getString("msg.interactive.password"));
         char[] passwd_retype = getConsolePassword(rb.getString("msg.interactive.password.again"));
         if(!Arrays.equals(passwd, passwd_retype)){
@@ -207,8 +207,8 @@ public class Main{
             final WizCryptBean wcb,
             final ParamBean cpb)
             throws NoSuchAlgorithmException,
-                InvalidKeyException,
-                NoSuchPaddingException{
+            InvalidKeyException,
+            NoSuchPaddingException{
         boolean verbose = cpb.getVerbose();
         boolean recursive = cpb.getRecurseIntoDir();
         if(f.isDirectory()){
@@ -216,21 +216,19 @@ public class Main{
                 for(File ff: f.listFiles()){
                     process(iprocess, ff, wcb, cpb);
                 }
-            }
-            else{
+            } else{
                 System.err.println(MessageFormat.format(
                         rb.getString("err.is.dir"),
                         f.getAbsolutePath()));
             }
-        }
-        else{
+        } else{
             try{
                 iprocess.process(f, wcb, cpb);
                 if(verbose){
                     System.out.println(
                             MessageFormat.format(
-                                rb.getString("msg.verbose.success"),
-                                f.getAbsolutePath()));
+                            rb.getString("msg.verbose.success"),
+                            f.getAbsolutePath()));
                 }
             } catch(DestinationFileExistsException dfe){
                 DEST_FILE_EXISTS = true;
@@ -240,12 +238,22 @@ public class Main{
                 String msg = rb.getString("err.pwd.not.match");
                 msg = MessageFormat.format(msg, f.getAbsolutePath());
                 System.err.println(msg);
-            } catch(FileFormatException ffe){
-                String msg = rb.getString("err.file.format");
+            } catch(FileCorruptException ex){
+                int code = ex.getErrorType();
+                String msg = null;
+                if(code == FileCorruptException.FILE_TRUNCATED){
+                    msg = rb.getString("err.file.corrupt.truncated");
+                } else if(code == FileCorruptException.HEADER_CRC_ERROR){
+                    msg = rb.getString("err.file.corrupt.header.crc");
+                } else if(code == FileCorruptException.DATA_CRC_ERROR){
+                    msg = rb.getString("err.file.corrupt.data.crc");
+                } else if(code == FileCorruptException.FILE_MAGIC_NUMBER_ERROR){
+                    msg = rb.getString("err.file.corrupt.magicnumber");
+                }
                 System.err.println(msg);
-            } catch(IOException ioe){
+            } catch(IOException ex){
                 IO_EXCEPTION = true;
-                System.err.println(ioe.getMessage());
+                System.err.println(ex.getMessage());
             }
         }
     }
@@ -253,10 +261,9 @@ public class Main{
     public void process(String[] arg){
         try{
             LogManager.getLogManager().readConfiguration(
-                Main.class.getClassLoader()
-                .getResourceAsStream("org/wiztools/wizcrypt/logging.properties"));
-        }
-        catch(IOException ioe){
+                    Main.class.getClassLoader()
+                    .getResourceAsStream("org/wiztools/wizcrypt/logging.properties"));
+        } catch(IOException ioe){
             assert true: "Logger configuration load failed!";
         }
         
@@ -269,7 +276,7 @@ public class Main{
             boolean oldFormat = false;
             boolean keepSource = false;
             boolean recurseIntoDir = false;
-
+            
             CommandLineParser parser = new GnuParser();
             CommandLine cmd = parser.parse(options, arg);
             if(cmd.hasOption('h')){
@@ -320,8 +327,7 @@ public class Main{
                 String pwdStr = cmd.getOptionValue('p');
                 if(pwdStr == null){
                     pwd = encrypt ? getConsolePasswordVerify() : getConsolePassword();
-                }
-                else{
+                } else{
                     pwd = pwdStr.toCharArray();
                 }
                 
@@ -377,5 +383,5 @@ public class Main{
         m.process(arg);
         System.exit(m.getExitStatus());
     }
-
+    
 }
