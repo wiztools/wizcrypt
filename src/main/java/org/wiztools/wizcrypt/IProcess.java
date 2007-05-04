@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 import org.wiztools.wizcrypt.exception.DestinationFileExistsException;
-import org.wiztools.wizcrypt.exception.FileFormatException;
+import org.wiztools.wizcrypt.exception.FileCorruptException;
 import org.wiztools.wizcrypt.exception.PasswordMismatchException;
 import org.wiztools.wizcrypt.impl.Decrypt07;
 import org.wiztools.wizcrypt.impl.DecryptOld;
@@ -61,7 +61,7 @@ public abstract class IProcess{
     throws IOException,
             FileNotFoundException,
             DestinationFileExistsException,
-            FileFormatException,
+            FileCorruptException,
             PasswordMismatchException,
             NoSuchAlgorithmException,
             UnsupportedEncodingException,
@@ -72,7 +72,7 @@ public abstract class IProcess{
     throws IOException,
             FileNotFoundException,
             DestinationFileExistsException,
-            FileFormatException,
+            FileCorruptException,
             PasswordMismatchException,
             NoSuchAlgorithmException,
             UnsupportedEncodingException,

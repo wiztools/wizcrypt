@@ -24,7 +24,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.wiztools.wizcrypt.exception.DestinationFileExistsException;
-import org.wiztools.wizcrypt.exception.FileFormatException;
+import org.wiztools.wizcrypt.exception.FileCorruptException;
 import org.wiztools.wizcrypt.exception.PasswordMismatchException;
 import org.wiztools.wizcrypt.impl.Decrypt07;
 import org.wiztools.wizcrypt.impl.Encrypt07;
@@ -162,7 +162,7 @@ public class MainTest {
             // should be visited here;
             // create deleted file:
             createFile();
-        } catch(FileFormatException ffe){
+        } catch(FileCorruptException ffe){
             ffe.printStackTrace();
             LOG.severe(ffe.getMessage());
             Assert.fail(ffe.getMessage());
@@ -190,7 +190,7 @@ public class MainTest {
                 ex.printStackTrace();
                 LOG.severe(ex.getMessage());
                 Assert.fail(ex.getMessage());
-            } catch(FileFormatException ffe){
+            } catch(FileCorruptException ffe){
                 ffe.printStackTrace();
                 LOG.severe(ffe.getMessage());
                 Assert.fail(ffe.getMessage());
@@ -202,7 +202,7 @@ public class MainTest {
                 ex.printStackTrace();
                 LOG.severe(ex.getMessage());
                 Assert.fail(ex.getMessage());
-            } catch(FileFormatException ffe){
+            } catch(FileCorruptException ffe){
                 ffe.printStackTrace();
                 LOG.severe(ffe.getMessage());
                 Assert.fail(ffe.getMessage());

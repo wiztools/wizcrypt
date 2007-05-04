@@ -23,7 +23,7 @@ import java.io.FileNotFoundException;
 import java.util.ResourceBundle;
 import org.wiztools.wizcrypt.*;
 import org.wiztools.wizcrypt.exception.DestinationFileExistsException;
-import org.wiztools.wizcrypt.exception.FileFormatException;
+import org.wiztools.wizcrypt.exception.FileCorruptException;
 import org.wiztools.wizcrypt.exception.PasswordMismatchException;
 
 /**
@@ -48,33 +48,33 @@ public final class Decrypt07 extends IProcess{
     }
     
     public void process(final File file, final WizCryptBean wcb,
-            final ParamBean cpb) 
+            final ParamBean cpb)
             throws FileNotFoundException,
-                DestinationFileExistsException,
-                PasswordMismatchException,
-                FileFormatException,
-                IOException,
-                NoSuchAlgorithmException,
-                InvalidKeyException,
-                NoSuchPaddingException{
+            DestinationFileExistsException,
+            PasswordMismatchException,
+            FileCorruptException,
+            IOException,
+            NoSuchAlgorithmException,
+            InvalidKeyException,
+            NoSuchPaddingException{
         process(file, null, wcb, cpb);
     }
     
     public void process(final File file, File outFile, final WizCryptBean wcb,
-            final ParamBean cpb) 
+            final ParamBean cpb)
             throws FileNotFoundException,
-                DestinationFileExistsException,
-                PasswordMismatchException,
-                FileFormatException,
-                IOException,
-                NoSuchAlgorithmException,
-                InvalidKeyException,
-                NoSuchPaddingException{
+            DestinationFileExistsException,
+            PasswordMismatchException,
+            FileCorruptException,
+            IOException,
+            NoSuchAlgorithmException,
+            InvalidKeyException,
+            NoSuchPaddingException{
         
         final boolean forceOverwrite = cpb.getForceOverwrite();
         final boolean keepSource = cpb.getKeepSource();
         
-        FileInputStream fis = null;
+        // FileInputStream fis = null;
         DataInputStream dis = null;
         FileOutputStream fos = null;
         boolean canDelete = false;
@@ -103,7 +103,7 @@ public final class Decrypt07 extends IProcess{
                         outFile.getAbsolutePath()));
             }
             
-            fis = new FileInputStream(file);
+            FileInputStream fis = new FileInputStream(file);
             dis = new DataInputStream(fis);
             fos = new FileOutputStream(outFile);
             
@@ -123,10 +123,10 @@ public final class Decrypt07 extends IProcess{
             LOG.fine("Magic number read: " + new String(magicNumber));
             if(!Arrays.equals(versionStr, magicNumber)){
                 LOG.fine("Magic number does not match. . .");
-                throw new FileFormatException();
+                throw new FileCorruptException(FileCorruptException.FILE_MAGIC_NUMBER_ERROR);
             }
             if(bytesRead < versionByteLen){
-                // TODO throw exception
+                throw new FileCorruptException(FileCorruptException.FILE_TRUNCATED);
             }
             LOG.finest("magicNumber: "+new String(magicNumber));
             
@@ -146,7 +146,7 @@ public final class Decrypt07 extends IProcess{
             bytesRead = dis.read(filePassKeyHash, 0, LEN_OF_PWD_HASH);
             headerOS.write(filePassKeyHash, 0, bytesRead);
             if(bytesRead < LEN_OF_PWD_HASH){
-                // TODO throw exception
+                throw new FileCorruptException(FileCorruptException.FILE_TRUNCATED);
             }
             
             byte[] passKeyHash = CipherHashGen.getPasswordSha256Hash(pwd);
@@ -168,7 +168,7 @@ public final class Decrypt07 extends IProcess{
             long computedHeaderCRC = checksumEngine.getValue();
             if(computedHeaderCRC != headerCRC){
                 LOG.severe("computed/header CRC: " + computedHeaderCRC + " / " + headerCRC);
-                throw new FileFormatException(); // TODO define CRC exception
+                throw new FileCorruptException(FileCorruptException.HEADER_CRC_ERROR);
             }
             LOG.info("***Computed and actual header CRC matches!!***");
             
@@ -184,7 +184,7 @@ public final class Decrypt07 extends IProcess{
                 
                 boolean shouldBreak = false;
                 if(readSize > dataLen){
-                    LOG.fine("readSize/dataLen/diff: " + readSize + "/" 
+                    LOG.fine("readSize/dataLen/diff: " + readSize + "/"
                             + dataLen + "/" + (readSize-dataLen));
                     LOG.warning("Bytes above the recorded data is ignored!");
                     i = i - (int)(readSize - dataLen);
@@ -197,8 +197,7 @@ public final class Decrypt07 extends IProcess{
                 if(cb != null){
                     if(sizeOfStream == -1){
                         cb.notifyProgress(readSize);
-                    }
-                    else{
+                    } else{
                         cb.notifyProgress(readSize * 100 / sizeOfStream);
                     }
                 }
@@ -213,18 +212,17 @@ public final class Decrypt07 extends IProcess{
             LOG.info("Computed CRC: " + checksumEngine.getValue());
             
             if(dataCRC != checksumEngine.getValue()){
-                throw new FileFormatException(); // TODO i18n msg
+                throw new FileCorruptException(FileCorruptException.DATA_CRC_ERROR);
             }
             
             //***end decryption
-
+            
             if(!keepSource){
                 canDelete = true;
             }
             
             isSuccessful = true;
-        }
-        finally{
+        } finally{
             try{
                 if(cos != null){
                     cos.close();
@@ -233,8 +231,8 @@ public final class Decrypt07 extends IProcess{
                 System.err.println(ioe.getMessage());
             }
             try{
-                if(fis != null){
-                    fis.close();
+                if(dis != null){
+                    dis.close();
                 }
             } catch(IOException ioe){
                 System.err.println(ioe.getMessage());
