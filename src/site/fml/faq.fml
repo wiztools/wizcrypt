@@ -14,10 +14,8 @@
       <question>Can I decrypt a file I encrypted using a older version of WizCrypt?</question>
       <answer>
         <p>
-	The encryption algorithm and the file-format used by every version of WizCrypt is the same. In 
-	addition, every version of WizCrypt is tested for decrypting the 
-	oldest-released-version-encrypted-file. This is one of our design-decisions: WizCrypt will always 
-	be able to decrypt earlier-version-encrypted-files.
+	No. The pre-3.x version file formats were not designed for reliability. Version 3.0 onwards we support
+        backward compatibility (that is, any version above 3.x will support backward compatibility till version 3.0).
         </p>
       </answer>
     </faq>

@@ -13,9 +13,7 @@ import org.wiztools.wizcrypt.exception.DestinationFileExistsException;
 import org.wiztools.wizcrypt.exception.FileCorruptException;
 import org.wiztools.wizcrypt.exception.PasswordMismatchException;
 import org.wiztools.wizcrypt.impl.Decrypt07;
-import org.wiztools.wizcrypt.impl.DecryptOld;
 import org.wiztools.wizcrypt.impl.Encrypt07;
-import org.wiztools.wizcrypt.impl.EncryptOld;
 
 public abstract class IProcess{
     
@@ -39,9 +37,6 @@ public abstract class IProcess{
         if(VERSION_07.equals(ver)){
             p = Encrypt07.getInstance();
         }
-        else if(VERSION_OLD.equals(ver)){
-            p = EncryptOld.getInstance();
-        }
         return p;
     }
     
@@ -50,9 +45,6 @@ public abstract class IProcess{
         IProcess p = null;
         if(VERSION_07.equals(ver)){
             p = Decrypt07.getInstance();
-        }
-        else if(VERSION_OLD.equals(ver)){
-            p = DecryptOld.getInstance();
         }
         return p;
     }
