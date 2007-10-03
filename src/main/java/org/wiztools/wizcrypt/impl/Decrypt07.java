@@ -47,6 +47,7 @@ public final class Decrypt07 extends IProcess{
         return _instance;
     }
     
+    @Override
     public void process(final File file, final WizCryptBean wcb,
             final ParamBean cpb)
             throws FileNotFoundException,
@@ -60,6 +61,7 @@ public final class Decrypt07 extends IProcess{
         process(file, null, wcb, cpb);
     }
     
+    @Override
     public void process(final File file, File outFile, final WizCryptBean wcb,
             final ParamBean cpb)
             throws FileNotFoundException,

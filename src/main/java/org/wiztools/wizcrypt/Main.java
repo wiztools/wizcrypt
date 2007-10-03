@@ -27,8 +27,6 @@ import org.wiztools.wizcrypt.exception.ConsoleNotAvailableException;
 import org.wiztools.wizcrypt.exception.DestinationFileExistsException;
 import org.wiztools.wizcrypt.exception.FileCorruptException;
 import org.wiztools.wizcrypt.exception.PasswordMismatchException;
-import org.wiztools.wizcrypt.impl.Decrypt07;
-import org.wiztools.wizcrypt.impl.Encrypt07;
 
 /**
  * The class which does the commandline parsing the calls the public APIs to encrypt/decrypt.
@@ -104,10 +102,6 @@ public class Main{
         .withDescription(rb.getString("msg.keep"))
         .create('k');
         options.addOption(option);
-        option = OptionBuilder.withLongOpt("old-format")
-        .isRequired(false)
-        .withDescription(rb.getString("msg.old.format"))
-        .create('o');
         options.addOption(option);
         option = OptionBuilder.withLongOpt("recursive")
         .isRequired(false)
@@ -273,7 +267,6 @@ public class Main{
             boolean decrypt = false;
             boolean forceOverwrite = false;
             boolean verbose = false;
-            boolean oldFormat = false;
             boolean keepSource = false;
             boolean recurseIntoDir = false;
             
@@ -306,9 +299,6 @@ public class Main{
             }
             if(cmd.hasOption('d')){
                 decrypt = true;
-            }
-            if(cmd.hasOption('o')){
-                oldFormat = true;
             }
             if(cmd.hasOption('k')){
                 keepSource = true;
