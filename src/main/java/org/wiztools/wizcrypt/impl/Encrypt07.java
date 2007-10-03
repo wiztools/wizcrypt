@@ -43,6 +43,7 @@ public final class Encrypt07 extends IProcess{
         return _instance;
     }
     
+    @Override
     public void process(final File inFile, final WizCryptBean wcb, final ParamBean cpb)
     throws FileNotFoundException, DestinationFileExistsException, IOException,
             NoSuchAlgorithmException,
@@ -52,6 +53,7 @@ public final class Encrypt07 extends IProcess{
         process(inFile, null, wcb, cpb);
     }
     
+    @Override
     public void process(final File file, File outFileTmp, final WizCryptBean wcb, final ParamBean cpb)
     throws FileNotFoundException, DestinationFileExistsException, IOException,
             NoSuchAlgorithmException,
