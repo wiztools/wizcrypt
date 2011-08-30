@@ -121,7 +121,8 @@ public class Main{
     }
     
     private void printVersionInfo(){
-        InputStream is = this.getClass().getClassLoader().getResourceAsStream("org/wiztools/wizcrypt/VERSION");
+        InputStream is = this.getClass().getClassLoader()
+                .getResourceAsStream("org/wiztools/wizcrypt/VERSION");
         try{
             int i = -1;
             byte[] buffer = new byte[0xFFFF];
@@ -157,10 +158,14 @@ public class Main{
     
     private char[] getConsolePasswordVerify() throws PasswordMismatchException,
             ConsoleNotAvailableException{
-        char[] passwd = getConsolePassword(rb.getString("msg.interactive.password"));
-        char[] passwd_retype = getConsolePassword(rb.getString("msg.interactive.password.again"));
+        char[] passwd = getConsolePassword(
+                rb.getString("msg.interactive.password"));
+        char[] passwd_retype = getConsolePassword(
+                rb.getString("msg.interactive.password.again"));
+        
         if(!Arrays.equals(passwd, passwd_retype)){
-            throw new PasswordMismatchException(rb.getString("err.interactive.pwd.not.match"));
+            throw new PasswordMismatchException(
+                    rb.getString("err.interactive.pwd.not.match"));
         }
         return passwd;
     }
@@ -346,23 +351,25 @@ public class Main{
                 File f = new File(args[i]);
                 process(iprocess, f, wcb, cpb);
             }
-        } catch(ParseException pe){
+        }
+        catch(ParseException pe){
             PARSE_EXCEPTION = true;
             System.err.println(pe.getMessage());
             printCommandLineHelp(options);
-        } catch(ConsoleNotAvailableException cna){
+        }
+        catch(ConsoleNotAvailableException cna){
             CONSOLE_NOT_AVBL_EXCEPTION = true;
             System.err.println(rb.getString("err.console.not.avbl"));
-        } catch(PasswordMismatchException pme){
+        }
+        catch(PasswordMismatchException pme){
             INVALID_PWD = true;
             System.err.println(pme.getMessage());
-        } catch(InvalidKeyException ike){
+        }
+        catch(InvalidKeyException ike){
             INVALID_PWD = true;
             System.err.println(rb.getString("err.invalid.pwd"));
-        } /*catch(UnsupportedEncodingException uee){
-            PWD_ENCODING_EXCEPTION = true;
-            System.err.println(uee.getMessage());
-        }*/ catch(GeneralSecurityException gse){
+        }
+        catch(GeneralSecurityException gse){
             SECURITY_EXCEPTION = true;
             System.err.println(gse.getMessage());
         }
