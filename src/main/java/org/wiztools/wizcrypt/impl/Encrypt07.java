@@ -6,6 +6,7 @@ import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.Adler32;
 import java.util.zip.Checksum;
@@ -106,7 +107,7 @@ public final class Encrypt07 extends IProcess{
             
             // Write the file-format magic number
             byte[] versionStr = FileFormatVersion.WC07.getBytes(WizCryptAlgorithms.STR_ENCODE);
-            LOG.fine("Length of bytearray containing version: "+versionStr.length);
+            LOG.log(Level.FINE, "Length of bytearray containing version: {0}", versionStr.length);
             outFile.write(versionStr, 0, versionStr.length);
             crcHeaderSkipLen += versionStr.length;
             
@@ -118,7 +119,7 @@ public final class Encrypt07 extends IProcess{
             
             // Write password hash
             byte[] pwdHash = CipherHashGen.getPasswordSha256Hash(pwd);
-            LOG.fine("Length of Sha hash: " + pwdHash.length);
+            LOG.log(Level.FINE, "Length of Sha hash: {0}", pwdHash.length);
             outFile.write(pwdHash);
             headerOS.write(pwdHash);
             crcHeaderSkipLen += pwdHash.length;
@@ -150,13 +151,13 @@ public final class Encrypt07 extends IProcess{
             outFile.seek(crcHeaderSkipLen);
             outFile.writeLong(checksumEngine.getValue());
             headerOS.writeLong(checksumEngine.getValue());
-            LOG.finest("Length of crc data written: " + (outFile.getFilePointer()-crcHeaderSkipLen));
-            LOG.finest("CRC: " + checksumEngine.getValue());
+            LOG.log(Level.FINEST, "Length of crc data written: {0}", (outFile.getFilePointer()-crcHeaderSkipLen));
+            LOG.log(Level.FINEST, "CRC: {0}", checksumEngine.getValue());
             
             // Write data length to header
             outFile.writeLong(readSize);
             headerOS.writeLong(readSize);
-            LOG.finest("read/write data size: " + readSize);
+            LOG.log(Level.FINEST, "read/write data size: {0}", readSize);
             
             // Write header checksum
             byte[] headerBytes = headerByteArrayOS.toByteArray();
@@ -191,13 +192,13 @@ public final class Encrypt07 extends IProcess{
             }
             // fos & fis will be closed by WizCrypt.encrypt() API
             if(canDelete){
-                LOG.fine("Deleting file: " + file.getAbsolutePath());
+                LOG.log(Level.FINE, "Deleting file: {0}", file.getAbsolutePath());
                 file.delete();
             }
             // delete corrupt outFile
             if(!isSuccessful){
                 if(outFileTmp != null && outFileTmp.exists()){
-                    LOG.fine("Deleting: " + outFileTmp.getAbsolutePath());
+                    LOG.log(Level.FINE, "Deleting: {0}", outFileTmp.getAbsolutePath());
                     outFileTmp.delete();
                 }
             }

@@ -9,8 +9,6 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import static org.wiztools.wizcrypt.WizCryptAlgorithms.PWD_HASH_OLD;
-import static org.wiztools.wizcrypt.WizCryptAlgorithms.STR_ENCODE;
-import static org.wiztools.wizcrypt.WizCryptAlgorithms.CRYPT_ALGO_RC4;
 
 /**
  * This class has static methods to:
