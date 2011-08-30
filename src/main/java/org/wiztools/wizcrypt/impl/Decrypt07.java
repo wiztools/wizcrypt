@@ -5,6 +5,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.text.MessageFormat;
 import java.util.Arrays;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.Adler32;
 import java.util.zip.Checksum;
@@ -119,10 +120,10 @@ public final class Decrypt07 extends IProcess{
             // Read the magic number
             byte[] versionStr = FileFormatVersion.WC07.getBytes(WizCryptAlgorithms.STR_ENCODE);
             int versionByteLen = versionStr.length;
-            LOG.fine("Length of bytearray holding version: "+versionByteLen);
+            LOG.log(Level.FINE, "Length of bytearray holding version: {0}", versionByteLen);
             byte[] magicNumber = new byte[versionByteLen];
             int bytesRead = dis.read(magicNumber, 0, versionByteLen);
-            LOG.fine("Magic number read: " + new String(magicNumber));
+            LOG.log(Level.FINE, "Magic number read: {0}", new String(magicNumber));
             if(!Arrays.equals(versionStr, magicNumber)){
                 LOG.fine("Magic number does not match. . .");
                 throw new FileCorruptException(FileCorruptException.FILE_MAGIC_NUMBER_ERROR);
@@ -130,13 +131,13 @@ public final class Decrypt07 extends IProcess{
             if(bytesRead < versionByteLen){
                 throw new FileCorruptException(FileCorruptException.FILE_TRUNCATED);
             }
-            LOG.finest("magicNumber: "+new String(magicNumber));
+            LOG.log(Level.FINEST, "magicNumber: {0}", new String(magicNumber));
             
             Checksum checksumEngine = new Adler32();
             
             // Read header CRC
             long headerCRC = dis.readLong();
-            LOG.info("Recorded header CRC: " + headerCRC);
+            LOG.log(Level.INFO, "Recorded header CRC: {0}", headerCRC);
             
             // Datastructure to hold header bytes
             ByteArrayOutputStream headerByteArrayOS = new ByteArrayOutputStream();
@@ -158,18 +159,18 @@ public final class Decrypt07 extends IProcess{
             
             long dataCRC = dis.readLong();
             headerOS.writeLong(dataCRC);
-            LOG.info("Recorded data CRC: " + dataCRC);
+            LOG.log(Level.INFO, "Recorded data CRC: {0}", dataCRC);
             
             long dataLen = dis.readLong();
             headerOS.writeLong(dataLen);
-            LOG.info("Recorder data length: " + dataLen);
+            LOG.log(Level.INFO, "Recorder data length: {0}", dataLen);
             
             // Check if header CRC matches
             byte[] headerBytes = headerByteArrayOS.toByteArray();
             checksumEngine.update(headerBytes, 0, headerBytes.length);
             long computedHeaderCRC = checksumEngine.getValue();
             if(computedHeaderCRC != headerCRC){
-                LOG.severe("computed/header CRC: " + computedHeaderCRC + " / " + headerCRC);
+                LOG.log(Level.SEVERE, "computed/header CRC: {0} / {1}", new Object[]{computedHeaderCRC, headerCRC});
                 throw new FileCorruptException(FileCorruptException.HEADER_CRC_ERROR);
             }
             LOG.info("***Computed and actual header CRC matches!!***");
@@ -186,8 +187,7 @@ public final class Decrypt07 extends IProcess{
                 
                 boolean shouldBreak = false;
                 if(readSize > dataLen){
-                    LOG.fine("readSize/dataLen/diff: " + readSize + "/"
-                            + dataLen + "/" + (readSize-dataLen));
+                    LOG.log(Level.FINE, "readSize/dataLen/diff: {0}/{1}/{2}", new Object[]{readSize, dataLen, readSize-dataLen});
                     LOG.warning("Bytes above the recorded data is ignored!");
                     i = i - (int)(readSize - dataLen);
                     shouldBreak = true;
@@ -209,9 +209,9 @@ public final class Decrypt07 extends IProcess{
                 }
             }
             
-            LOG.finest("read/write data size: " + readSize);
+            LOG.log(Level.FINEST, "read/write data size: {0}", readSize);
             
-            LOG.info("Computed CRC: " + checksumEngine.getValue());
+            LOG.log(Level.INFO, "Computed CRC: {0}", checksumEngine.getValue());
             
             if(dataCRC != checksumEngine.getValue()){
                 throw new FileCorruptException(FileCorruptException.DATA_CRC_ERROR);
@@ -244,12 +244,12 @@ public final class Decrypt07 extends IProcess{
             }
             // fos & fis will be closed by WizCrypt.decrypt() API
             if(canDelete){
-                LOG.fine("Deleting: " + file.getAbsolutePath());
+                LOG.log(Level.FINE, "Deleting: {0}", file.getAbsolutePath());
                 file.delete();
             }
             if(!isSuccessful){
                 if(outFile != null && outFile.exists()){
-                    LOG.fine("Deleting (Not successful): " + outFile.getAbsolutePath());
+                    LOG.log(Level.FINE, "Deleting (Not successful): {0}", outFile.getAbsolutePath());
                     outFile.delete();
                 }
             }
