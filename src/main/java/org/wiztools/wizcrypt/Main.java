@@ -321,13 +321,13 @@ public class Main{
             if(cmd.hasOption('p')){
                 String pwdStr = cmd.getOptionValue('p');
                 if(pwdStr == null){
-                    pwd = encrypt ? getConsolePasswordVerify() : getConsolePassword();
+                    pwd = encrypt? getConsolePasswordVerify(): getConsolePassword();
                 } else{
                     pwd = pwdStr.toCharArray();
                 }
                 
             } else{
-                pwd = encrypt ? getConsolePasswordVerify() : getConsolePassword();
+                pwd = encrypt? getConsolePasswordVerify(): getConsolePassword();
             }
             IProcess iprocess = null;
             if(encrypt){
