@@ -26,7 +26,7 @@ import java.util.ResourceBundle;
 /**
  * Class to do the decryption using the WizCrypt naming convention (*.wiz).
  */
-public final class Decrypt07 extends WizCrypt{
+public final class Decrypt07 implements WizCrypt{
     
     private static final Logger LOG = Logger.getLogger(Decrypt07.class.getName());
     private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
@@ -47,28 +47,14 @@ public final class Decrypt07 extends WizCrypt{
     @Override
     public void process(final File file, final WizCryptBean wcb,
             final ParamBean cpb)
-            throws FileNotFoundException,
-            DestinationFileExistsException,
-            PasswordMismatchException,
-            FileCorruptException,
-            IOException,
-            NoSuchAlgorithmException,
-            InvalidKeyException,
-            NoSuchPaddingException{
+            throws IOException, WizCryptException {
         process(file, null, wcb, cpb);
     }
     
     @Override
     public void process(final File file, File outFile, final WizCryptBean wcb,
             final ParamBean cpb)
-            throws FileNotFoundException,
-            DestinationFileExistsException,
-            PasswordMismatchException,
-            FileCorruptException,
-            IOException,
-            NoSuchAlgorithmException,
-            InvalidKeyException,
-            NoSuchPaddingException{
+            throws IOException, WizCryptException {
         
         final boolean forceOverwrite = cpb.isForceOverwrite();
         final boolean keepSource = cpb.isKeepSource();
@@ -220,7 +206,17 @@ public final class Decrypt07 extends WizCrypt{
             }
             
             isSuccessful = true;
-        } finally{
+        }
+        catch(InvalidKeyException ex) {
+            throw new WizCryptException(ex);
+        }
+        catch(NoSuchAlgorithmException ex) {
+            throw new WizCryptException(ex);
+        }
+        catch(NoSuchPaddingException ex) {
+            throw new WizCryptException(ex);
+        }
+        finally {
             try{
                 if(cos != null){
                     cos.close();

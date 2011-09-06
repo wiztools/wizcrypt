@@ -225,34 +225,40 @@ public class Main{
                             rb.getString("msg.verbose.success"),
                             f.getAbsolutePath()));
                 }
-            } catch(DestinationFileExistsException dfe){
-                DEST_FILE_EXISTS = true;
-                System.err.println(dfe.getMessage());
-            } catch(PasswordMismatchException pme){
-                PWD_MISMATCH = true;
-                String msg = rb.getString("err.pwd.not.match");
-                msg = MessageFormat.format(msg, f.getAbsolutePath());
-                System.err.println(msg);
-            } catch(FileCorruptException ex){
-                FileCorruptType code = ex.getErrorType();
-                String msg = null;
-                switch(code) {
-                    case FILE_TRUNCATED:
-                        msg = rb.getString("err.file.corrupt.truncated");
-                        break;
-                    case HEADER_CRC_ERROR:
-                        msg = rb.getString("err.file.corrupt.header.crc");
-                        break;
-                    case DATA_CRC_ERROR:
-                        msg = rb.getString("err.file.corrupt.data.crc");
-                        break;
-                    case FILE_MAGIC_NUMBER_ERROR:
-                        msg = rb.getString("err.file.corrupt.magicnumber");
-                        break;
+            } 
+            catch(WizCryptException ex) {
+                if(ex instanceof DestinationFileExistsException) {
+                    DEST_FILE_EXISTS = true;
+                    System.err.println(ex.getMessage());
                 }
-                
-                System.err.println(msg);
-            } catch(IOException ex){
+                else if(ex instanceof PasswordMismatchException) {
+                    PWD_MISMATCH = true;
+                    String msg = rb.getString("err.pwd.not.match");
+                    msg = MessageFormat.format(msg, f.getAbsolutePath());
+                    System.err.println(msg);
+                }
+                else if(ex instanceof FileCorruptException) {
+                    FileCorruptType code = ((FileCorruptException) ex).getErrorType();
+                    String msg = null;
+                    switch(code) {
+                        case FILE_TRUNCATED:
+                            msg = rb.getString("err.file.corrupt.truncated");
+                            break;
+                        case HEADER_CRC_ERROR:
+                            msg = rb.getString("err.file.corrupt.header.crc");
+                            break;
+                        case DATA_CRC_ERROR:
+                            msg = rb.getString("err.file.corrupt.data.crc");
+                            break;
+                        case FILE_MAGIC_NUMBER_ERROR:
+                            msg = rb.getString("err.file.corrupt.magicnumber");
+                            break;
+                    }
+
+                    System.err.println(msg);
+                }
+            }
+            catch(IOException ex){
                 IO_EXCEPTION = true;
                 System.err.println(ex.getMessage());
             }
@@ -333,9 +339,9 @@ public class Main{
             }
             WizCrypt iprocess = null;
             if(encrypt){
-                iprocess = WizCrypt.getEncryptInstance();
+                iprocess = WizCryptDriver.getEncryptInstance();
             } else if(decrypt){
-                iprocess = WizCrypt.getDecryptInstance();
+                iprocess = WizCryptDriver.getDecryptInstance();
             }
             
             // Create WizCryptBean object

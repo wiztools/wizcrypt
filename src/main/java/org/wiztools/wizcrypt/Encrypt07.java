@@ -20,12 +20,11 @@ import java.io.FileInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.FileNotFoundException;
-import org.wiztools.wizcrypt.*;
 
 /**
  * Class to do the encryption using the WizCrypt naming convention (*.wiz).
  */
-public final class Encrypt07 extends WizCrypt{
+public final class Encrypt07 implements WizCrypt{
     
     private static final Logger LOG = Logger.getLogger(Encrypt07.class.getName());
     private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
@@ -45,21 +44,13 @@ public final class Encrypt07 extends WizCrypt{
     
     @Override
     public void process(final File inFile, final WizCryptBean wcb, final ParamBean cpb)
-    throws FileNotFoundException, DestinationFileExistsException, IOException,
-            NoSuchAlgorithmException,
-            UnsupportedEncodingException,
-            InvalidKeyException,
-            NoSuchPaddingException{
+                    throws IOException, WizCryptException {
         process(inFile, null, wcb, cpb);
     }
     
     @Override
     public void process(final File file, File outFileTmp, final WizCryptBean wcb, final ParamBean cpb)
-    throws FileNotFoundException, DestinationFileExistsException, IOException,
-            NoSuchAlgorithmException,
-            UnsupportedEncodingException,
-            InvalidKeyException,
-            NoSuchPaddingException{
+                    throws IOException, WizCryptException {
         
         final boolean forceOverwrite = cpb.isForceOverwrite();
         final boolean keepSource = cpb.isKeepSource();
@@ -171,7 +162,17 @@ public final class Encrypt07 extends WizCrypt{
             }
             
             isSuccessful = true;
-        } finally{
+        }
+        catch(InvalidKeyException ex) {
+            throw new WizCryptException(ex);
+        }
+        catch(NoSuchAlgorithmException ex) {
+            throw new WizCryptException(ex);
+        }
+        catch(NoSuchPaddingException ex) {
+            throw new WizCryptException(ex);
+        }
+        finally {
             try{
                 if(cis != null){
                     cis.close();
