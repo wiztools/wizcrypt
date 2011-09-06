@@ -70,8 +70,8 @@ public final class Decrypt07 extends WizCrypt{
             InvalidKeyException,
             NoSuchPaddingException{
         
-        final boolean forceOverwrite = cpb.getForceOverwrite();
-        final boolean keepSource = cpb.getKeepSource();
+        final boolean forceOverwrite = cpb.isForceOverwrite();
+        final boolean keepSource = cpb.isKeepSource();
         
         // FileInputStream fis = null;
         DataInputStream dis = null;
