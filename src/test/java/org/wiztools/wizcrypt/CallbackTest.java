@@ -10,11 +10,7 @@
 package org.wiztools.wizcrypt;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.logging.LogManager;
 import org.junit.After;
 import org.junit.Assert;
@@ -32,7 +28,7 @@ public class CallbackTest {
     private static final String PLAIN_FILE = "src/test/resources/logo.png";
     private static final String CIPHER_FILE = "src/test/resources/logo.png.wiz";
     private static final String PASSWD = "password";
-    private static final ParamBean cpb = new ParamBean();
+    private final ParamBean cpb = new ParamBean();
     
     @Before
     public void setUp() throws Exception {
@@ -143,15 +139,18 @@ public class CallbackTest {
             super(size);
         }
         
+        @Override
         public void begin() {
             System.out.println("~~~~ Callback output ~~~~");
             System.out.print("Begin,");
         }
 
+        @Override
         public void notifyProgress(long value) {
             System.out.print(value + ",");
         }
 
+        @Override
         public void end() {
             System.out.println("End.\n");
         }
