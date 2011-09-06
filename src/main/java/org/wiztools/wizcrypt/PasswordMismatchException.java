@@ -1,6 +1,6 @@
-package org.wiztools.wizcrypt.exception;
+package org.wiztools.wizcrypt;
 
-public class PasswordMismatchException extends Exception{
+public class PasswordMismatchException extends WizCryptException{
     
     public PasswordMismatchException(){
         

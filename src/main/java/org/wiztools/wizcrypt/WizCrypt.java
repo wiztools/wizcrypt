@@ -9,41 +9,30 @@ import java.security.InvalidKeyException;
 import java.io.File;
 import java.io.IOException;
 import java.io.FileNotFoundException;
-import org.wiztools.wizcrypt.exception.DestinationFileExistsException;
-import org.wiztools.wizcrypt.exception.FileCorruptException;
-import org.wiztools.wizcrypt.exception.PasswordMismatchException;
-import org.wiztools.wizcrypt.impl.Decrypt07;
-import org.wiztools.wizcrypt.impl.Encrypt07;
 
-public abstract class IProcess{
+public abstract class WizCrypt{
     
-    private static final String LATEST_VERSION = "07";
+    private static final Version LATEST_VERSION = Version.WC07;
     
-    // Keep all version definition lower case
-    public static final String VERSION_07 = "07";
-    public static final String VERSION_OLD = "old";
-    
-    public static IProcess getEncryptInstance(){
+    public static WizCrypt getEncryptInstance(){
         return getEncryptInstance(LATEST_VERSION);
     }
     
-    public static IProcess getDecryptInstance(){
+    public static WizCrypt getDecryptInstance(){
         return getDecryptInstance(LATEST_VERSION);
     }
     
-    public static IProcess getEncryptInstance(final String version){
-        String ver = version.toLowerCase();
-        IProcess p = null;
-        if(VERSION_07.equals(ver)){
+    public static WizCrypt getEncryptInstance(final Version version){
+        WizCrypt p = null;
+        if(Version.WC07 == version){
             p = Encrypt07.getInstance();
         }
         return p;
     }
     
-    public static IProcess getDecryptInstance(final String version){
-        String ver = version.toLowerCase();
-        IProcess p = null;
-        if(VERSION_07.equals(ver)){
+    public static WizCrypt getDecryptInstance(final Version version){
+        WizCrypt p = null;
+        if(Version.WC07 == version){
             p = Decrypt07.getInstance();
         }
         return p;

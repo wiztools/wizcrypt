@@ -1,4 +1,4 @@
-package org.wiztools.wizcrypt.impl;
+package org.wiztools.wizcrypt;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -22,15 +22,11 @@ import java.io.IOException;
 import java.io.FileNotFoundException;
 
 import java.util.ResourceBundle;
-import org.wiztools.wizcrypt.*;
-import org.wiztools.wizcrypt.exception.DestinationFileExistsException;
-import org.wiztools.wizcrypt.exception.FileCorruptException;
-import org.wiztools.wizcrypt.exception.PasswordMismatchException;
 
 /**
  * Class to do the decryption using the WizCrypt naming convention (*.wiz).
  */
-public final class Decrypt07 extends IProcess{
+public final class Decrypt07 extends WizCrypt{
     
     private static final Logger LOG = Logger.getLogger(Decrypt07.class.getName());
     private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
@@ -41,7 +37,7 @@ public final class Decrypt07 extends IProcess{
         
     }
     
-    public static IProcess getInstance(){
+    public static WizCrypt getInstance(){
         if(_instance == null){
             _instance = new Decrypt07();
         }
@@ -126,10 +122,10 @@ public final class Decrypt07 extends IProcess{
             LOG.log(Level.FINE, "Magic number read: {0}", new String(magicNumber));
             if(!Arrays.equals(versionStr, magicNumber)){
                 LOG.fine("Magic number does not match. . .");
-                throw new FileCorruptException(FileCorruptException.FILE_MAGIC_NUMBER_ERROR);
+                throw new FileCorruptException(FileCorruptType.FILE_MAGIC_NUMBER_ERROR);
             }
             if(bytesRead < versionByteLen){
-                throw new FileCorruptException(FileCorruptException.FILE_TRUNCATED);
+                throw new FileCorruptException(FileCorruptType.FILE_TRUNCATED);
             }
             LOG.log(Level.FINEST, "magicNumber: {0}", new String(magicNumber));
             
@@ -149,7 +145,7 @@ public final class Decrypt07 extends IProcess{
             bytesRead = dis.read(filePassKeyHash, 0, LEN_OF_PWD_HASH);
             headerOS.write(filePassKeyHash, 0, bytesRead);
             if(bytesRead < LEN_OF_PWD_HASH){
-                throw new FileCorruptException(FileCorruptException.FILE_TRUNCATED);
+                throw new FileCorruptException(FileCorruptType.FILE_TRUNCATED);
             }
             
             byte[] passKeyHash = CipherHashGen.getPasswordSha256Hash(pwd);
@@ -171,7 +167,7 @@ public final class Decrypt07 extends IProcess{
             long computedHeaderCRC = checksumEngine.getValue();
             if(computedHeaderCRC != headerCRC){
                 LOG.log(Level.SEVERE, "computed/header CRC: {0} / {1}", new Object[]{computedHeaderCRC, headerCRC});
-                throw new FileCorruptException(FileCorruptException.HEADER_CRC_ERROR);
+                throw new FileCorruptException(FileCorruptType.HEADER_CRC_ERROR);
             }
             LOG.info("***Computed and actual header CRC matches!!***");
             
@@ -214,7 +210,7 @@ public final class Decrypt07 extends IProcess{
             LOG.log(Level.INFO, "Computed CRC: {0}", checksumEngine.getValue());
             
             if(dataCRC != checksumEngine.getValue()){
-                throw new FileCorruptException(FileCorruptException.DATA_CRC_ERROR);
+                throw new FileCorruptException(FileCorruptType.DATA_CRC_ERROR);
             }
             
             //***end decryption

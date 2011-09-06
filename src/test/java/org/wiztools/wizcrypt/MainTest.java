@@ -23,11 +23,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.wiztools.wizcrypt.exception.DestinationFileExistsException;
-import org.wiztools.wizcrypt.exception.FileCorruptException;
-import org.wiztools.wizcrypt.exception.PasswordMismatchException;
-import org.wiztools.wizcrypt.impl.Decrypt07;
-import org.wiztools.wizcrypt.impl.Encrypt07;
 
 /**
  *
@@ -113,7 +108,7 @@ public class MainTest {
         
         // Encryption
         
-        IProcess e = Encrypt07.getInstance();
+        WizCrypt e = Encrypt07.getInstance();
         
         try {
             WizCryptBean wcb = new WizCryptBean();
@@ -143,7 +138,7 @@ public class MainTest {
         
         // Decryption
         
-        IProcess d = Decrypt07.getInstance();
+        WizCrypt d = Decrypt07.getInstance();
         
         // test for wrong password
 
@@ -171,7 +166,7 @@ public class MainTest {
     
     @Test
     public void fileExistenceTest() throws Exception{
-        IProcess d = Decrypt07.getInstance();
+        WizCrypt d = Decrypt07.getInstance();
         try {
             WizCryptBean wcb = new WizCryptBean();
             wcb.setPassword(password.toCharArray());
