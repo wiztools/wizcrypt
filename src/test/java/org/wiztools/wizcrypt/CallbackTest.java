@@ -62,7 +62,7 @@ public class CallbackTest {
             wcb.setCallback(new TestCallback());
             File in = new File(PLAIN_FILE);
             File out = new File(tmpDir + "logo.png.wiz");
-            WizCrypt ip = Encrypt07.getInstance();
+            WizCrypt ip = WizCryptDriver.getEncryptInstance();
             ip.process(in, out, wcb, cpb);
         }
         catch(Exception e){
@@ -80,7 +80,7 @@ public class CallbackTest {
             wcb.setCallback(new TestCallback(new File(PLAIN_FILE).length()));
             File in = new File(PLAIN_FILE);
             File out = new File(tmpDir + "logo.png.wiz");
-            WizCrypt ip = Encrypt07.getInstance();
+            WizCrypt ip = WizCryptDriver.getEncryptInstance();
             ip.process(in, out, wcb, cpb);
         }
         catch(Exception e){
@@ -98,7 +98,7 @@ public class CallbackTest {
             wcb.setCallback(new TestCallback());
             File in = new File(CIPHER_FILE_WC07);
             File out = new File(tmpDir + "logo.png");
-            WizCrypt ip = Decrypt07.getInstance();
+            WizCrypt ip = WizCryptDriver.getDecryptInstance();
             ip.process(in, out, wcb, cpb);
             // WizCrypt.get07Instance().decrypt(is, os, wcb);
         }
@@ -117,7 +117,7 @@ public class CallbackTest {
             wcb.setCallback(new TestCallback(new File(CIPHER_FILE_WC07).length()));
             File in = new File(CIPHER_FILE_WC07);
             File out = new File(tmpDir + "logo.png");
-            WizCrypt ip = Decrypt07.getInstance();
+            WizCrypt ip = WizCryptDriver.getDecryptInstance();
             ip.process(in, out, wcb, cpb);
             // WizCrypt.get07Instance().decrypt(is, os, wcb);
         }
