@@ -3,8 +3,6 @@
  *
  * Created on 14 February 2007, 22:04
  *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
  */
 
 package org.wiztools.wizcrypt;
@@ -28,7 +26,7 @@ public class ParamBean {
         this.forceOverwrite = forceOverwrite;
     }
     
-    public boolean getForceOverwrite(){
+    public boolean isForceOverwrite(){
         return forceOverwrite;
     }
     
@@ -36,7 +34,7 @@ public class ParamBean {
         this.keepSource = keepSource;
     }
     
-    public boolean getKeepSource(){
+    public boolean isKeepSource(){
         return keepSource;
     }
     
@@ -44,7 +42,7 @@ public class ParamBean {
         this.recurseIntoDir = recurseIntoDir;
     }
     
-    public boolean getRecurseIntoDir(){
+    public boolean isRecurseIntoDir(){
         return recurseIntoDir;
     }
     
@@ -52,7 +50,7 @@ public class ParamBean {
         this.verbose = verbose;
     }
     
-    public boolean getVerbose(){
+    public boolean isVerbose(){
         return verbose;
     }
 }

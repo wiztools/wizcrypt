@@ -204,8 +204,8 @@ public class Main{
             throws NoSuchAlgorithmException,
             InvalidKeyException,
             NoSuchPaddingException{
-        boolean verbose = cpb.getVerbose();
-        boolean recursive = cpb.getRecurseIntoDir();
+        boolean verbose = cpb.isVerbose();
+        boolean recursive = cpb.isRecurseIntoDir();
         if(f.isDirectory()){
             if(recursive){
                 for(File ff: f.listFiles()){
