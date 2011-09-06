@@ -42,6 +42,8 @@ public abstract class AbstractWizCrypt implements WizCrypt {
 
     @Override
     public final void addCallback(Callback callback) {
+        if(callback == null)
+            throw new NullPointerException("Callback cannot be null!");
         callbacks.add(callback);
     }
 
