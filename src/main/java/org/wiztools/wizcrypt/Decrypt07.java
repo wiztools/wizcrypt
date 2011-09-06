@@ -107,14 +107,14 @@ public final class Decrypt07 extends WizCrypt{
             fos = new FileOutputStream(outFile);
             
             //***start decryption
-            byte[] pwd = new String(wcb.getPassword()).getBytes(WizCryptAlgorithms.STR_ENCODE);
+            byte[] pwd = new String(wcb.getPassword()).getBytes(WizCryptAlgorithms.ENCODE_UTF8);
             
             if(cb != null){
                 cb.begin();
             }
             
             // Read the magic number
-            byte[] versionStr = FileFormatVersion.WC07.getBytes(WizCryptAlgorithms.STR_ENCODE);
+            byte[] versionStr = Version.WC07.getBytes();
             int versionByteLen = versionStr.length;
             LOG.log(Level.FINE, "Length of bytearray holding version: {0}", versionByteLen);
             byte[] magicNumber = new byte[versionByteLen];
