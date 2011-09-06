@@ -94,7 +94,7 @@ public final class Encrypt07 extends WizCrypt{
             
             long crcHeaderSkipLen = 0;
             
-            byte[] pwd = new String(wcb.getPassword()).getBytes(WizCryptAlgorithms.STR_ENCODE);
+            byte[] pwd = new String(wcb.getPassword()).getBytes(WizCryptAlgorithms.ENCODE_UTF8);
             
             if(cb != null){
                 cb.begin();
@@ -105,7 +105,7 @@ public final class Encrypt07 extends WizCrypt{
             DataOutputStream headerOS = new DataOutputStream(headerByteArrayOS);
             
             // Write the file-format magic number
-            byte[] versionStr = FileFormatVersion.WC07.getBytes(WizCryptAlgorithms.STR_ENCODE);
+            byte[] versionStr = Version.WC07.getBytes();
             LOG.log(Level.FINE, "Length of bytearray containing version: {0}", versionStr.length);
             outFile.write(versionStr, 0, versionStr.length);
             crcHeaderSkipLen += versionStr.length;
@@ -162,7 +162,7 @@ public final class Encrypt07 extends WizCrypt{
             byte[] headerBytes = headerByteArrayOS.toByteArray();
             checksumEngine.reset();
             checksumEngine.update(headerBytes, 0, headerBytes.length);
-            outFile.seek(FileFormatVersion.WC07.getBytes(WizCryptAlgorithms.STR_ENCODE).length);
+            outFile.seek(Version.WC07.getBytes().length);
             outFile.writeLong(checksumEngine.getValue());
             /***end encryption code*/
             

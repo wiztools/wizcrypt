@@ -8,7 +8,7 @@ import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import static org.wiztools.wizcrypt.WizCryptAlgorithms.PWD_HASH_OLD;
+import static org.wiztools.wizcrypt.WizCryptAlgorithms.PWD_HASH_LEGACY;
 
 /**
  * This class has static methods to:
@@ -40,7 +40,7 @@ public final class CipherHashGen{
     public static byte[] getPasswordMD5Hash(final byte[] passKey)
             throws NoSuchAlgorithmException,
                 UnsupportedEncodingException{
-        return getPasswordHash(passKey, PWD_HASH_OLD);
+        return getPasswordHash(passKey, PWD_HASH_LEGACY);
     }
     
     public static byte[] getPasswordSha256Hash(final byte[] passKey)
