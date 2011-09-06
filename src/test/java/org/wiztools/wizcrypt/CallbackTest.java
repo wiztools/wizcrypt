@@ -27,7 +27,12 @@ public class CallbackTest {
     
     private static final String PLAIN_FILE = "src/test/resources/logo.png";
     private static final String CIPHER_FILE = "src/test/resources/logo.png.wiz";
+    private static final String CIPHER_FILE_WC07 = "src/test/resources/logo.png.wc07.wiz";
     private static final String PASSWD = "password";
+    
+    private static final String tmpDir = System.getProperty("java.io.tmpdir")
+                            + File.separator;
+    
     private final ParamBean cpb = new ParamBean();
     
     @Before
@@ -58,8 +63,7 @@ public class CallbackTest {
             wcb.setPassword(PASSWD.toCharArray());
             wcb.setCallback(new TestCallback());
             File in = new File(PLAIN_FILE);
-            File out = new File(System.getProperty("java.io.tmpdir")
-                            + File.separator + "logo.png.wiz");
+            File out = new File(tmpDir + "logo.png.wiz");
             IProcess ip = Encrypt07.getInstance();
             ip.process(in, out, wcb, cpb);
         }
@@ -77,8 +81,7 @@ public class CallbackTest {
             wcb.setPassword(PASSWD.toCharArray());
             wcb.setCallback(new TestCallback(new File(PLAIN_FILE).length()));
             File in = new File(PLAIN_FILE);
-            File out = new File(System.getProperty("java.io.tmpdir")
-                            + File.separator + "logo.png.wiz");
+            File out = new File(tmpDir + "logo.png.wiz");
             IProcess ip = Encrypt07.getInstance();
             ip.process(in, out, wcb, cpb);
         }
@@ -95,10 +98,8 @@ public class CallbackTest {
             WizCryptBean wcb = new WizCryptBean();
             wcb.setPassword(PASSWD.toCharArray());
             wcb.setCallback(new TestCallback());
-            File in = new File(System.getProperty("java.io.tmpdir")
-                            + File.separator + "logo.png.wiz");
-            File out = new File(System.getProperty("java.io.tmpdir")
-                            + File.separator + "logo.png");
+            File in = new File(CIPHER_FILE_WC07);
+            File out = new File(tmpDir + "logo.png");
             IProcess ip = Decrypt07.getInstance();
             ip.process(in, out, wcb, cpb);
             // WizCrypt.get07Instance().decrypt(is, os, wcb);
@@ -115,11 +116,9 @@ public class CallbackTest {
         try{
             WizCryptBean wcb = new WizCryptBean();
             wcb.setPassword(PASSWD.toCharArray());
-            wcb.setCallback(new TestCallback(new File(CIPHER_FILE).length()));
-            File in = new File(System.getProperty("java.io.tmpdir")
-                            + File.separator + "logo.png.wiz");
-            File out = new File(System.getProperty("java.io.tmpdir")
-                            + File.separator + "logo.png");
+            wcb.setCallback(new TestCallback(new File(CIPHER_FILE_WC07).length()));
+            File in = new File(CIPHER_FILE_WC07);
+            File out = new File(tmpDir + "logo.png");
             IProcess ip = Decrypt07.getInstance();
             ip.process(in, out, wcb, cpb);
             // WizCrypt.get07Instance().decrypt(is, os, wcb);
