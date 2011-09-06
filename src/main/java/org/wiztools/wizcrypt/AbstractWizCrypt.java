@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author subhash
  */
-public abstract class AbstractWizCrypt implements WizCrypt {
+abstract class AbstractWizCrypt implements WizCrypt {
     
     private final List<Callback> callbacks = new ArrayList<Callback>();
     
