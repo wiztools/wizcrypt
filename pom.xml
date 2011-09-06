@@ -131,7 +131,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clover-plugin</artifactId>
                 <configuration>
-                    <jdk>1.6</jdk>
+                    <jdk>1.5</jdk>
                     <licenseLocation>src/test/clover/clover.license</licenseLocation>
                 </configuration>
                 <executions>
