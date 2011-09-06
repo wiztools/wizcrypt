@@ -12,11 +12,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.security.NoSuchAlgorithmException;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
-import javax.crypto.NoSuchPaddingException;
-import java.security.InvalidKeyException;
 import java.io.IOException;
 import java.io.File;
 import org.junit.After;
@@ -108,7 +105,7 @@ public class MainTest {
         
         // Encryption
         
-        WizCrypt e = Encrypt07.getInstance();
+        WizCrypt e = WizCryptDriver.getEncryptInstance();
         
         try {
             WizCryptBean wcb = new WizCryptBean();
@@ -118,27 +115,15 @@ public class MainTest {
             cpb.setKeepSource(true);
             e.process(fin, wcb, cpb);
             System.out.println("processing over...");
-        } catch(DestinationFileExistsException dfe){
+        } catch(WizCryptException dfe){
             dfe.printStackTrace();
             LOG.severe(dfe.getMessage());
             Assert.fail(dfe.getMessage());
-        } catch (InvalidKeyException ex) {
-            ex.printStackTrace();
-            LOG.severe(ex.getMessage());
-            Assert.fail(ex.getMessage());
-        } catch (NoSuchAlgorithmException ex) {
-            ex.printStackTrace();
-            LOG.severe(ex.getMessage());
-            Assert.fail(ex.getMessage());
-        } catch (NoSuchPaddingException ex) {
-            ex.printStackTrace();
-            LOG.severe(ex.getMessage());
-            Assert.fail(ex.getMessage());
-        }
+        } 
         
         // Decryption
         
-        WizCrypt d = Decrypt07.getInstance();
+        WizCrypt d = WizCryptDriver.getDecryptInstance();
         
         // test for wrong password
 
@@ -166,7 +151,7 @@ public class MainTest {
     
     @Test
     public void fileExistenceTest() throws Exception{
-        WizCrypt d = Decrypt07.getInstance();
+        WizCrypt d = WizCryptDriver.getDecryptInstance();
         try {
             WizCryptBean wcb = new WizCryptBean();
             wcb.setPassword(password.toCharArray());
@@ -177,32 +162,11 @@ public class MainTest {
                 Assert.fail("Cannot process for file not ending with .wiz");
             } catch(FileNotFoundException fnfe){
                 // should be visited here
-            } catch(DestinationFileExistsException dfe){
-                dfe.printStackTrace();
-                LOG.severe(dfe.getMessage());
-                Assert.fail(dfe.getMessage());
-            } catch(PasswordMismatchException ex){
-                ex.printStackTrace();
-                LOG.severe(ex.getMessage());
-                Assert.fail(ex.getMessage());
-            } catch(FileCorruptException ffe){
-                ffe.printStackTrace();
-                LOG.severe(ffe.getMessage());
-                Assert.fail(ffe.getMessage());
             }
             
-            try{
-                d.process(fout, wcb, cpb);
-            } catch (PasswordMismatchException ex) {
-                ex.printStackTrace();
-                LOG.severe(ex.getMessage());
-                Assert.fail(ex.getMessage());
-            } catch(FileCorruptException ffe){
-                ffe.printStackTrace();
-                LOG.severe(ffe.getMessage());
-                Assert.fail(ffe.getMessage());
-            }
-        } catch(DestinationFileExistsException dfe){
+            d.process(fout, wcb, cpb);
+
+        } catch(WizCryptException dfe){
             dfe.printStackTrace();
             LOG.severe(dfe.getMessage());
             Assert.fail(dfe.getMessage());
