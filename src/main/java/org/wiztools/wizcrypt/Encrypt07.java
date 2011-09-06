@@ -3,7 +3,6 @@ package org.wiztools.wizcrypt;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.RandomAccessFile;
-import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -19,12 +18,11 @@ import java.security.InvalidKeyException;
 import java.io.FileInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.FileNotFoundException;
 
 /**
  * Class to do the encryption using the WizCrypt naming convention (*.wiz).
  */
-public final class Encrypt07 implements WizCrypt{
+final class Encrypt07 implements WizCrypt{
     
     private static final Logger LOG = Logger.getLogger(Encrypt07.class.getName());
     private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
@@ -35,7 +33,7 @@ public final class Encrypt07 implements WizCrypt{
         
     }
     
-    public static WizCrypt getInstance(){
+    static WizCrypt getInstance(){
         if(_instance == null){
             _instance = new Encrypt07();
         }
