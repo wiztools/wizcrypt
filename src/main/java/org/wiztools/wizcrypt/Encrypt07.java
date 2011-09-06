@@ -22,32 +22,13 @@ import java.io.IOException;
 /**
  * Class to do the encryption using the WizCrypt naming convention (*.wiz).
  */
-final class Encrypt07 implements WizCrypt{
+final class Encrypt07 extends AbstractWizCrypt{
     
     private static final Logger LOG = Logger.getLogger(Encrypt07.class.getName());
     private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
     
-    private static Encrypt07 _instance;
-    
-    private Encrypt07(){
-        
-    }
-    
-    static WizCrypt getInstance(){
-        if(_instance == null){
-            _instance = new Encrypt07();
-        }
-        return _instance;
-    }
-    
     @Override
-    public void process(final File inFile, final WizCryptBean wcb, final ParamBean cpb)
-                    throws IOException, WizCryptException {
-        process(inFile, null, wcb, cpb);
-    }
-    
-    @Override
-    public void process(final File file, File outFileTmp, final WizCryptBean wcb, final ParamBean cpb)
+    public void process(final File file, File outFileTmp, final char[] password, final ParamBean cpb)
                     throws IOException, WizCryptException {
         
         final boolean forceOverwrite = cpb.isForceOverwrite();
@@ -58,7 +39,6 @@ final class Encrypt07 implements WizCrypt{
         RandomAccessFile outFile = null;
         
         CipherInputStream cis = null;
-        Callback cb = wcb.getCallback();
         
         // This variable should be set to true after successful processing of
         // Encryption. Remember, if any branch condition creeps into this code
@@ -79,15 +59,12 @@ final class Encrypt07 implements WizCrypt{
             
             //***start encryption code
             
-            final long sizeOfStream = cb==null?-1:cb.getSize();
-            
             long crcHeaderSkipLen = 0;
             
-            byte[] pwd = new String(wcb.getPassword()).getBytes(WizCryptAlgorithms.ENCODE_UTF8);
-            
-            if(cb != null){
-                cb.begin();
-            }
+            byte[] pwd = new String(password).getBytes(WizCryptAlgorithms.ENCODE_UTF8);
+
+            // Begin callback:
+            beginCallback();
             
             // Byte array having header info: used for computing header CRC
             ByteArrayOutputStream headerByteArrayOS = new ByteArrayOutputStream();
@@ -126,13 +103,9 @@ final class Encrypt07 implements WizCrypt{
                 checksumEngine.update(buffer, 0, i);
                 outFile.write(buffer, 0, i);
                 readSize += i;
-                if(cb != null){
-                    if(sizeOfStream == -1){
-                        cb.notifyProgress(readSize);
-                    } else{
-                        cb.notifyProgress(readSize * 100 / sizeOfStream);
-                    }
-                }
+                
+                // Notify callback progress:
+                notifyCallbackProgress(readSize);
             }
             
             // Write computed checksum to header
@@ -178,9 +151,10 @@ final class Encrypt07 implements WizCrypt{
             } catch(IOException ioe){
                 System.err.println(ioe.getMessage());
             }
-            if(cb != null){
-                cb.end();
-            }
+            
+            // End callback:
+            endCallback();
+            
             if(outFile != null){
                 try{
                     outFile.close();

@@ -7,10 +7,12 @@ import java.io.IOException;
 
 public interface WizCrypt{
     
-    public void process(File file, WizCryptBean wcb, ParamBean cpb)
+    public void addCallback(Callback callback);
+    
+    public void process(File file, char[] password, ParamBean cpb)
                     throws IOException, WizCryptException;
     
-    public void process(File file, File outFile, WizCryptBean wcb, ParamBean cpb)
+    public void process(File file, File outFile, char[] password, ParamBean cpb)
                     throws IOException, WizCryptException;
     
 }

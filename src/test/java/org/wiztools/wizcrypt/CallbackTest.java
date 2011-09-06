@@ -3,8 +3,6 @@
  *
  * Created on December 27, 2006, 9:34 AM
  *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
  */
 
 package org.wiztools.wizcrypt;
@@ -57,13 +55,11 @@ public class CallbackTest {
     public void testEncryptCallback(){
         System.out.println("\ntestEncryptCallback()");
         try{
-            WizCryptBean wcb = new WizCryptBean();
-            wcb.setPassword(PASSWD.toCharArray());
-            wcb.setCallback(new TestCallback());
             File in = new File(PLAIN_FILE);
             File out = new File(tmpDir + "logo.png.wiz");
-            WizCrypt ip = WizCryptDriver.getEncryptInstance();
-            ip.process(in, out, wcb, cpb);
+            WizCrypt wc = WizCryptDriver.getEncryptInstance();
+            wc.addCallback(new TestCallback());
+            wc.process(in, out, PASSWD.toCharArray(), cpb);
         }
         catch(Exception e){
             e.printStackTrace();
@@ -75,13 +71,11 @@ public class CallbackTest {
     public void testEncryptPercentageCallback(){
         System.out.println("\ntestEncryptPercentageCallback()");
         try{
-            WizCryptBean wcb = new WizCryptBean();
-            wcb.setPassword(PASSWD.toCharArray());
-            wcb.setCallback(new TestCallback(new File(PLAIN_FILE).length()));
             File in = new File(PLAIN_FILE);
             File out = new File(tmpDir + "logo.png.wiz");
-            WizCrypt ip = WizCryptDriver.getEncryptInstance();
-            ip.process(in, out, wcb, cpb);
+            WizCrypt wc = WizCryptDriver.getEncryptInstance();
+            wc.addCallback(new TestCallback(new File(PLAIN_FILE).length()));
+            wc.process(in, out, PASSWD.toCharArray(), cpb);
         }
         catch(Exception e){
             e.printStackTrace();
@@ -93,13 +87,11 @@ public class CallbackTest {
     public void testDecryptCallback(){
         System.out.println("\ntestDecryptCallback()");
         try{
-            WizCryptBean wcb = new WizCryptBean();
-            wcb.setPassword(PASSWD.toCharArray());
-            wcb.setCallback(new TestCallback());
             File in = new File(CIPHER_FILE_WC07);
             File out = new File(tmpDir + "logo.png");
-            WizCrypt ip = WizCryptDriver.getDecryptInstance();
-            ip.process(in, out, wcb, cpb);
+            WizCrypt wc = WizCryptDriver.getDecryptInstance();
+            wc.addCallback(new TestCallback());
+            wc.process(in, out, PASSWD.toCharArray(), cpb);
             // WizCrypt.get07Instance().decrypt(is, os, wcb);
         }
         catch(Exception e){
@@ -112,13 +104,11 @@ public class CallbackTest {
     public void testDecryptPercentageCallback(){
         System.out.println("\ntestDecryptCallback()");
         try{
-            WizCryptBean wcb = new WizCryptBean();
-            wcb.setPassword(PASSWD.toCharArray());
-            wcb.setCallback(new TestCallback(new File(CIPHER_FILE_WC07).length()));
             File in = new File(CIPHER_FILE_WC07);
             File out = new File(tmpDir + "logo.png");
-            WizCrypt ip = WizCryptDriver.getDecryptInstance();
-            ip.process(in, out, wcb, cpb);
+            WizCrypt wc = WizCryptDriver.getDecryptInstance();
+            wc.addCallback(new TestCallback(new File(CIPHER_FILE_WC07).length()));
+            wc.process(in, out, PASSWD.toCharArray(), cpb);
             // WizCrypt.get07Instance().decrypt(is, os, wcb);
         }
         catch(Exception e){

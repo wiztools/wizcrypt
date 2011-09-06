@@ -26,33 +26,13 @@ import java.util.ResourceBundle;
 /**
  * Class to do the decryption using the WizCrypt naming convention (*.wiz).
  */
-final class Decrypt07 implements WizCrypt{
+final class Decrypt07 extends AbstractWizCrypt{
     
     private static final Logger LOG = Logger.getLogger(Decrypt07.class.getName());
     private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
     
-    private static Decrypt07 _instance;
-    
-    private Decrypt07(){
-        
-    }
-    
-    static WizCrypt getInstance(){
-        if(_instance == null){
-            _instance = new Decrypt07();
-        }
-        return _instance;
-    }
-    
     @Override
-    public void process(final File file, final WizCryptBean wcb,
-            final ParamBean cpb)
-            throws IOException, WizCryptException {
-        process(file, null, wcb, cpb);
-    }
-    
-    @Override
-    public void process(final File file, File outFile, final WizCryptBean wcb,
+    public void process(final File file, File outFile, final char[] password,
             final ParamBean cpb)
             throws IOException, WizCryptException {
         
@@ -65,8 +45,6 @@ final class Decrypt07 implements WizCrypt{
         boolean canDelete = false;
         
         CipherOutputStream cos = null;
-        Callback cb = wcb.getCallback();
-        final long sizeOfStream = cb==null?-1:cb.getSize();
         
         // This variable should be set to true after successful processing of
         // Decryption. Remember, if any branch condition creeps into this code
@@ -93,11 +71,10 @@ final class Decrypt07 implements WizCrypt{
             fos = new FileOutputStream(outFile);
             
             //***start decryption
-            byte[] pwd = new String(wcb.getPassword()).getBytes(WizCryptAlgorithms.ENCODE_UTF8);
+            byte[] pwd = new String(password).getBytes(WizCryptAlgorithms.ENCODE_UTF8);
             
-            if(cb != null){
-                cb.begin();
-            }
+            // Begin callback:
+            beginCallback();
             
             // Read the magic number
             byte[] versionStr = Version.WC07.getBytes();
@@ -177,14 +154,10 @@ final class Decrypt07 implements WizCrypt{
                 
                 checksumEngine.update(buffer, 0, i);
                 cos.write(buffer, 0, i);
+
                 
-                if(cb != null){
-                    if(sizeOfStream == -1){
-                        cb.notifyProgress(readSize);
-                    } else{
-                        cb.notifyProgress(readSize * 100 / sizeOfStream);
-                    }
-                }
+                // Notify callbacks progress:
+                notifyCallbackProgress(readSize);
                 
                 if(shouldBreak){
                     break;
@@ -231,9 +204,10 @@ final class Decrypt07 implements WizCrypt{
             } catch(IOException ioe){
                 System.err.println(ioe.getMessage());
             }
-            if(cb != null){
-                cb.end();
-            }
+            
+            // End callbacks
+            endCallback();
+
             // fos & fis will be closed by WizCrypt.decrypt() API
             if(canDelete){
                 LOG.log(Level.FINE, "Deleting: {0}", file.getAbsolutePath());
