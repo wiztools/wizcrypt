@@ -199,7 +199,7 @@ public class Main{
     
     private void process(final WizCrypt iprocess,
             final File f,
-            final WizCryptBean wcb,
+            final char[] pwd,
             final ParamBean cpb)
             throws NoSuchAlgorithmException,
             InvalidKeyException,
@@ -209,7 +209,7 @@ public class Main{
         if(f.isDirectory()){
             if(recursive){
                 for(File ff: f.listFiles()){
-                    process(iprocess, ff, wcb, cpb);
+                    process(iprocess, ff, pwd, cpb);
                 }
             } else{
                 System.err.println(MessageFormat.format(
@@ -218,7 +218,7 @@ public class Main{
             }
         } else{
             try{
-                iprocess.process(f, wcb, cpb);
+                iprocess.process(f, pwd, cpb);
                 if(verbose){
                     System.out.println(
                             MessageFormat.format(
@@ -357,7 +357,7 @@ public class Main{
             
             for(int i=0;i<args.length;i++){
                 File f = new File(args[i]);
-                process(iprocess, f, wcb, cpb);
+                process(iprocess, f, pwd, cpb);
             }
         }
         catch(ParseException pe){

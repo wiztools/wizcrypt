@@ -22,7 +22,7 @@ public final class WizCryptDriver {
     public static WizCrypt getEncryptInstance(final Version version){
         WizCrypt p = null;
         if(Version.WC07 == version){
-            p = Encrypt07.getInstance();
+            p = new Encrypt07();
         }
         return p;
     }
@@ -30,7 +30,7 @@ public final class WizCryptDriver {
     public static WizCrypt getDecryptInstance(final Version version){
         WizCrypt p = null;
         if(Version.WC07 == version){
-            p = Decrypt07.getInstance();
+            p = new Decrypt07();
         }
         return p;
     }

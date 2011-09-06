@@ -25,19 +25,10 @@ package org.wiztools.wizcrypt;
  */
 public class WizCryptBean {
     
-    private Callback callback = null;
     private char[] password;
     
     /** Creates a new instance of WizCryptParam */
     public WizCryptBean() {
-    }
-    
-    public void setCallback(final Callback callback){
-        this.callback = callback;
-    }
-    
-    public Callback getCallback(){
-        return callback;
     }
     
     public void setPassword(final char[] password){

@@ -108,12 +108,9 @@ public class MainTest {
         WizCrypt e = WizCryptDriver.getEncryptInstance();
         
         try {
-            WizCryptBean wcb = new WizCryptBean();
-            wcb.setPassword(password.toCharArray());
-
             System.out.println("before processing...");
             cpb.setKeepSource(true);
-            e.process(fin, wcb, cpb);
+            e.process(fin, password.toCharArray(), cpb);
             System.out.println("processing over...");
         } catch(WizCryptException dfe){
             dfe.printStackTrace();
@@ -127,10 +124,8 @@ public class MainTest {
         
         // test for wrong password
 
-        WizCryptBean wcb = new WizCryptBean();
-        wcb.setPassword(wrongPassword.toCharArray());
         try {
-            d.process(fout, wcb, cpb);
+            d.process(fout, wrongPassword.toCharArray(), cpb);
             System.out.println("My message!");
             Assert.fail("Cannot process for wrong supplied password!!!");
         } catch(DestinationFileExistsException dfe){
@@ -153,18 +148,15 @@ public class MainTest {
     public void fileExistenceTest() throws Exception{
         WizCrypt d = WizCryptDriver.getDecryptInstance();
         try {
-            WizCryptBean wcb = new WizCryptBean();
-            wcb.setPassword(password.toCharArray());
-            
             // Try processing file not ending with .wiz
             try{
-                d.process(new File(path+".xxx"), wcb, cpb);
+                d.process(new File(path+".xxx"), password.toCharArray(), cpb);
                 Assert.fail("Cannot process for file not ending with .wiz");
             } catch(FileNotFoundException fnfe){
                 // should be visited here
             }
             
-            d.process(fout, wcb, cpb);
+            d.process(fout, password.toCharArray(), cpb);
 
         } catch(WizCryptException dfe){
             dfe.printStackTrace();
