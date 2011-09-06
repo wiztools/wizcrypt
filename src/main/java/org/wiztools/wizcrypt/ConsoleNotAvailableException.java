@@ -7,13 +7,13 @@
  * and open the template in the editor.
  */
 
-package org.wiztools.wizcrypt.exception;
+package org.wiztools.wizcrypt;
 
 /**
  *
  * @author subhash
  */
-public class ConsoleNotAvailableException extends Exception {
+public class ConsoleNotAvailableException extends WizCryptException {
     
     /**
      * Creates a new instance of ConsoleNotAvailableException

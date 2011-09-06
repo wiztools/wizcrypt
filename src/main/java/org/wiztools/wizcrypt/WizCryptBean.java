@@ -3,8 +3,6 @@
  *
  * Created on February 13, 2007, 12:18 PM
  *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
  */
 
 package org.wiztools.wizcrypt;

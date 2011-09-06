@@ -1,4 +1,4 @@
-package org.wiztools.wizcrypt.impl;
+package org.wiztools.wizcrypt;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -21,12 +21,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 import org.wiztools.wizcrypt.*;
-import org.wiztools.wizcrypt.exception.DestinationFileExistsException;
 
 /**
  * Class to do the encryption using the WizCrypt naming convention (*.wiz).
  */
-public final class Encrypt07 extends IProcess{
+public final class Encrypt07 extends WizCrypt{
     
     private static final Logger LOG = Logger.getLogger(Encrypt07.class.getName());
     private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
@@ -37,7 +36,7 @@ public final class Encrypt07 extends IProcess{
         
     }
     
-    public static IProcess getInstance(){
+    public static WizCrypt getInstance(){
         if(_instance == null){
             _instance = new Encrypt07();
         }

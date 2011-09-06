@@ -23,10 +23,6 @@ import java.io.IOException;
 import java.io.File;
 
 import java.util.ResourceBundle;
-import org.wiztools.wizcrypt.exception.ConsoleNotAvailableException;
-import org.wiztools.wizcrypt.exception.DestinationFileExistsException;
-import org.wiztools.wizcrypt.exception.FileCorruptException;
-import org.wiztools.wizcrypt.exception.PasswordMismatchException;
 
 /**
  * The class which does the commandline parsing the calls the public APIs to encrypt/decrypt.
@@ -201,7 +197,7 @@ public class Main{
         return exitVal;
     }
     
-    private void process(final IProcess iprocess,
+    private void process(final WizCrypt iprocess,
             final File f,
             final WizCryptBean wcb,
             final ParamBean cpb)
@@ -238,17 +234,23 @@ public class Main{
                 msg = MessageFormat.format(msg, f.getAbsolutePath());
                 System.err.println(msg);
             } catch(FileCorruptException ex){
-                int code = ex.getErrorType();
+                FileCorruptType code = ex.getErrorType();
                 String msg = null;
-                if(code == FileCorruptException.FILE_TRUNCATED){
-                    msg = rb.getString("err.file.corrupt.truncated");
-                } else if(code == FileCorruptException.HEADER_CRC_ERROR){
-                    msg = rb.getString("err.file.corrupt.header.crc");
-                } else if(code == FileCorruptException.DATA_CRC_ERROR){
-                    msg = rb.getString("err.file.corrupt.data.crc");
-                } else if(code == FileCorruptException.FILE_MAGIC_NUMBER_ERROR){
-                    msg = rb.getString("err.file.corrupt.magicnumber");
+                switch(code) {
+                    case FILE_TRUNCATED:
+                        msg = rb.getString("err.file.corrupt.truncated");
+                        break;
+                    case HEADER_CRC_ERROR:
+                        msg = rb.getString("err.file.corrupt.header.crc");
+                        break;
+                    case DATA_CRC_ERROR:
+                        msg = rb.getString("err.file.corrupt.data.crc");
+                        break;
+                    case FILE_MAGIC_NUMBER_ERROR:
+                        msg = rb.getString("err.file.corrupt.magicnumber");
+                        break;
                 }
+                
                 System.err.println(msg);
             } catch(IOException ex){
                 IO_EXCEPTION = true;
@@ -329,11 +331,11 @@ public class Main{
             } else{
                 pwd = encrypt? getConsolePasswordVerify(): getConsolePassword();
             }
-            IProcess iprocess = null;
+            WizCrypt iprocess = null;
             if(encrypt){
-                iprocess = IProcess.getEncryptInstance();
+                iprocess = WizCrypt.getEncryptInstance();
             } else if(decrypt){
-                iprocess = IProcess.getDecryptInstance();
+                iprocess = WizCrypt.getDecryptInstance();
             }
             
             // Create WizCryptBean object
