@@ -344,10 +344,6 @@ public class Main{
                 iprocess = WizCryptDriver.getDecryptInstance();
             }
             
-            // Create WizCryptBean object
-            WizCryptBean wcb = new WizCryptBean();
-            wcb.setPassword(pwd);
-            
             // Create CliParamBean object
             ParamBean cpb = new ParamBean();
             cpb.setForceOverwrite(forceOverwrite);

@@ -20,19 +20,25 @@ public final class WizCryptDriver {
     }
     
     public static WizCrypt getEncryptInstance(final Version version){
-        WizCrypt p = null;
-        if(Version.WC07 == version){
-            p = new Encrypt07();
+        switch(version){
+            case WC07:
+                return new Encrypt07();
+            case LEGACY:
+                return new EncryptLegacy();
+            default:
+                return null;
         }
-        return p;
     }
     
     public static WizCrypt getDecryptInstance(final Version version){
-        WizCrypt p = null;
-        if(Version.WC07 == version){
-            p = new Decrypt07();
+        switch(version) {
+            case WC07:
+                return new Decrypt07();
+            case LEGACY:
+                return new DecryptLegacy();
+            default:
+                return null;
         }
-        return p;
     }
     
 }
