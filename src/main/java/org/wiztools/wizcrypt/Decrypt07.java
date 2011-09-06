@@ -26,7 +26,7 @@ import java.util.ResourceBundle;
 /**
  * Class to do the decryption using the WizCrypt naming convention (*.wiz).
  */
-public final class Decrypt07 implements WizCrypt{
+final class Decrypt07 implements WizCrypt{
     
     private static final Logger LOG = Logger.getLogger(Decrypt07.class.getName());
     private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
@@ -37,7 +37,7 @@ public final class Decrypt07 implements WizCrypt{
         
     }
     
-    public static WizCrypt getInstance(){
+    static WizCrypt getInstance(){
         if(_instance == null){
             _instance = new Decrypt07();
         }
