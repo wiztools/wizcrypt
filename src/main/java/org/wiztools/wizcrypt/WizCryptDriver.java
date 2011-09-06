@@ -21,23 +21,21 @@ public final class WizCryptDriver {
     
     public static WizCrypt getEncryptInstance(final Version version){
         switch(version){
-            case WC07:
-                return new Encrypt07();
             case LEGACY:
                 return new EncryptLegacy();
+            case WC07:
             default:
-                return null;
+                return new Encrypt07();
         }
     }
     
     public static WizCrypt getDecryptInstance(final Version version){
         switch(version) {
-            case WC07:
-                return new Decrypt07();
             case LEGACY:
                 return new DecryptLegacy();
+            case WC07:
             default:
-                return null;
+                return new Decrypt07();
         }
     }
     
