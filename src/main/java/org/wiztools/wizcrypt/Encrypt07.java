@@ -4,7 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.RandomAccessFile;
 import java.text.MessageFormat;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.Adler32;
@@ -25,7 +24,6 @@ import java.io.IOException;
 final class Encrypt07 extends AbstractWizCrypt{
     
     private static final Logger LOG = Logger.getLogger(Encrypt07.class.getName());
-    private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
     
     @Override
     public void process(final File file, File outFileTmp, final char[] password, final ParamBean cpb)
