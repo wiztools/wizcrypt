@@ -1,51 +1,48 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<project name="Maven">
-  <bannerLeft>
-    <name>WizCrypt</name>
-    <src>img/logo.png</src>
-    <href>http://wizcrypt.wiztools.org/</href>
-  </bannerLeft>
-  <bannerRight>
-    <src>http://www.wiztools.org/img/project-logo.png</src>
-  </bannerRight>
-  <skin>
-   <groupId>org.apache.maven.skins</groupId>
-   <artifactId>maven-default-skin</artifactId>
-   <version>1.0</version>
-  </skin>
+<project name="WizCrypt">
+    <bannerLeft>
+        <name>WizCrypt</name>
+        <src>img/logo.png</src>
+        <href>http://wizcrypt.wiztools.org/</href>
+    </bannerLeft>
+    <bannerRight>
+        <src>http://www.wiztools.org/img/project-logo.png</src>
+    </bannerRight>
 
-  <poweredBy>
-    <logo name="Clover Code Coverage" href="http://www.cenqua.com/clover/"
-      img="img/clovered1.gif"/>
-    <logo name="Maven Build" href="http://maven.apache.org/"
+    <poweredBy>
+        <logo name="Maven Build" href="http://maven.apache.org/"
       img="images/logos/maven-feather.png"/>
-    <logo name="Netbeans IDE" href="http://www.netbeans.org/"
+        <logo name="Netbeans IDE" href="http://www.netbeans.org/"
       img="img/built-on-nb.gif"/>
-    <logo name="BerliOS.de" href="http://developer.berlios.de/"
-      img="http://developer.berlios.de/bslogo.php?group_id=5944"/>
-    <logo name="Jars Rated" href="http://jars.developer.com/utilities/other/resource.php/34229"
-      img="img/jars_top_rated_25.gif"/>
-    <logo name="No Software Patents" href="http://www.nosoftwarepatents.com/"
+        <logo name="No Software Patents" href="http://www.nosoftwarepatents.com/"
       img="img/NoSoftwarePatent90x40_3.jpg"/>
-  </poweredBy>
+    </poweredBy>
 
-  <body>
-    <links>
-      <item name="WizTools.org" href="http://wiztools.org/" />
-    </links>
+    <body>
+        <links>
+            <item name="WizTools.org" href="http://wiztools.org/" />
+        </links>
 
-    <menu name="WizCrypt">
-      <item name="Home" href="index.html"/>
-      <item name="How?" href="how.html"/>
-      <item name="Scriptability" href="scriptability.html"/>
-      <item name="API Guide" href="apiguide.html"/>
-      <item name="API Guide--Callback" href="apiguide_callback.html"/>
-      <item name="FAQ" href="faq.html"/>
-      <item name="Forum" href="http://developer.berlios.de/forum/?group_id=5944"/>
-      <item name="Translate" href="translate.html"/>
-      <item name="Downloads" href="download.html"/>
-      <item name="Powered By" href="poweredby.html"/>
-    </menu>
-    ${reports}
-  </body>
+        <menu name="WizCrypt">
+            <item name="Home" href="index.html"/>
+            <item name="How?" href="how.html"/>
+            <item name="Scriptability" href="scriptability.html"/>
+            <item name="API Guide" href="apiguide.html"/>
+            <item name="API Guide-Callback" href="apiguide_callback.html"/>
+            <item name="FAQ" href="faq.html"/>
+            <item name="Forum" href="http://developer.berlios.de/forum/?group_id=5944"/>
+            <item name="Translate" href="translate.html"/>
+            <item name="Downloads" href="download.html"/>
+            <item name="Powered By" href="poweredby.html"/>
+        </menu>
+        <menu ref="reports"/>
+    
+        <menu name="WizTools.org">
+            <item name="RESTClient" href="http://rest-client.googlecode.com/"/>
+            <item name="Mini-Projects" href="http://wiztools.googlecode.com/"/>
+            <item name="Wiz WebServer" href="https://bitbucket.org/subwiz/wiz-webserver/downloads"/>
+            <item name="JFind" href="http://jfind.googlecode.com/"/>
+            <item name="Blog" href="http://blog.wiztools.org/"/>
+        </menu>
+    </body>
 </project>
