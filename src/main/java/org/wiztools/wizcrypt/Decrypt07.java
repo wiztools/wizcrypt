@@ -21,7 +21,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 
-import java.util.ResourceBundle;
 
 /**
  * Class to do the decryption using the WizCrypt naming convention (*.wiz).
@@ -29,7 +28,6 @@ import java.util.ResourceBundle;
 final class Decrypt07 extends AbstractWizCrypt{
     
     private static final Logger LOG = Logger.getLogger(Decrypt07.class.getName());
-    private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
     
     @Override
     public void process(final File file, File outFile, final char[] password,
@@ -51,20 +49,7 @@ final class Decrypt07 extends AbstractWizCrypt{
         // subsequently, this has to be updated in that branch.
         boolean isSuccessful = false;
         try{
-            String path = file.getAbsolutePath();
-            if(!path.endsWith(".wiz")){
-                throw new FileNotFoundException(
-                        MessageFormat.format(rb.getString("err.file.not.end.wiz"), path));
-            }
-            String newPath = path.replaceFirst(".wiz$", "");
-            if(outFile == null){
-                outFile = new File(newPath);
-            }
-            if(!forceOverwrite && outFile.exists()){
-                throw new DestinationFileExistsException(
-                        MessageFormat.format(rb.getString("err.destination.file.exists"),
-                        outFile.getAbsolutePath()));
-            }
+            outFile = validateAndGetOutFileForDecrypt(file, outFile, cpb);
             
             FileInputStream fis = new FileInputStream(file);
             dis = new DataInputStream(fis);
