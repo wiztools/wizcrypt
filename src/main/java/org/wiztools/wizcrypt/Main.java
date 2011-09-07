@@ -108,6 +108,7 @@ public class Main{
                 .isRequired(false)
                 .withDescription(rb.getString("msg.legacy.format"))
                 .create('l');
+        options.addOption(option);
         
         return options;
     }
