@@ -49,6 +49,7 @@ public class EncryptLegacyTest {
         File outFile = new File(tmpDir, "logo.png.wiz");
         ParamBean cpb = new ParamBean();
         cpb.setForceOverwrite(true);
+        cpb.setKeepSource(true);
         WizCrypt instance = WizCryptDriver.getEncryptInstance(Version.LEGACY);
         instance.process(file, outFile, PASSWD, cpb);
         

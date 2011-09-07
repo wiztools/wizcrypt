@@ -150,9 +150,9 @@ final class Encrypt07 extends AbstractWizCrypt{
                     System.err.println(ioe.getMessage());
                 }
             }
-            // fos & fis will be closed by WizCrypt.encrypt() API
+            
             if(canDelete){
-                LOG.log(Level.FINE, "Deleting file: {0}", file.getAbsolutePath());
+                LOG.log(Level.FINE, "Deleting: {0}", file.getAbsolutePath());
                 file.delete();
             }
             // delete corrupt outFile

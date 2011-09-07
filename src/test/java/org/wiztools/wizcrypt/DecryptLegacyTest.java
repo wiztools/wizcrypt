@@ -48,6 +48,7 @@ public class DecryptLegacyTest {
         File outFile = new File(tmpDir, "logo.png");
         ParamBean cpb = new ParamBean();
         cpb.setForceOverwrite(true);
+        cpb.setKeepSource(true);
         WizCrypt instance = WizCryptDriver.getDecryptInstance(Version.LEGACY);
         instance.process(file, outFile, PASSWD, cpb);
         

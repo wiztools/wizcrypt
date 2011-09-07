@@ -9,6 +9,8 @@ import java.io.OutputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.crypto.CipherOutputStream;
 import javax.crypto.NoSuchPaddingException;
 
@@ -17,16 +19,16 @@ import javax.crypto.NoSuchPaddingException;
  * @author subhash
  */
 final class DecryptLegacy extends AbstractWizCrypt {
+    
+    private static final Logger LOG = Logger.getLogger(DecryptLegacy.class.getName());
 
     @Override
     public void process(File file, File outFile, char[] password, ParamBean cpb) throws IOException, WizCryptException {
-        final boolean forceOverwrite = cpb.isForceOverwrite();
-        final boolean keepSource = cpb.isKeepSource();
-        
-        
+
         CipherOutputStream cos = null;
         InputStream is = null;
 
+        boolean isSuccessful = false;
         try{
             outFile = validateAndGetOutFileForDecrypt(file, outFile, cpb);
             
@@ -59,6 +61,7 @@ final class DecryptLegacy extends AbstractWizCrypt {
                 readSize += i;
                 notifyCallbackProgress(readSize);
             }
+            isSuccessful = true;
         }
         catch(NoSuchAlgorithmException ex) {
             throw new WizCryptException(ex);
@@ -83,6 +86,19 @@ final class DecryptLegacy extends AbstractWizCrypt {
                 }
             } catch(IOException ioe){
                 System.err.println(ioe.getMessage());
+            }
+            
+            if(isSuccessful && !cpb.isKeepSource()) {
+                LOG.log(Level.FINE, "Deleting: {0}", file.getAbsolutePath());
+                file.delete();
+            }
+            
+            // delete corrupt outfile:
+            if(!isSuccessful) {
+                if(outFile != null && outFile.exists()) {
+                    LOG.log(Level.FINE, "Deleting: {0}", outFile.getAbsolutePath());
+                    outFile.delete();
+                }
             }
             endCallback();
         }

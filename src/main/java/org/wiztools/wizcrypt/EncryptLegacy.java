@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.crypto.CipherInputStream;
 import javax.crypto.NoSuchPaddingException;
 
@@ -16,9 +18,12 @@ import javax.crypto.NoSuchPaddingException;
  * @author subhash
  */
 final class EncryptLegacy extends AbstractWizCrypt {
+    
+    private static final Logger LOG = Logger.getLogger(EncryptLegacy.class.getName());
 
     @Override
     public void process(File file, File outFile, char[] password, ParamBean cpb) throws IOException, WizCryptException {
+        boolean isSuccessful = false;
         CipherInputStream cis = null;
         OutputStream os = null;
         try{
@@ -47,6 +52,7 @@ final class EncryptLegacy extends AbstractWizCrypt {
                 readSize += i;
                 notifyCallbackProgress(readSize);
             }
+            isSuccessful = true;
         }
         catch(InvalidKeyException ex) {
             throw new WizCryptException(ex);
@@ -72,6 +78,20 @@ final class EncryptLegacy extends AbstractWizCrypt {
             } catch(IOException ioe){
                 System.err.println(ioe.getMessage());
             }
+            
+            if(isSuccessful && !cpb.isKeepSource()) {
+                LOG.log(Level.FINE, "Deleting: {0}", file.getAbsolutePath());
+                file.delete();
+            }
+            
+            // delete corrupt outfile:
+            if(!isSuccessful) {
+                if(outFile!=null && outFile.exists()) {
+                    LOG.log(Level.FINE, "Deleting: {0}", outFile.getAbsolutePath());
+                    outFile.delete();
+                }
+            }
+            
             endCallback();
         }
     }
