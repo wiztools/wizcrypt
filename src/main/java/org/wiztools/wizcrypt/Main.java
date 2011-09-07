@@ -58,52 +58,56 @@ public class Main{
     private Options generateOptions(){
         Options options = new Options();
         Option option = OptionBuilder.withLongOpt("password")
-        .hasOptionalArg()
-        .isRequired(false)
-        .withDescription(rb.getString("msg.password"))
-        .create('p');
+                .hasOptionalArg()
+                .isRequired(false)
+                .withDescription(rb.getString("msg.password"))
+                .create('p');
         options.addOption(option);
         option = OptionBuilder.withLongOpt("encrypt")
-        .isRequired(false)
-        .withDescription(rb.getString("msg.encrypt"))
-        .create('e');
+                .isRequired(false)
+                .withDescription(rb.getString("msg.encrypt"))
+                .create('e');
         options.addOption(option);
         option = OptionBuilder.withLongOpt("decrypt")
-        .isRequired(false)
-        .withDescription(rb.getString("msg.decrypt"))
-        .create('d');
+                .isRequired(false)
+                .withDescription(rb.getString("msg.decrypt"))
+                .create('d');
         options.addOption(option);
         option = OptionBuilder.withLongOpt("help")
-        .isRequired(false)
-        .withDescription(rb.getString("msg.help"))
-        .create('h');
+                .isRequired(false)
+                .withDescription(rb.getString("msg.help"))
+                .create('h');
         options.addOption(option);
         option = OptionBuilder.withLongOpt("version")
-        .isRequired(false)
-        .withDescription(rb.getString("msg.version"))
-        .create();
+                .isRequired(false)
+                .withDescription(rb.getString("msg.version"))
+                .create();
         options.addOption(option);
         option = OptionBuilder.withLongOpt("verbose")
-        .isRequired(false)
-        .withDescription(rb.getString("msg.verbose"))
-        .create('v');
+                .isRequired(false)
+                .withDescription(rb.getString("msg.verbose"))
+                .create('v');
         options.addOption(option);
         option = OptionBuilder.withLongOpt("force-overwrite")
-        .isRequired(false)
-        .withDescription(rb.getString("msg.force.overwrite"))
-        .create('f');
+                .isRequired(false)
+                .withDescription(rb.getString("msg.force.overwrite"))
+                .create('f');
         options.addOption(option);
         option = OptionBuilder.withLongOpt("keep")
-        .isRequired(false)
-        .withDescription(rb.getString("msg.keep"))
-        .create('k');
+                .isRequired(false)
+                .withDescription(rb.getString("msg.keep"))
+                .create('k');
         options.addOption(option);
         options.addOption(option);
         option = OptionBuilder.withLongOpt("recursive")
-        .isRequired(false)
-        .withDescription(rb.getString("msg.recursive"))
-        .create('r');
+                .isRequired(false)
+                .withDescription(rb.getString("msg.recursive"))
+                .create('r');
         options.addOption(option);
+        option = OptionBuilder.withLongOpt("legacy-format")
+                .isRequired(false)
+                .withDescription(rb.getString("msg.legacy.format"))
+                .create('l');
         
         return options;
     }
@@ -282,6 +286,7 @@ public class Main{
             boolean verbose = false;
             boolean keepSource = false;
             boolean recurseIntoDir = false;
+            boolean useLegacyFormat = false;
             
             CommandLineParser parser = new GnuParser();
             CommandLine cmd = parser.parse(options, arg);
@@ -319,6 +324,9 @@ public class Main{
             if(cmd.hasOption('r')){
                 recurseIntoDir = true;
             }
+            if(cmd.hasOption('l')){
+                useLegacyFormat = true;
+            }
             if(encrypt && decrypt){
                 throw new ParseException(rb.getString("err.both.selected"));
             }
@@ -339,9 +347,14 @@ public class Main{
             }
             WizCrypt iprocess = null;
             if(encrypt){
-                iprocess = WizCryptDriver.getEncryptInstance();
+                iprocess = useLegacyFormat?
+                        WizCryptDriver.getEncryptInstance(Version.LEGACY):
+                        WizCryptDriver.getEncryptInstance();
+
             } else if(decrypt){
-                iprocess = WizCryptDriver.getDecryptInstance();
+                iprocess = useLegacyFormat? 
+                        WizCryptDriver.getDecryptInstance(Version.LEGACY):
+                        WizCryptDriver.getDecryptInstance();
             }
             
             // Create CliParamBean object
