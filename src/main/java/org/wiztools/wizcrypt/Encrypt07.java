@@ -29,7 +29,6 @@ final class Encrypt07 extends AbstractWizCrypt{
     public void process(final File file, File outFileTmp, final char[] password, final ParamBean cpb)
                     throws IOException, WizCryptException {
         
-        final boolean forceOverwrite = cpb.isForceOverwrite();
         final boolean keepSource = cpb.isKeepSource();
         
         FileInputStream fis = null;
@@ -43,20 +42,12 @@ final class Encrypt07 extends AbstractWizCrypt{
         // subsequently, this has to be updated in that branch.
         boolean isSuccessful = false;
         try{
-            if(outFileTmp == null){
-                outFileTmp = new File(file.getAbsolutePath()+".wiz");
-            }
-            if(!forceOverwrite && outFileTmp.exists()){
-                throw new DestinationFileExistsException(
-                        MessageFormat.format(rb.getString("err.destination.file.exists"),
-                        outFileTmp.getAbsolutePath()));
-            }
-            fis = new FileInputStream(file);
-            
+            outFileTmp = validateAndGetOutFileForEncrypt(file, outFileTmp, cpb);
             outFile = new RandomAccessFile(outFileTmp, "rw");
             
-            //***start encryption code
+            fis = new FileInputStream(file);
             
+            //***start encryption code
             long crcHeaderSkipLen = 0;
             
             byte[] pwd = new String(password).getBytes(WizCryptAlgorithms.ENCODE_UTF8);
