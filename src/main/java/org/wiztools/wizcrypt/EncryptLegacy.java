@@ -2,15 +2,13 @@ package org.wiztools.wizcrypt;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.ResourceBundle;
 import javax.crypto.CipherInputStream;
-import javax.crypto.CipherOutputStream;
 import javax.crypto.NoSuchPaddingException;
 
 /**
@@ -25,6 +23,9 @@ public class EncryptLegacy extends AbstractWizCrypt {
         OutputStream os = null;
         try{
             InputStream is = new FileInputStream(file);
+            outFile = validateAndGetOutFileForEncrypt(file, outFile, cpb);
+            
+            os = new FileOutputStream(outFile);
             
             
             beginCallback();
