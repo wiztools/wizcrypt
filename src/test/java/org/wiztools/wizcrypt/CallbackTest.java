@@ -22,7 +22,6 @@ import org.junit.Test;
 public class CallbackTest {
     
     private static final String PLAIN_FILE = "src/test/resources/logo.png";
-    private static final String CIPHER_FILE = "src/test/resources/logo.png.wiz";
     private static final String CIPHER_FILE_WC07 = "src/test/resources/logo.png.wc07.wiz";
     private static final String PASSWD = "password";
     

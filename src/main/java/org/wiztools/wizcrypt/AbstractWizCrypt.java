@@ -23,6 +23,19 @@ abstract class AbstractWizCrypt implements WizCrypt {
     
     private final List<Callback> callbacks = new ArrayList<Callback>();
     
+    protected File validateAndGetOutFileForEncrypt(File file, File outFile, ParamBean pb)
+                    throws DestinationFileExistsException{
+        if(outFile == null){
+            outFile = new File(file.getAbsolutePath()+".wiz");
+        }
+        if(!pb.isForceOverwrite() && outFile.exists()){
+            throw new DestinationFileExistsException(
+                    MessageFormat.format(rb.getString("err.destination.file.exists"),
+                    outFile.getAbsolutePath()));
+        }
+        return outFile;
+    }
+    
     protected File validateAndGetOutFileForDecrypt(File file, File outFile, ParamBean pb)
                     throws FileNotFoundException, DestinationFileExistsException{
         String path = file.getAbsolutePath();
