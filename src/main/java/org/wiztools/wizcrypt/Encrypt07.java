@@ -3,7 +3,6 @@ package org.wiztools.wizcrypt;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.RandomAccessFile;
-import java.text.MessageFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.Adler32;
