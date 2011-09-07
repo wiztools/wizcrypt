@@ -16,7 +16,7 @@ import javax.crypto.NoSuchPaddingException;
  *
  * @author subhash
  */
-public class DecryptLegacy extends AbstractWizCrypt {
+final class DecryptLegacy extends AbstractWizCrypt {
 
     @Override
     public void process(File file, File outFile, char[] password, ParamBean cpb) throws IOException, WizCryptException {

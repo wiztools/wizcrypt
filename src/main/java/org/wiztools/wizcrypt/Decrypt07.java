@@ -34,7 +34,6 @@ final class Decrypt07 extends AbstractWizCrypt{
             final ParamBean cpb)
             throws IOException, WizCryptException {
         
-        final boolean forceOverwrite = cpb.isForceOverwrite();
         final boolean keepSource = cpb.isKeepSource();
         
         // FileInputStream fis = null;
