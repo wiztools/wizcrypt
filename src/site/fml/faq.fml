@@ -14,8 +14,7 @@
       <question>Can I decrypt a file I encrypted using a older version of WizCrypt?</question>
       <answer>
         <p>
-	No. The pre-3.x version file formats were not designed for reliability. Version 3.0 onwards we support
-        backward compatibility (that is, any version above 3.x will support backward compatibility till version 3.0).
+	Yes. Use <i>-l</i> (legacy) option when encrypting / decrypting.
         </p>
       </answer>
     </faq>
@@ -40,7 +39,7 @@
       <question>What do I need to build this application from source?</question>
       <answer>
         <p>
-	You need to have Maven 2.x (http://maven.apache.org/).
+	You need to have Maven 2.x (http://maven.apache.org/) or above.
         </p>
       </answer>
     </faq>
