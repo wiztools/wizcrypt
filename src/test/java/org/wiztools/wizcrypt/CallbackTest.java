@@ -54,24 +54,9 @@ public class CallbackTest {
         System.out.println("\ntestEncryptCallback()");
         try{
             File out = new File(tmpDir, "logo.png.wiz");
-            WizCrypt wc = WizCryptDriver.getEncryptInstance();
+            WizCrypt wc = WizCryptDriver.getEncryptInstance(PLAIN_FILE, out, PASSWD, cpb);
             wc.addCallback(new TestCallback());
-            wc.process(PLAIN_FILE, out, PASSWD, cpb);
-        }
-        catch(Exception e){
-            e.printStackTrace();
-            Assert.fail("An exception occurred: " + e.getMessage());
-        }
-    }
-    
-    @Test
-    public void testEncryptPercentageCallback(){
-        System.out.println("\ntestEncryptPercentageCallback()");
-        try{
-            File out = new File(tmpDir, "logo.png.wiz");
-            WizCrypt wc = WizCryptDriver.getEncryptInstance();
-            wc.addCallback(new TestCallback(PLAIN_FILE.length()));
-            wc.process(PLAIN_FILE, out, PASSWD, cpb);
+            wc.process();
         }
         catch(Exception e){
             e.printStackTrace();
@@ -84,9 +69,9 @@ public class CallbackTest {
         System.out.println("\ntestDecryptCallback()");
         try{
             File out = new File(tmpDir, "logo.png");
-            WizCrypt wc = WizCryptDriver.getDecryptInstance();
+            WizCrypt wc = WizCryptDriver.getDecryptInstance(CIPHER_FILE_WC07, out, PASSWD, cpb);
             wc.addCallback(new TestCallback());
-            wc.process(CIPHER_FILE_WC07, out, PASSWD, cpb);
+            wc.process();
         }
         catch(Exception e){
             e.printStackTrace();
@@ -94,29 +79,9 @@ public class CallbackTest {
         }
     }
     
-    @Test
-    public void testDecryptPercentageCallback(){
-        System.out.println("\ntestDecryptCallback()");
-        try{
-            File out = new File(tmpDir, "logo.png");
-            WizCrypt wc = WizCryptDriver.getDecryptInstance();
-            wc.addCallback(new TestCallback(CIPHER_FILE_WC07.length()));
-            wc.process(CIPHER_FILE_WC07, out, PASSWD, cpb);
-            // WizCrypt.get07Instance().decrypt(is, os, wcb);
-        }
-        catch(Exception e){
-            e.printStackTrace();
-            Assert.fail("An exception occurred: " + e.getMessage());
-        }
-    }
-    
-    class TestCallback extends Callback{
+    class TestCallback implements Callback{
         public TestCallback(){
             
-        }
-        
-        public TestCallback(final long size){
-            super(size);
         }
         
         @Override

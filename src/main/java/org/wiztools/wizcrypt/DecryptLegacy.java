@@ -21,19 +21,23 @@ import javax.crypto.NoSuchPaddingException;
 final class DecryptLegacy extends AbstractWizCrypt {
     
     private static final Logger LOG = Logger.getLogger(DecryptLegacy.class.getName());
+    
+    DecryptLegacy(File file, File outFile, char[] password, ParamBean cpb) {
+        super(file, outFile, password, cpb);
+    }
 
     @Override
-    public void process(File file, File outFile, char[] password, ParamBean cpb) throws IOException, WizCryptException {
+    public void process() throws IOException, WizCryptException {
 
         CipherOutputStream cos = null;
         InputStream is = null;
 
         boolean isSuccessful = false;
         try{
-            outFile = validateAndGetOutFileForDecrypt(file, outFile, cpb);
+            File out = validateAndGetOutFileForDecrypt(file, super.outFile, cpb);
             
             is = new FileInputStream(file);
-            OutputStream os = new FileOutputStream(outFile);
+            OutputStream os = new FileOutputStream(out);
             
             beginCallback();
             

@@ -31,6 +31,10 @@ public class Main{
     
     private static final ResourceBundle rb = ResourceBundle.getBundle("org.wiztools.wizcrypt.wizcryptmsg");
     
+    private boolean isEncryptMode = false;
+    private boolean isDecryptMode = false;
+    private boolean useLegacyFormat = false;
+    
     // Error booleans
     // Note: Even when just one of the input file
     // triggers any of these Exceptions, the flag
@@ -202,8 +206,7 @@ public class Main{
         return exitVal;
     }
     
-    private void process(final WizCrypt iprocess,
-            final File f,
+    private void process(final File f,
             final char[] pwd,
             final ParamBean cpb)
             throws NoSuchAlgorithmException,
@@ -211,19 +214,36 @@ public class Main{
             NoSuchPaddingException{
         boolean verbose = cpb.isVerbose();
         boolean recursive = cpb.isRecurseIntoDir();
+        
+        
         if(f.isDirectory()){
             if(recursive){
                 for(File ff: f.listFiles()){
-                    process(iprocess, ff, pwd, cpb);
+                    process(ff, pwd, cpb);
                 }
             } else{
                 System.err.println(MessageFormat.format(
                         rb.getString("err.is.dir"),
                         f.getAbsolutePath()));
             }
-        } else{
+        }
+        else { // is a file to be encrypted / decrypted
             try{
-                iprocess.process(f, pwd, cpb);
+                final WizCrypt wc;
+                if(isEncryptMode){
+                    wc = useLegacyFormat?
+                            WizCryptDriver.getEncryptInstance(Version.LEGACY, f, null, pwd, cpb)
+                            :
+                            WizCryptDriver.getEncryptInstance(f, null, pwd, cpb);
+
+                }
+                else { // is Decrypt mode
+                    wc = useLegacyFormat? 
+                            WizCryptDriver.getDecryptInstance(Version.LEGACY, f, null, pwd, cpb)
+                            :
+                            WizCryptDriver.getDecryptInstance(f, null, pwd, cpb);
+                }
+                wc.process();
                 if(verbose){
                     System.out.println(
                             MessageFormat.format(
@@ -281,13 +301,11 @@ public class Main{
         
         Options options = generateOptions();
         try{
-            boolean encrypt = false;
-            boolean decrypt = false;
+            
             boolean forceOverwrite = false;
             boolean verbose = false;
             boolean keepSource = false;
             boolean recurseIntoDir = false;
-            boolean useLegacyFormat = false;
             
             CommandLineParser parser = new GnuParser();
             CommandLine cmd = parser.parse(options, arg);
@@ -314,10 +332,10 @@ public class Main{
                 forceOverwrite = true;
             }
             if(cmd.hasOption('e')){
-                encrypt = true;
+                isEncryptMode = true;
             }
             if(cmd.hasOption('d')){
-                decrypt = true;
+                isDecryptMode = true;
             }
             if(cmd.hasOption('k')){
                 keepSource = true;
@@ -328,35 +346,25 @@ public class Main{
             if(cmd.hasOption('l')){
                 useLegacyFormat = true;
             }
-            if(encrypt && decrypt){
+            if(isEncryptMode && isDecryptMode){
                 throw new ParseException(rb.getString("err.both.selected"));
             }
-            if(!encrypt && !decrypt){
+            if(!isEncryptMode && !isDecryptMode){
                 throw new ParseException(rb.getString("err.none.selected"));
             }
             char[] pwd = null;
             if(cmd.hasOption('p')){
                 String pwdStr = cmd.getOptionValue('p');
                 if(pwdStr == null){
-                    pwd = encrypt? getConsolePasswordVerify(): getConsolePassword();
+                    pwd = isEncryptMode? getConsolePasswordVerify(): getConsolePassword();
                 } else{
                     pwd = pwdStr.toCharArray();
                 }
                 
             } else{
-                pwd = encrypt? getConsolePasswordVerify(): getConsolePassword();
+                pwd = isEncryptMode? getConsolePasswordVerify(): getConsolePassword();
             }
-            WizCrypt iprocess = null;
-            if(encrypt){
-                iprocess = useLegacyFormat?
-                        WizCryptDriver.getEncryptInstance(Version.LEGACY):
-                        WizCryptDriver.getEncryptInstance();
-
-            } else if(decrypt){
-                iprocess = useLegacyFormat? 
-                        WizCryptDriver.getDecryptInstance(Version.LEGACY):
-                        WizCryptDriver.getDecryptInstance();
-            }
+                
             
             // Create CliParamBean object
             ParamBean cpb = new ParamBean();
@@ -367,7 +375,8 @@ public class Main{
             
             for(int i=0;i<args.length;i++){
                 File f = new File(args[i]);
-                process(iprocess, f, pwd, cpb);
+                
+                process(f, pwd, cpb);
             }
         }
         catch(ParseException pe){

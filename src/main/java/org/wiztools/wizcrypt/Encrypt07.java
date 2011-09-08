@@ -24,15 +24,19 @@ final class Encrypt07 extends AbstractWizCrypt{
     
     private static final Logger LOG = Logger.getLogger(Encrypt07.class.getName());
     
+    Encrypt07(File file, File outFile, char[] password, ParamBean cpb) {
+        super(file, outFile, password, cpb);
+    }
+    
     @Override
-    public void process(final File file, File outFileTmp, final char[] password, final ParamBean cpb)
-                    throws IOException, WizCryptException {
+    public void process() throws IOException, WizCryptException {
         
         final boolean keepSource = cpb.isKeepSource();
         
         FileInputStream fis = null;
         boolean canDelete = false;
-        RandomAccessFile outFile = null;
+        RandomAccessFile out = null;
+        File outFileTmp = null;
         
         CipherInputStream cis = null;
         
@@ -41,8 +45,8 @@ final class Encrypt07 extends AbstractWizCrypt{
         // subsequently, this has to be updated in that branch.
         boolean isSuccessful = false;
         try{
-            outFileTmp = validateAndGetOutFileForEncrypt(file, outFileTmp, cpb);
-            outFile = new RandomAccessFile(outFileTmp, "rw");
+            outFileTmp = validateAndGetOutFileForEncrypt(file, super.outFile, cpb);
+            out = new RandomAccessFile(outFileTmp, "rw");
             
             fis = new FileInputStream(file);
             
@@ -61,11 +65,11 @@ final class Encrypt07 extends AbstractWizCrypt{
             // Write the file-format magic number
             byte[] versionStr = Version.WC07.getBytes();
             LOG.log(Level.FINE, "Length of bytearray containing version: {0}", versionStr.length);
-            outFile.write(versionStr, 0, versionStr.length);
+            out.write(versionStr, 0, versionStr.length);
             crcHeaderSkipLen += versionStr.length;
             
             // Leave space for header CRC
-            outFile.writeLong(0);
+            out.writeLong(0);
             crcHeaderSkipLen += 8; // Long takes 8 bytes
             
             cis = new CipherInputStream(fis, CipherHashGen.getCipherForEncrypt(pwd, WizCryptAlgorithms.CRYPT_ALGO_RC4));
@@ -73,15 +77,15 @@ final class Encrypt07 extends AbstractWizCrypt{
             // Write password hash
             byte[] pwdHash = CipherHashGen.getPasswordSha256Hash(pwd);
             LOG.log(Level.FINE, "Length of Sha hash: {0}", pwdHash.length);
-            outFile.write(pwdHash);
+            out.write(pwdHash);
             headerOS.write(pwdHash);
             crcHeaderSkipLen += pwdHash.length;
             
             // Skip bytes for CRC info
-            outFile.writeLong(0);
+            out.writeLong(0);
             
             // Skip bytes for length of data
-            outFile.writeLong(0);
+            out.writeLong(0);
             
             int i = -1;
             byte[] buffer = new byte[0xFFFF];
@@ -89,7 +93,7 @@ final class Encrypt07 extends AbstractWizCrypt{
             Checksum checksumEngine = new Adler32();
             while((i=cis.read(buffer)) != -1){
                 checksumEngine.update(buffer, 0, i);
-                outFile.write(buffer, 0, i);
+                out.write(buffer, 0, i);
                 readSize += i;
                 
                 // Notify callback progress:
@@ -97,14 +101,14 @@ final class Encrypt07 extends AbstractWizCrypt{
             }
             
             // Write computed checksum to header
-            outFile.seek(crcHeaderSkipLen);
-            outFile.writeLong(checksumEngine.getValue());
+            out.seek(crcHeaderSkipLen);
+            out.writeLong(checksumEngine.getValue());
             headerOS.writeLong(checksumEngine.getValue());
-            LOG.log(Level.FINEST, "Length of crc data written: {0}", (outFile.getFilePointer()-crcHeaderSkipLen));
+            LOG.log(Level.FINEST, "Length of crc data written: {0}", (out.getFilePointer()-crcHeaderSkipLen));
             LOG.log(Level.FINEST, "CRC: {0}", checksumEngine.getValue());
             
             // Write data length to header
-            outFile.writeLong(readSize);
+            out.writeLong(readSize);
             headerOS.writeLong(readSize);
             LOG.log(Level.FINEST, "read/write data size: {0}", readSize);
             
@@ -112,8 +116,8 @@ final class Encrypt07 extends AbstractWizCrypt{
             byte[] headerBytes = headerByteArrayOS.toByteArray();
             checksumEngine.reset();
             checksumEngine.update(headerBytes, 0, headerBytes.length);
-            outFile.seek(Version.WC07.getBytes().length);
-            outFile.writeLong(checksumEngine.getValue());
+            out.seek(Version.WC07.getBytes().length);
+            out.writeLong(checksumEngine.getValue());
             /***end encryption code*/
             
             if(!keepSource){
@@ -143,9 +147,9 @@ final class Encrypt07 extends AbstractWizCrypt{
             // End callback:
             endCallback();
             
-            if(outFile != null){
+            if(out != null){
                 try{
-                    outFile.close();
+                    out.close();
                 } catch(IOException ioe){
                     System.err.println(ioe.getMessage());
                 }
