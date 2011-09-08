@@ -1,0 +1,19 @@
+ ------------------
+ WizCrypt - File Format
+ ------------------
+
+Introduction
+
+ There are two versions of file-format supported by WizCrypt:
+
+ [[1]] {{{http://wizcrypt.googlecode.com/hg/src/site/resources/spec/wizcrypt07-file-format.txt}WizCrypt07 Format}}:
+       This is the newer format supported by the latest versions of WizCrypt.
+
+ [[2]] {{{http://wizcrypt.googlecode.com/hg/src/site/resources/spec/wizcrypt-legacy-file-format.txt}WizCrypt Legacy Format}}:
+       This version was used till version 2.2 of WizCrypt.
+
+Note
+
+ Legacy file format compatibility is provided in recent editions of WizCrypt for
+supporting files created with older versions of the software. It is recommended
+to use the WizCrypt07 format for new encryptions.
