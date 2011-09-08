@@ -28,7 +28,7 @@
 
         <menu name="WizCrypt">
             <item name="Home" href="index.html"/>
-            <item name="How?" href="how.html"/>
+            <item name="File Format" href="file-format.html"/>
             <item name="Scriptability" href="scriptability.html"/>
             <item name="API Guide" href="apiguide.html"/>
             <item name="API Guide-Callback" href="apiguide_callback.html"/>
