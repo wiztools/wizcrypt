@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<project name="WizCrypt">
+<project name="WizCrypt"
+            xmlns="http://maven.apache.org/DECORATION/1.1.0"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://maven.apache.org/DECORATION/1.1.0 http://maven.apache.org/xsd/decoration-1.1.0.xsd">
     <bannerLeft>
         <name>WizCrypt</name>
         <src>img/logo.png</src>
@@ -30,7 +33,6 @@
             <item name="API Guide" href="apiguide.html"/>
             <item name="API Guide-Callback" href="apiguide_callback.html"/>
             <item name="FAQ" href="faq.html"/>
-            <item name="Forum" href="http://developer.berlios.de/forum/?group_id=5944"/>
             <item name="Translate" href="translate.html"/>
             <item name="Downloads" href="download.html"/>
             <item name="Powered By" href="poweredby.html"/>
