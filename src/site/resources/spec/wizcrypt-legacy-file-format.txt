@@ -1,0 +1,60 @@
+
+
+     WizCrypt Legacy File Format Specification
+     =========================================
+
+
+1. INTRODUCTION
+
+ WizCrypt Legacy Format is an encryption file format used by OpenSource file
+ encryption software WizCrypt upto version 2.2:
+
+ http://wizcrypt.wiztools.org/
+
+ All versions since WizCrypt 2.2 support the newer WizCrypt07 format.
+
+ It is not recommended to use the Legacy format. This document is developed only
+ for historical purposes.
+
+2. WizCrypt Legacy File Extension
+
+ The recommended file extension for this format is `.wiz'.
+
+3. FILE FORMAT
+
+ The WizCrypt Legacy file format:
+
+      +-----------------------+
+      |+---------------------+|
+      ||  MD5 Password Hash  ||
+      |+---------------------+|
+      |+---------------------+|
+      ||                     ||
+      ||                     ||
+      ||                     ||
+      ||                     ||
+      ||    RC4  Encrypted   ||
+      ||        Data         ||
+      ||                     ||
+      ||                     ||
+      ||                     ||
+      ||                     ||
+      |+---------------------+|
+      +-----------------------+
+
+ The first 16-bytes of the encrypted file stores the password's MD5 hash.
+
+ The data part stores the RC4 encrypted content of the original file (encrypted
+ using the password-key).
+
+4. AUTHOR
+
+ This file-format specification is written by SUBHASH CHANDRAN S.
+ Address:
+
+ SUBHASH CHANDRAN S
+ Software Engineer
+ WizTools.org
+ 
+ Email: subwiz@gmail.com
+
