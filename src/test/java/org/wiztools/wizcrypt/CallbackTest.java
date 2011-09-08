@@ -91,8 +91,8 @@ public class CallbackTest {
         }
 
         @Override
-        public void notifyProgress(long value) {
-            System.out.print(value + ",");
+        public void notifyProgress(long percentage, long bytes) {
+            System.out.print("[" + percentage + "%, " + bytes + "b]");
         }
 
         @Override

@@ -73,11 +73,7 @@ abstract class AbstractWizCrypt implements WizCrypt {
     
     protected void notifyCallbackProgress(final long readSize) {
         for(Callback callback: callbacks) {
-            if(fileSize == -1){
-                callback.notifyProgress(readSize);
-            } else{
-                callback.notifyProgress(readSize * 100 / fileSize);
-            }
+            callback.notifyProgress(readSize * 100 / fileSize, readSize);
         }
     }
     
