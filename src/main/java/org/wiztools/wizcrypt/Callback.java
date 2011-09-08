@@ -33,7 +33,7 @@ public interface Callback {
      * as parameter or not.
      * 
      */
-    public abstract void notifyProgress(long value);
+    public abstract void notifyProgress(long percentage, long bytes);
     
     /**
      * <code>end()</code> is called immediately after the encryption/decryption
