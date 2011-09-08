@@ -30,9 +30,9 @@
     </issueManagement>
     
     <scm>
-        <connection>scm:svn://svn.berlios.de/wizcrypt/trunk</connection>
-        <developerConnection>scm:svn+ssh://subwiz@svn.berlios.de/svnroot/repos/wizcrypt/trunk</developerConnection>
-        <url>http://svn.berlios.de/wsvn/wizcrypt/</url>
+        <connection>scm:hg:http://wizcrypt.googlecode.com/hg</connection>
+        <developerConnection>scm:hg:https://wizcrypt.googlecode.com/hg</developerConnection>
+        <url>http://code.google.com/p/wizcrypt/source/browse/</url>
     </scm>
     
     <developers>
@@ -72,6 +72,7 @@
         </dependency>
         
     </dependencies>
+    
     <build>
         <plugins>
             <plugin>
