@@ -20,17 +20,21 @@ import javax.crypto.NoSuchPaddingException;
 final class EncryptLegacy extends AbstractWizCrypt {
     
     private static final Logger LOG = Logger.getLogger(EncryptLegacy.class.getName());
+    
+    EncryptLegacy(File file, File outFile, char[] password, ParamBean cpb) {
+        super(file, outFile, password, cpb);
+    }
 
     @Override
-    public void process(File file, File outFile, char[] password, ParamBean cpb) throws IOException, WizCryptException {
+    public void process() throws IOException, WizCryptException {
         boolean isSuccessful = false;
         CipherInputStream cis = null;
         OutputStream os = null;
         try{
             InputStream is = new FileInputStream(file);
-            outFile = validateAndGetOutFileForEncrypt(file, outFile, cpb);
+            File out = validateAndGetOutFileForEncrypt(file, super.outFile, cpb);
             
-            os = new FileOutputStream(outFile);
+            os = new FileOutputStream(out);
             
             
             beginCallback();

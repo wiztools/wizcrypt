@@ -49,8 +49,8 @@ public class DecryptLegacyTest {
         ParamBean cpb = new ParamBean();
         cpb.setForceOverwrite(true);
         cpb.setKeepSource(true);
-        WizCrypt instance = WizCryptDriver.getDecryptInstance(Version.LEGACY);
-        instance.process(file, outFile, PASSWD, cpb);
+        WizCrypt instance = WizCryptDriver.getDecryptInstance(Version.LEGACY, file, outFile, PASSWD, cpb);
+        instance.process();
         
         // Validate:
         byte[] validateWith = FileUtil.getContentAsBytes(PLAIN_FILE);

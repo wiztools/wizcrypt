@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.wiztools.wizcrypt;
 
 import java.io.File;
@@ -21,7 +17,21 @@ abstract class AbstractWizCrypt implements WizCrypt {
     protected static final ResourceBundle rb = ResourceBundle.getBundle(
                                         "org.wiztools.wizcrypt.wizcryptmsg");
     
+    protected final File file;
+    protected final File outFile;
+    protected final char[] password;
+    protected final ParamBean cpb;
+    private final long fileSize;
+    
     private final List<Callback> callbacks = new ArrayList<Callback>();
+
+    public AbstractWizCrypt(File file, File outFile, char[] password, ParamBean cpb) {
+        this.file = file;
+        this.outFile = outFile;
+        this.password = password;
+        this.cpb = cpb;
+        fileSize = file.length();
+    }
     
     protected File validateAndGetOutFileForEncrypt(File file, File outFile, ParamBean pb)
                     throws DestinationFileExistsException{
@@ -63,11 +73,10 @@ abstract class AbstractWizCrypt implements WizCrypt {
     
     protected void notifyCallbackProgress(final long readSize) {
         for(Callback callback: callbacks) {
-            final long sizeOfStream = callback.getSize();
-            if(sizeOfStream == -1){
+            if(fileSize == -1){
                 callback.notifyProgress(readSize);
             } else{
-                callback.notifyProgress(readSize * 100 / sizeOfStream);
+                callback.notifyProgress(readSize * 100 / fileSize);
             }
         }
     }
@@ -86,11 +95,6 @@ abstract class AbstractWizCrypt implements WizCrypt {
     }
 
     @Override
-    public final void process(File file, char[] password, ParamBean cpb) throws IOException, WizCryptException {
-        process(file, null, password, cpb);
-    }
-
-    @Override
-    public abstract void process(File file, File outFile, char[] password, ParamBean cpb) throws IOException, WizCryptException;
+    public abstract void process() throws IOException, WizCryptException;
     
 }

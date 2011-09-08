@@ -27,9 +27,12 @@ final class Decrypt07 extends AbstractWizCrypt{
     
     private static final Logger LOG = Logger.getLogger(Decrypt07.class.getName());
     
+    Decrypt07(File file, File outFile, char[] password, ParamBean cpb) {
+        super(file, outFile, password, cpb);
+    }
+    
     @Override
-    public void process(final File file, File outFile, final char[] password,
-            final ParamBean cpb)
+    public void process()
             throws IOException, WizCryptException {
         
         final boolean keepSource = cpb.isKeepSource();
@@ -46,11 +49,11 @@ final class Decrypt07 extends AbstractWizCrypt{
         // subsequently, this has to be updated in that branch.
         boolean isSuccessful = false;
         try{
-            outFile = validateAndGetOutFileForDecrypt(file, outFile, cpb);
+            File out = validateAndGetOutFileForDecrypt(file, super.outFile, cpb);
             
             FileInputStream fis = new FileInputStream(file);
             dis = new DataInputStream(fis);
-            fos = new FileOutputStream(outFile);
+            fos = new FileOutputStream(out);
             
             //***start decryption
             byte[] pwd = new String(password).getBytes(WizCryptAlgorithms.ENCODE_UTF8);

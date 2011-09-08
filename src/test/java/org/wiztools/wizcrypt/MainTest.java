@@ -104,13 +104,11 @@ public class MainTest {
         System.out.println("main");
         
         // Encryption
-        
-        WizCrypt e = WizCryptDriver.getEncryptInstance();
-        
+        WizCrypt e = WizCryptDriver.getEncryptInstance(fin, null, password.toCharArray(), cpb);
         try {
             System.out.println("before processing...");
             cpb.setKeepSource(true);
-            e.process(fin, password.toCharArray(), cpb);
+            e.process();
             System.out.println("processing over...");
         } catch(WizCryptException dfe){
             dfe.printStackTrace();
@@ -120,12 +118,12 @@ public class MainTest {
         
         // Decryption
         
-        WizCrypt d = WizCryptDriver.getDecryptInstance();
+        WizCrypt d = WizCryptDriver.getDecryptInstance(fout, null, wrongPassword.toCharArray(), cpb);
         
         // test for wrong password
 
         try {
-            d.process(fout, wrongPassword.toCharArray(), cpb);
+            d.process();
             System.out.println("My message!");
             Assert.fail("Cannot process for wrong supplied password!!!");
         } catch(DestinationFileExistsException dfe){
@@ -146,17 +144,19 @@ public class MainTest {
     
     @Test
     public void fileExistenceTest() throws Exception{
-        WizCrypt d = WizCryptDriver.getDecryptInstance();
+        
         try {
             // Try processing file not ending with .wiz
             try{
-                d.process(new File(path+".xxx"), password.toCharArray(), cpb);
+                WizCrypt d = WizCryptDriver.getDecryptInstance(new File(path+".xxx"), null, password.toCharArray(), cpb);
+                d.process();
                 Assert.fail("Cannot process for file not ending with .wiz");
             } catch(FileNotFoundException fnfe){
                 // should be visited here
             }
-            
-            d.process(fout, password.toCharArray(), cpb);
+
+            WizCrypt d = WizCryptDriver.getDecryptInstance(fout, null, password.toCharArray(), cpb);
+            d.process();
 
         } catch(WizCryptException dfe){
             dfe.printStackTrace();
