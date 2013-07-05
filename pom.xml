@@ -5,7 +5,7 @@
     <groupId>org.wiztools.wizcrypt</groupId>
     <artifactId>wizcrypt</artifactId>
     <packaging>jar</packaging>
-    <version>3.0</version>
+    <version>3.1-SNAPSHOT</version>
     <name>WizCrypt</name>
     <url>http://wizcrypt.wiztools.org/</url>
     <description>
