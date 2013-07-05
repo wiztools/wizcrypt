@@ -113,12 +113,9 @@
  Address:
 
  SUBHASH CHANDRAN S
- Software Engineer
- SpikeSource Software Pvt. Ltd.
- Tower A, 7th Floor, Diamond District,
- 150, Airport Road,
- Bangalore - 560 008
- Ph: +91 80 41810800
+ Founder & Programmer
+ WizTools.org
+ Chennai, India
  
  Email: subwiz@gmail.com
 
