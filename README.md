@@ -9,6 +9,10 @@ Cross platform personal commandline encryption program. It runs in 2 modes:
 
 2. Decryption mode: Files with .wiz extension are converted back into ordinary file. You have to pass command line argument `-d' for operating in this mode.
 
+This tool is available as part of _"The Joy of Unix in Windows Tool Bundle"_:
+
+[![](http://static.wiztools.org/wiztools-cli-tools.png)](http://cli-bundle.wiztools.org/)
+
 ### Requirement:
 
 JRE 1.6 or above.
